@@ -1,0 +1,65 @@
+<<header-child,include=FALSE,cache=FALSE,purl=FALSE>>=
+library("ggplot2")
+library("spatPomp")
+library(doParallel)
+library(doRNG)
+
+options(
+        scipen=2,
+        help_type="html",
+        stringsAsFactors=FALSE,
+        prompt="R> ",
+        continue="+  ",
+        width=70,
+        useFancyQuotes=FALSE,
+        reindent.spaces=2,
+        xtable.comment=FALSE
+        )
+@
+
+<<knitr-opts,include=F,cache=F,purl=F>>=
+library("knitr")
+opts_knit$set(concordance=TRUE)
+opts_chunk$set(
+    progress=TRUE,prompt=TRUE,highlight=FALSE,
+    tidy=TRUE,
+    tidy.opts=list(
+        keep.blank.line=FALSE
+    ),
+    comment="",
+    warning=FALSE,
+    message=FALSE,
+    error=TRUE,
+    echo=TRUE,
+    cache=FALSE,
+    strip.white=TRUE,
+    results="markup",
+    background="#FFFFFF00",
+    size="normalsize",
+    fig.path="figure/",
+    fig.lp="fig:",
+    fig.align="left",
+    fig.show="asis",
+#    dpi=300,
+    dev="pdf",
+    dev.args=list(
+        bg="transparent",
+        pointsize=9
+    )
+)
+
+myround<- function (x, digits = 1) {
+  # taken from the broman package
+  if (digits < 1) 
+    stop("This is intended for the case digits >= 1.")
+  if (length(digits) > 1) {
+    digits <- digits[1]
+    warning("Using only digits[1]")
+  }
+  tmp <- sprintf(paste("%.", digits, "f", sep = ""), x)
+  zero <- paste0("0.", paste(rep("0", digits), collapse = ""))
+  tmp[tmp == paste0("-", zero)] <- zero
+  tmp
+}
+
+@

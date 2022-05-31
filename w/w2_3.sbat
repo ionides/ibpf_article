@@ -1,0 +1,33 @@
+#!/bin/bash
+
+## this is a full run of w2
+
+#SBATCH --job-name=w2_3
+#SBATCH --mail-user=ionides@umich.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+ 
+#SBATCH --account=ionides2
+#SBATCH --partition=standard
+
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=36
+#SBATCH --cpus-per-task=1
+
+## 5GB/cpu is the basic share
+#SBATCH --mem-per-cpu=5GB
+
+## wall time hours:minutes:seconds
+#SBATCH --time=24:00:00
+
+###   Load software modules
+
+module load R/4.1.0
+module list
+
+####  Commands your job should run follow this line
+
+echo "Running on $SLURM_JOB_NODELIST"
+echo "Running in $(pwd)"
+
+Rscript --vanilla w2.r
+

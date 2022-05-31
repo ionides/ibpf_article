@@ -1,0 +1,25 @@
+Working out what to do to incorporate ibpf into spatPomp
+
+1. should allow for shared parameters & unit-specific parameters
+
+2. the package should include at least 1 example which ibpf can be checked 
+on. (a) measles; (b) linear gaussian example for testing.
+
+3. unit tests, giving 100% line coverage via "make covr"
+ 
+4. adding ibpf to the ms
+(a) pseudocode, sec 4.3.
+(b) for example, we can cite the numerical work for the stat sinica paper.
+
+5. service functions for moving between expanded, contracted and basic 
+parameter formats: see param_formats.R. These also need to be described in 
+the ms.
+
+plan: (4,5) are added to the supplement, which is posted on arxiv as an 
+updated version of the previous arxiv paper.
+
+
+
+
+
+

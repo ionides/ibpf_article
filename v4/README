@@ -1,0 +1,6 @@
+v4: The same as v3, except restarting the top 25% of previous searches rather than top 50%.
+
+v3: A more agressive search on simulated data: starting with more particles and a smaller rwsd for alpha.
+
+
+

@@ -1,0 +1,10 @@
+w1.r : evaluates likelihood for ../sim/sim.rds at the true parameter values
+       for the simulation.
+
+w2.r : evaluates likelihood for data, using he10 mle values
+       (uncoupled, with immigration) which can be compared against he10
+       likelihoods.
+
+w3.r : checking that conditional likelihoods for the uncoupled
+       he10 model match the he10 likelihoods for each unit.
+

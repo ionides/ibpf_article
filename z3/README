@@ -1,0 +1,11 @@
+
+z3:
+modifies z2 by restarting at top 25% of searches rather than top 50%
+
+z2:
+A more agressive search on actual data.
+Adapting the v3 code developed for simulated data.
+
+
+
+

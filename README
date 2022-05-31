@@ -1,0 +1,31 @@
+
+Source code for: An iterated block particle filter for inference on coupled dynamic systems with shared and unit-specific parameters
+
+E. L. Ionides, J. Wheeler and N. Ning
+
+This repository is a public version of the source code for the article. The intention is to keep it up-to-date as the article is revised during the publication process. 
+
+ms.Rnw The document source code.
+
+ibpf.R    A spatPomp implementation. requires a unit-specific representation of shared parameters.
+
+measles2.R  A version of the UK measles model with requested parameters given a unit-specific representation.
+
+he10.R A variation of measles2.R which matches He et al (2010) "Plug-and-play inference for disease dynamics: Measles in large and small towns as a case study" Journal of the Royal Society Interface.
+
+data The data files from he10.
+
+param_formats.R  book-keeping functions for moving between different parameter representations.
+
+sim, sim.r  a simulation from he10.R used for testing.
+
+v4. ibpf on measles simulated data.
+
+v. An older version of v4.
+
+w testing likelihood evaluation, and getting a good evaluation at the truth for a simulated model.
+
+z3. ibpf on measles data as used for he10.
+
+
+

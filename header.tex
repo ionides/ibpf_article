@@ -1,0 +1,178 @@
+
+\newcommand\mytitle{An iterated block particle filter for inference on coupled dynamic systems with shared and unit-specific parameters}
+
+\newcommand\ibpf{IBPF}
+
+%% for algorithm pseudocode
+\usepackage{enumerate,alltt,xstring}
+\usepackage[ruled,noline,linesnumbered]{algorithm2e}
+\SetKwFor{For}{for}{do}{end}
+\SetKwFor{While}{while}{do}{end}
+\SetKwInput{KwIn}{input}
+\SetKwInput{KwOut}{output}
+\SetKwInput{KwCplx}{complexity}
+\SetKwInput{KwIndices}{note}
+\SetKwBlock{Begin}{procedure}{}
+\DontPrintSemicolon
+
+% for measles model
+\newcommand\amplitude{h}
+\newcommand\meanBeta{{\bar\beta}}
+\newcommand\cohort{c}
+\newcommand\birth{b}
+\newcommand\gravity{G}
+
+%%%%%%%%%%%%%%%% START OF USER DEFINITIONS %%%%%%%%%%%%%%%5
+
+\newcommand\siOnly[1]{} %% redefined for the supplement
+\newcommand\msOnly[1]{#1} %% redefined for the supplement
+
+%% code macros
+%\newcommand\slot[1]{\code{#1}}
+\newcommand\class[1]{class `\code{#1}'}
+\newcommand\code[1]{\texttt{#1}}
+\usepackage{url}
+\newcommand\spatPomp{\texttt{spatPomp}}
+
+%% EDITING MACROS
+
+%\usepackage[normalem]{ulem}% to use \sout in feedback commands
+%\usepackage{subfigure,sidecap}
+%\usepackage{wrapfig}
+\usepackage{color}
+\usepackage[normalem]{ulem}% to use \sout in feedback commands
+% orange for EI
+\definecolor{orange}{rgb}{1,0.5,0}
+\newcommand\ei[2]{\sout{#1} \textcolor{orange}{#2}}
+\newcommand\eic[1]{\textcolor{orange}{[#1]}}
+% green for KA
+\definecolor{green}{rgb}{0,0.5,0}
+\newcommand\ka[2]{\sout{#1} \textcolor{green}{#2}}
+\newcommand\kac[1]{\textcolor{green}{[#1]}}
+%purple for AK
+%\definecolor{purple}{rgb}{0.5,0,1}
+%\newcommand\ak[2]{\sout{#1} \textcolor{purple}{#2}}
+%\newcommand\akc[1]{\textcolor{purple}{[#1]}}
+%cyan for JP
+\definecolor{cyan}{rgb}{0,.5,.5}
+\newcommand\jp[2]{\sout{#1} \textcolor{cyan}{#2}}
+\newcommand\jpc[1]{\textcolor{cyan}{[#1]}}
+
+%% basic POMP definitions
+\newcommand\Xspace{{\mathbb X}}
+\newcommand\Yspace{{\mathbb Y}}
+%\newcommand\Thetaspace{{\Theta}}
+\newcommand\Thetaspace{\R^{\Thetadim}}
+\newcommand\Xunitspace{{\scriptsize{\mathcal X}}}
+\newcommand\Yunitspace{{\tiny{\mathcal Y}}}
+\newcommand\hatTheta{\widehat{\Theta}}
+\newcommand\Xdim{{\mathrm{dim}}(\Xspace)}
+\newcommand\Ydim{{\mathrm{dim}}(\Yspace)}
+%\newcommand\Thetadim{{\mathrm{dim}}(\Thetaspace)}
+\newcommand\Thetadim{P}
+\newcommand\thetadim{p}
+\newcommand\timeSet{{\mathbb T}}
+\newcommand\data[1]{#1^*}
+
+\newcommand\unitSpecific{\hspace{0.1mm}\mathrm{us}}
+\newcommand\shared{\hspace{0.15mm}\mathrm{sh}}
+
+\newcommand\comma{{\hspace{-0.25mm},\hspace{-0.2mm}}}
+
+%% for particle filters
+\newcommand\unit{u}
+\newcommand\altUnit{\tilde u}
+\newcommand\Unit{U}
+\newcommand\rep{i}
+\newcommand\Rep{\mathcal{I}}
+\newcommand\island{\rep}
+\newcommand\Island{\Rep}
+%\newcommand\txtisland{replicate}
+\newcommand\altIsland{\tilde i}
+\usepackage[mathscr]{euscript}
+
+\renewcommand\time{n}
+\newcommand\myvec[1]{\boldsymbol{#1}}
+\newcommand\altTime{\tilde n}
+\newcommand\Time{N}
+\newcommand\Np{J}
+\newcommand\np{j}
+\newcommand\altNp{k}
+\newcommand\altAltNp{\tilde j}
+\newcommand\resampleIndex{i}
+\newcommand\unitWeight{w}
+\newcommand\spatReg{r}
+
+
+%% for all iterated filtering algorithms
+\newcommand\Nit{M}
+\newcommand\nit{m}
+
+%% for Bpfilter	
+\newcommand\block{k}
+\newcommand\Block{K}
+\newcommand\blockweight{w}
+\newcommand\blocklist{\mathcal{B}} %% Partition
+
+%% customized math macros
+\newcommand\prob{\mathbb{P}}
+\newcommand\E{\mathbb{E}}
+\newcommand\dd[1]{\mathrm{d}{#1}}
+\newcommand\given{{\,\vert\,}}
+\newcommand\equals{{{\,}={\,}}} 
+\newcommand\myequals{\hspace{0.5mm}{=}\hspace{0.5mm}}
+\newcommand\myto{{\;:\;}}
+\newcommand\mycolon{{\hspace{0.6mm}:\hspace{0.6mm}}}
+\newcommand\seq[2]{{#1}\mycolon{#2}}
+\newcommand\mydot{{\,\cdot\,}}
+\newcommand\cp[2]{N_{\mathrm{#1}\mathrm{#2}}}
+\newcommand\giventh{{\hspace{0.5mm};\hspace{0.5mm}}}
+%\newcommand\normal{{\mathrm{Normal}}}
+\newcommand\normal{\mathcal{N}}
+\newcommand\argequals{{\,=\,}}
+\newcommand\lags{c}
+\newcommand\maxlag{\overline{c}}
+\newcommand\nlfList{C}
+\newcommand\bigO{\mathcal{O}}
+\newcommand\loglik{\lambda}
+\newcommand\loglikMC{\MC{\loglik}}
+\newcommand\R{\mathbb{R}}
+\newcommand\param{\,;}
+\newcommand\MC[1]{#1^{\,\mbox{\tiny MC}}}
+\newcommand\EMC{{\E}}
+\newcommand\Var{\mathrm{Var}}
+\newcommand\var{\Var}
+\newcommand\Cov{\mathrm{Cov}} 
+\newcommand\cov{\Cov}
+\newcommand\iid{\mathrm{iid}}
+%\newcommand\dist{\mathrm{dist}}
+\newcommand\dist{d}
+\newcommand\transpose{\top}
+
+\def\lik{L}
+\def\loglik{\ell}
+
+%% THEOREM-LIKE ENVIRONMENTS
+\usepackage{amsthm}
+\newtheorem{prop}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\newtheorem{cor}{Corrolary}
+\newtheorem{fact}{Fact}  
+\newtheorem{assumption}{Assumption}
+\newtheorem{assumptionB}{Assumption}
+%\newtheorem{procedure}{Procedure}
+\renewcommand\theassumption{A\arabic{assumption}}
+\renewcommand\theassumptionB{B\arabic{assumptionB}}
+
+%\usepackage{float}
+%\floatstyle{ruled}
+%\newfloat{textbox}{t}{tbx}
+%\floatname{textbox}{Box}
+%\renewcommand\thetextbox{\arabic{textbox}}
+
+
+
+%%%%%%%%%%%%%%%% END OF USER DEFINITIONSS %%%%%%%%%%%%%%%5

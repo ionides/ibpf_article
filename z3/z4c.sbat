@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#SBATCH --job-name=z3z4c
+#SBATCH --mail-user=ionides@umich.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+ 
+#SBATCH --account=ionides2
+#SBATCH --partition=standard
+
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=36
+#SBATCH --cpus-per-task=1
+
+## 5GB/cpu is the basic share
+#SBATCH --mem-per-cpu=5GB
+
+## estimated time: 24 hr 
+## wall time hours:minutes:seconds
+#SBATCH --time=30:00:00
+
+###   Load software modules
+
+module load R/4.1.0
+module list
+
+####  Commands your job should run follow this line
+
+echo "Running on $SLURM_JOB_NODELIST"
+echo "Running in $(pwd)"
+
+Rscript --vanilla z4c.r
+
