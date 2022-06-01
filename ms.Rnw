@@ -110,7 +110,7 @@ $\ $\par
 \vspace{.4cm} 
 \centerline{Edward. L. Ionides, Ning Ning and Jesse Wheeler}
 \vspace{.4cm} 
-\centerline{University of Michigan, Department of Statistics,}
+\centerline{University of Michigan, Department of Statistics}
 
  \vspace{.55cm} \fontsize{9}{11.5pt plus.8pt minus.6pt}\selectfont
 
@@ -465,7 +465,7 @@ This greatly exceeds the 7 shared parameters fitted by \citet{ionides21} for a m
 An iterated guided intermediate resampling filter (IGIRF) algorithm was used to fit 9 shared parameters and 3 unit-specific initial value parameters in a measles metapopulation model \citep{park20}.
 That analysis used a customized treatment for the unit-specific initial value parameters and did not attempt to estimate other unit-specific parameters.
 IGIRF is sensitive to the choice of the guide function, and the model-specific implementation used by \citet{park20} performed better than the generic implementation of IGIRF which is currently available in \code{spatPomp}.
-To our knowledge, {\ibpf} is therefore advancing the current limits for scalability of likelihood-based inference for metapopulation dynamics.
+To our knowledge, {\ibpf} is therefore advancing the current limits for scalability of simulation-based maximum-likelihood inference for metapopulation dynamics.
 
 <<sim-loglik-truth,echo=FALSE>>=
 readRDS("w/w1_3/lik.rds") -> w
@@ -705,11 +705,11 @@ Rather, we view the simulation study as a lower bound on the effort required to 
 The data we consider here are weekly case reports for twenty towns, identical to those studied by \citet{he10}.
 Some previous analyses have used counts aggregated over two-week intervals \citep{park20,ionides21} since these were available for more cities, but our goal here is to extend the analysis of \citet{he10}.
 Apart from this, our model matches \citet{ionides21} and for completeness we repeat the description here.
-We compartmentalize the population of each city into susceptible ($S$), exposed ($E$), infectious ($I$), and recovered/removed ($R$) categories.
-The numbers of individuals in each compartment for city $\unit$ at time $t$ are denoted by integer-valued random variables $S_\unit(t)$, $E_\unit(t)$, $I_\unit(t)$, and $R_\unit(t)$.
-The population dynamics are written in terms of counting processes $N_{AB,\unit}(t)$ enumerating cumulative transitions in city $\unit$, up to time $t$, between compartments $A$ and $B$.
+We compartmentalize the population of each town into susceptible ($S$), exposed ($E$), infectious ($I$), and recovered/removed ($R$) categories.
+The numbers of individuals in each compartment for town $\unit$ at time $t$ are denoted by integer-valued random variables $S_\unit(t)$, $E_\unit(t)$, $I_\unit(t)$, and $R_\unit(t)$.
+The population dynamics are written in terms of counting processes $N_{AB,\unit}(t)$ enumerating cumulative transitions in town $\unit$, up to time $t$, between compartments $A$ and $B$.
 Here, $A,B\in \{S,E,I,R,B,D\}$ with $B$ denoting a source compartment for immigration or birth, and $D$ a sink compartment for emigration or death.
-We enumerate the $U=20$ cities studied by \citet{he10} in decreasing size, so that $\unit=1$ corresponds to London.
+We enumerate the $U=20$ towns studied by \citet{he10} in decreasing size, so that $\unit=1$ corresponds to London.
 Our model is described by the following system of stochastic differential equations, for $\unit=1,\dots, \Unit$,
 \begin{equation}
 \nonumber
@@ -721,7 +721,7 @@ Our model is described by the following system of stochastic differential equati
 \end{array}
 \end{equation}
 The total population $P_\unit(t)=S_\unit(t)+E_\unit(t)+I_\unit(t)+R_\unit(t)$ is calculated by smoothing census data and is treated as known.
-The number of recovered individuals $R_\unit(t)$ in city $\unit$ is therefore defined implicitly.
+The number of recovered individuals $R_\unit(t)$ in town $\unit$ is therefore defined implicitly.
 $N_{SE,\unit}(t)$ is modeled as negative binomial death processes \citep{breto09,breto11}
 with over-dispersion parameter $\sigma_{SE}$, and rate given by
 \begin{eqnarray}
@@ -754,14 +754,14 @@ where $\beta(t)$ models seasonality driven by high contact rates between childre
   \end{cases} \label{eq:term}
 \end{equation}
 with $p = 0.759$ being the proportion of the year taken up by the school terms, $\meanBeta$ is the mean transmission rate, and $\amplitude$ measures the reduction of transmission during school holidays.
-In \eqref{eq:dEdt}, $\alpha$ is a mixing exponent modeling inhomogeneous contact rates within a city, and $\iota$ models immigration of infected individuals which is appropriate when analyzing a subset of cities that cannot be treated as a closed system.
-The number of travelers from city $\unit$ to $\altUnit$ is denoted by $v_{\unit\altUnit}$. 
+In \eqref{eq:dEdt}, $\alpha$ is a mixing exponent modeling inhomogeneous contact rates within a town, and $\iota$ models immigration of infected individuals which is appropriate when analyzing a subset of cities that cannot be treated as a closed system.
+The number of travelers from town $\unit$ to $\altUnit$ is denoted by $v_{\unit\altUnit}$. 
 Here, $v_{\unit\altUnit}$ is constructed using the gravity model of \cite{xia04}, 
 \[
 v_{\unit\altUnit} = \gravity \cdot \frac{\;\overline{\dist}\;}{\bar{P}^2} \cdot \frac{P_\unit \cdot P_{\altUnit}}{\dist(\unit,\altUnit)},
 \]
-where $\dist(\unit,\altUnit)$ denotes the distance between city $\unit$ and city $\altUnit$, $P_\unit$ is the average population for city $\unit$ across time, $\bar{P}$ is the average population across cities, and $\overline{\dist}$ is the average distance between a randomly chosen pair of cities.
-Here, we model $v_{\unit\altUnit}$ as fixed through time and symmetric between any two arbitrary cities, though a natural extension would allow for temporal variation and asymmetric movement between two cities.
+where $\dist(\unit,\altUnit)$ denotes the distance between town $\unit$ and town $\altUnit$, $P_\unit$ is the average population for town $\unit$ across time, $\bar{P}$ is the average population across towns, and $\overline{\dist}$ is the average distance between a randomly chosen pair of towns.
+Here, we model $v_{\unit\altUnit}$ as fixed through time and symmetric between any two arbitrary towns, though a natural extension would allow for temporal variation and asymmetric movement between two towns.
 The transition processes $N_{EI,\unit}(t)$, $N_{IR,\unit}(t)$ and $N_{\bullet D,\unit}(t)$ are modeled as conditional Poisson process with per-capita rates $\mu_{EI}$, $\mu_{IR}$ and $\mu_{\bullet D}$ respectively, and we fix $\mu_{\bullet D}=(50 \mbox{ year})^{-1}$.
 The birth process $N_{BS,\unit}(t)$ is an inhomogeneous Poisson process with rate $\mu_{BS,\unit}(t)$, given by interpolated census data.
 
@@ -898,7 +898,7 @@ As a consequence, competitive computational performance is obtained even though 
 
 \vspace{1mm}
 
-\noindent This work was supported by National Science Foundation grant DMS-1761603 and DMS 1646108.
+\noindent This work was supported by National Science Foundation grants DMS-1761603 and DMS 1646108.
 We acknowledge an anonymous referee from a previous article who recommended that we should try implementing a block particle filter.
 
 \bibliography{bib-ibpf}
