@@ -1,11 +1,20 @@
+\newcommand\jwc[1]{\textcolor{orange}{[#1]}}
 
 \newcommand\mytitle{An iterated block particle filter for inference on coupled dynamic systems with shared and unit-specific parameters}
 
 \newcommand\ibpf{IBPF}
 
+\newcommand\supSecMeaslesParams{S1}
+\newcommand\supSecAlg{S2}
+\newcommand\supSecEfficiency{S3}
+\newcommand\supFigSpatReg{S1}
+
+%\usepackage[sectionbib]{natbib}
+
 %% for algorithm pseudocode
 \usepackage{enumerate,alltt,xstring}
 \usepackage[ruled,noline,linesnumbered]{algorithm2e}
+\usepackage{setspace}
 \SetKwFor{For}{for}{do}{end}
 \SetKwFor{While}{while}{do}{end}
 \SetKwInput{KwIn}{input}
@@ -17,10 +26,14 @@
 
 % for measles model
 \newcommand\amplitude{h}
-\newcommand\meanBeta{{\bar\beta}}
+\newcommand\meanBeta{{\overline\beta}}
 \newcommand\cohort{c}
 \newcommand\birth{b}
 \newcommand\gravity{G}
+%\newcommand\pop{p}  % average population over time
+\newcommand\pop{\mathrm{pop}}  % average population over time
+\newcommand\schoolTermFrac{s}
+\newcommand\pinit{\pi}
 
 %%%%%%%%%%%%%%%% START OF USER DEFINITIONS %%%%%%%%%%%%%%%5
 
@@ -79,6 +92,17 @@
 
 \newcommand\comma{{\hspace{-0.25mm},\hspace{-0.2mm}}}
 
+%% for measles model
+
+%\newcommand\modelA{(A)}
+%\newcommand\modelB{(B)}
+%\newcommand\modelC{(C)}
+\usepackage[mathscr]{euscript}
+\newcommand\modelA{$\mathscr{A}$}
+\newcommand\modelB{$\mathscr{B}$}
+\newcommand\modelC{$\mathscr{C}$}
+\newcommand\measOD{\tau}
+
 %% for particle filters
 \newcommand\unit{u}
 \newcommand\altUnit{\tilde u}
@@ -108,7 +132,7 @@
 \newcommand\Nit{M}
 \newcommand\nit{m}
 
-%% for Bpfilter	
+%% for Bpfilter
 \newcommand\block{k}
 \newcommand\Block{K}
 \newcommand\blockweight{w}
@@ -119,7 +143,7 @@
 \newcommand\E{\mathbb{E}}
 \newcommand\dd[1]{\mathrm{d}{#1}}
 \newcommand\given{{\,\vert\,}}
-\newcommand\equals{{{\,}={\,}}} 
+\newcommand\equals{{{\,}={\,}}}
 \newcommand\myequals{\hspace{0.5mm}{=}\hspace{0.5mm}}
 \newcommand\myto{{\;:\;}}
 \newcommand\mycolon{{\hspace{0.6mm}:\hspace{0.6mm}}}
@@ -142,7 +166,7 @@
 \newcommand\EMC{{\E}}
 \newcommand\Var{\mathrm{Var}}
 \newcommand\var{\Var}
-\newcommand\Cov{\mathrm{Cov}} 
+\newcommand\Cov{\mathrm{Cov}}
 \newcommand\cov{\Cov}
 \newcommand\iid{\mathrm{iid}}
 %\newcommand\dist{\mathrm{dist}}
@@ -160,7 +184,7 @@
 \newtheorem{example}{Example}
 \newtheorem{remark}{Remark}
 \newtheorem{cor}{Corrolary}
-\newtheorem{fact}{Fact}  
+\newtheorem{fact}{Fact}
 \newtheorem{assumption}{Assumption}
 \newtheorem{assumptionB}{Assumption}
 %\newtheorem{procedure}{Procedure}

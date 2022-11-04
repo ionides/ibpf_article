@@ -1,40 +1,18 @@
 
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+
+%\documentclass[12pt]{article}
 %\input{stat-sinica-header.tex}
 
-\documentclass[12pt]{article}
-
-\setlength{\abovecaptionskip}{-2mm}
-
-%%%%%%% START OF STAT SINICA SETTINGS %%%%%%%%%%
-
-\textwidth=31.9pc
-\textheight=46.5pc
-\oddsidemargin=1pc
-\evensidemargin=1pc
-\headsep=15pt
-\topmargin=.6cm
-\parindent=1.7pc
-\parskip=0pt
-
 \usepackage[sectionbib]{natbib}
-\usepackage{array,epsfig,fancyheadings,rotating}
-%\usepackage[]{hyperref}  %<----modified by Ivan
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{sectsty, secdot}
-\sectionfont{\fontsize{12}{15}\selectfont}
-\sectionfont{\fontsize{12}{14pt plus.8pt minus .6pt}\selectfont}
-\renewcommand{\theequation}{\thesection\arabic{equation}}
-\subsectionfont{\fontsize{12}{14pt plus.8pt minus .6pt}\selectfont}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\pagestyle{fancy}
-\def\n{\noindent}
-\lhead[\fancyplain{} \leftmark]{}
-\chead[]{}
-\rhead[]{\fancyplain{}\rightmark}
-\cfoot{}
-
-%%%%%% END OF STAT SINICA SETTINGS %%%%%%%%5
+%%% Statistica Sinica formatting
+%\newcommand\statSinica[1]{#1}
+ \newcommand\statSinica[1]{}
+%%% arXiv formatting
+ \newcommand\arxiv[1]{#1}
+%\newcommand\arxiv[1]{}
 
 % sec:intro.
 % sec:alg. The \code{ibpf} algorithm for likelihood maximization
@@ -53,17 +31,13 @@ if(is.numeric(run_level)){
 \input{header.tex}
 
 \usepackage{amsmath,amssymb}
-%\usepackage{graphicx,psfrag,epsf}
 \usepackage{graphicx}
 \usepackage{enumerate}
 \usepackage{natbib}
 \usepackage{soul}
 \usepackage{xcolor}
 
-\usepackage{url} % not crucial - just used below for the URL 
-
-%\newcommand\jpc[1]{{\textcolor{orange}{#1}}}
-\newcommand\aak[1]{{\textcolor{blue}{#1}}}
+\usepackage{url} % not crucial - just used below for the URL
 
 %\usepackage{fullpage}
 \bibliographystyle{apalike}
@@ -73,7 +47,7 @@ if(is.numeric(run_level)){
 
 <<doParallel,include=F,cache=F>>=
 cores <-  as.numeric(Sys.getenv('SLURM_NTASKS_PER_NODE', unset=NA))
-if(is.na(cores)) cores <- detectCores()  
+if(is.na(cores)) cores <- detectCores()
 registerDoParallel(cores)
 
 ggplot2::theme_set(ggplot2::theme_bw())
@@ -86,39 +60,27 @@ ggplot2::theme_set(ggplot2::theme_bw())
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\renewcommand{\baselinestretch}{1.45}
+\statSinica{\statSinicaSetup}
 
-\markright{ \hbox{\footnotesize\rm Statistica Sinica
-%{\footnotesize\bf 24} (201?), 000-000
-}\hfill\\[-13pt]
-\hbox{\footnotesize\rm
-%\href{http://dx.doi.org/10.5705/ss.20??.???}{doi:http://dx.doi.org/10.5705/ss.20??.???}
-}\hfill }
+\centerline{\statSinica{\large}\arxiv{\Large}\bf An iterated block particle filter for inference on coupled dynamic}
 
-\markboth{\hfill{\footnotesize\rm E. L. Ionides et al.} \hfill}
-{\hfill {\footnotesize\rm An iterated block particle filter} \hfill}
+\arxiv{\vspace{1mm}}
 
-\renewcommand{\thefootnote}{}
-$\ $\par
+\centerline{\statSinica{\large}\arxiv{\Large}\bf systems with shared and unit-specific parameters}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\arxiv{\vspace{2mm}}
 
-\fontsize{12}{14pt plus.8pt minus .6pt}\selectfont \vspace{0.8pc}
-\centerline{\large\bf An iterated block particle filter for inference on coupled dynamic}
-\vspace{2pt} 
-\centerline{\large\bf systems with shared and unit-specific parameters}
-\vspace{.4cm} 
-\centerline{Edward. L. Ionides, Ning Ning and Jesse Wheeler}
-\vspace{.4cm} 
-\centerline{University of Michigan, Department of Statistics}
+\centerline{Edward L. Ionides$^1$, Ning Ning$^2$ and Jesse Wheeler$^1$}
 
- \vspace{.55cm} \fontsize{9}{11.5pt plus.8pt minus.6pt}\selectfont
+\arxiv{\vspace{1mm}}
 
+{\small
+\centerline{\small University of Michigan, Department of Statistics$^1$}
+\centerline{\small Texas A\&M University, Department of Statistics$^2$}
+}
+ \vspace{.25cm} \fontsize{9}{11.5pt plus.8pt minus.6pt}\selectfont
 
-\centerline{Submitted to {\it Statistica Sinica} special edition on}
-\centerline{Recent developments of sequential Monte Carlo methods}
-\centerline{and their applications}
-
+\statSinica{\statSinicaSubmission}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -126,35 +88,27 @@ $\ $\par
 \noindent {\it Abstract:}
 We consider inference for a collection of partially observed, stochastic, interacting, nonlinear dynamic processes.
 Each process is identified with a label called its unit, and our primary motivation arises in biological metapopulation systems where a unit corresponds to a spatially distinct sub-population.
-Metapopulation systems are characterized by strong dependence through time within a single unit and relatively weak interactions between units, and these properties make block particle filters an effective tool for simulation-based likelihood evaluation. 
+Metapopulation systems are characterized by strong dependence through time within a single unit and relatively weak interactions between units, and these properties make block particle filters an effective tool for simulation-based likelihood evaluation.
 Iterated filtering algorithms can facilitate likelihood maximization for simulation-based filters.
-We introduce a new iterated block particle filter algorithm applicable when parameters are unit-specific or shared between units.
+We introduce an iterated block particle filter applicable when parameters are unit-specific or shared between units.
 We demonstrate this algorithm by performing inference on a coupled epidemiological model describing spatiotemporal measles case report data for twenty towns.
 
-\vspace{9pt}
-\noindent {\it Key words and phrases:}
-sequential Monte Carlo; metapopulation; spatiotemporal; maximum likelihood estimation; partially observed Markov process.
-\par
+\statSinica{\statSinicaKeywords}
+
 \end{quotation}\par
-
-
 
 \def\thefigure{\arabic{figure}}
 \def\thetable{\arabic{table}}
 
 \renewcommand{\theequation}{\thesection.\arabic{equation}}
 
-
-\fontsize{12}{14pt plus.8pt minus .6pt}\selectfont
-
-
-%% \def\spacingset#1{\renewcommand{\baselinestretch}%
-%% {#1}\small\normalsize} \spacingset{1}
-
+\statSinica{
+  \fontsize{12}{14pt plus.8pt minus .6pt}\selectfont
+%%  \def\spacingset#1{\renewcommand{\baselinestretch}%
+%%  {#1}\small\normalsize} \spacingset{1}
+}
 
 \date{}
-
-%% \spacingset{1.45} 
 
 \section{Introduction}
 \label{sec:intro}
@@ -169,14 +123,16 @@ Collections of biological populations measured at different spatial locations ma
 The study of spatiotemporal disease dynamics has motivated research into inference for metapopulation systems \citep{xia04,li20,park20,ionides21,cauchemez08,bjornstad19}.
 
 Statistical inference for partially observed nonlinear biological systems was, until recently, an open methodological challenge even in the time series case \citep{bjornstad01}.
-Advances in Monte Carlo methods based on the particle filter have made inference accessible on many low-dimensional problems, but the curse of dimensionality \citep{bengtsson08} prevents applicability of the basic particle filter on metapopulations with more than a few units.
+Advances in Monte Carlo methods based on the particle filter have made inference accessible on many low-dimensional problems \citep{doucet11,kantas15,king16} but the curse of dimensionality \citep{bengtsson08} prevents applicability of the basic particle filter on metapopulations with more than a few units.
 Methods based on improving the proposal distribution for the particle filter may not fully resolve the curse of dimensionality \citep{snyder15}.
 Situations where previous Monte Carlo methods can provably beat the curse of dimensionality may have limited applicability \citep{beskos17,park20,ionides21}.
 Consequently, state-of-the-art scientific analysis for metapopulation dynamics has depended on ensemble Kalman filter (EnKF) methods \citep{li20}.
 EnKF algorithms scale well but are founded on an approximation that can be unsuitable for discrete populations with fade-out and re-introduction dynamics and other highly non-Gaussian features \citep{ionides21}.
 
 In Sec.~\ref{sec:alg}, we propose an algorithm for inference on metapopulation dynamics which we call an iterated block particle filter (IBPF).
-IBPF extends the block particle filter (BPF) of \citet{rebeschini15} to carry out maximum likelihood parameter estimation.
+IBPF combines the iterated filtering likelihood maximization technique of \citet{ionides15} with the block particle filter (BFP) of \citet{rebeschini15}.
+Iterated filtering algorithms use parameter perturbations to coerce a filtering algorithm into exploring the parameter space.
+BPF addresses the curse of dimensionality by modifying the resampling step of a particle filter to resample independently on blocks that form a partition of the collection of units.
 A previous IBPF algorithm was developed by \citet{ning21-ibpf} for the particular case that all estimated parameters are unit-specific, which is to say that the dynamics and measurement process for a unit $u$ are determined by a vector of parameters $\psi_u$ specific to unit $u$.
 The formal meaning of this assertion is given, together with the pseudocode for our algorithm, in Sec.~\ref{sec:alg}.
 We propose an extension of their IBPF which additionally permits the estimation of a vector of shared parameters, $\phi$.
@@ -189,7 +145,9 @@ Addressing these issues is also a prerequisite for studying questions about the 
 We will show empirically, in Sec.~\ref{sec:data}, that our {\ibpf} algorithm is applicable to an inference challenge in epidemiological metapopulation dynamics.
 Our demonstration focuses on a dataset for weekly measles incidence in 20 towns in the United Kingdom (UK) during the pre-vaccination era \citep{he10} modeled using a previously studied metapopulation model \citep{park20,ionides21}.
 Measles case reports have been a longstanding benchmark problem for inference on biological dynamics, motivating the development of time series methodology and, more recently, the progression from single populations to metapopulation systems.
-Unlike previous attempts on sequential Monte Carlo inference for metapopulation models, we show that our algorithm can provide practical inference when parameters are either shared between units or differ between units.
+Unlike previous attempts on sequential Monte Carlo inference for metapopulation models, we show that our algorithm can provide practical plug-and-play, likelihood-based inference when parameters are either shared between units or differ between units.
+Demonstrating a solution to this open problem provides numerical evidence substituting for numerical comparisons against alternative methods.
+
 Our data analysis results do not fully resolve open questions about what models for coupling between towns are supported by the data, and which parameters should be modeled as unit-specific.
 Rather, we demonstrate steps toward this research goal.
 We use a simulation study, in Sec.~\ref{sec:sim}, to show that our methodology can deliver a good approximation to the maximum likelihood estimate when fitting the model used to simulate the data.
@@ -210,7 +168,7 @@ Observations are modeled as conditionally independent given the latent process.
 The conditional independence of measurements applies over both time and the unit structure, so the collection $\big\{Y_{\unit\comma\time},\unit\in\seq{1}{\Unit},\time\in\seq{1}{\Time}\big\}$ is conditionally independent given
 $\big\{X_{\unit\comma\time},\unit\in\seq{1}{\Unit},\time\in\seq{1}{\Time}\big\}$.
 We suppose the existence of a joint density $f_{\myvec{X}_{0:\Time},\myvec{Y}_{1:\Time}}$  for $X_{1:\Unit,0:\Time}$ and $Y_{1:\Unit,1:\Time}$ with respect to some appropriate measure, following a notational convention that the subscripts of $f$ denote the joint or conditional density under consideration.
-We suppose that $f$ depends on a parameter vector $\theta=(\phi,\psi_{1:U})$.
+We suppose that $f$ depends on a real-valued parameter vector $\theta=(\phi,\psi_{1:U})$, which we write as $\theta=\theta_{1:D}$ when we wish to concatenate the component shared and unit-specific parameters into a single vector of length $D$.
 The data are $\data{y}_{\unit\comma\time}$ for unit $\unit$ at time $\time$.
 This model is a special case of a  partially observed Markov process (POMP) also known as a state space model or hidden Markov model.
 The additional unit structure, not generally required for a POMP, is appropriate for modeling interactions between units characterized by a spatial location, and so we call the model a SpatPOMP.
@@ -218,18 +176,18 @@ For metapopulation models, the units are not generally arranged on a spatial gri
 
 A numerical challenge of fundamental statistical relevance is the maximization of the log-likelihood function of the data given the model, $\loglik(\theta)=\log f_{\myvec{Y}_{1:\Time}}(\data{\myvec{y}}_{1:\Time}\giventh \theta)$.
 Numerical evaluation of the likelihood function is closely related to the filtering problem of evaluating $f_{\myvec{X}_n|\myvec{Y}_{1:n}}(\myvec{x}_n\given \data{\myvec{y}}_{1:n}\giventh \theta)$.
-Including parameters into the latent space of a dynamic model can coerce a filter into calculating a Bayesian posterior distribution, though regularization is required to make the calculation numerically tractable using Monte Carlo methods \citep{kitagawa98,janeliu01}.
+If the dynamic model is extended to include the parameters as latent variables, the filtering problem leads to the Bayesian posterior distribution, though regularization is required to make the calculation numerically tractable using Monte Carlo methods \citep{kitagawa98,janeliu01}.
 Iterating this Bayesian calculation recursively targets a maximum likelihood estimate (MLE), a strategy known as data cloning \citep{lele07,lele10}.
-Adding noise to perturb the parameters at each time point can stabilize the numerics while retaining the capability to approximate the MLE \citep{ionides06-pnas,ionides11,ionides15}.
+Adding noise to perturb the parameters in the extended model at each time point can stabilize the numerics while retaining the capability to approximate the MLE \citep{ionides06-pnas,ionides11,ionides15}.
 Many variations on this idea have been developed using different filter methods \citep{park20,li20,ionides21,manoli15} or employing different perturbation systems \citep{doucet13,nguyen17}.
 
-Previous approaches to iterated perturbed particle filtering are not immediately applicable to BPF.
-In the special case where each parameter is localized to an individual unit (i.e., all parameters are unit-specific) one can resample perturbed parameters at the block level and obtain a theoretical guarantee of approximating the MLE \citep{ning21-ibpf}.
+A direct approach to iterating BPF for parameter estimation is to resample the extended model independently on each block, giving rise to separate collections of parameters for each block.
+\citet{ning21-ibpf} proved that this IBPF algorithm targets the MLE for the special case where each parameter is localized to an individual unit, i.e., when all parameters are unit-specific.
 Formally, we say that a parameter for a discrete-time SpatPOMP is specific to a unit $u$ if it is involved in specifying the measurement density $f_{Y_{u,n}|X_{u,n}}$ or transition density $f_{X_{u,n+1}|\myvec{X}_n}$ for some $n$, and it is not involved in $f_{Y_{v,m}|X_{v,m}}$ or $f_{X_{v,m+1}|\myvec{X}_m}$ for any $v\neq u$ and any $m$.
 For a continuous-time SpatPOMP, we replace the requirement on $f_{X_{u,n+1}|\myvec{X}_n}$ with an equivalent requirement on a numerical solution over a small time increment $\delta$, as in equation \eqref{eq:extension} below.
 A parameter which is not unit-specific is said to be shared between units.
-There are intermediate possibilities, where a parameter shared for only a subset of all units, but such situations are not explored further here.
-The special case where all parameters are unit-specific may occur sometimes, but models typically have some shared parameters which arise in transition densities and/or measurement densities for multiple units. 
+There are intermediate possibilities, where a parameter is shared for only a subset of all units, but such situations are not explored further here.
+The special case where all parameters are unit-specific may occur sometimes, but models typically have some shared parameters which arise in transition densities and/or measurement densities for multiple units.
 
 Our approach to iterated filtering for shared parameters involves constructing an extended model within which the shared parameters is represented as a unit-specific parameter that happens to be constant across units.
 We construct a spatiotemporally extended model by supposing that a numerical solution for the transition from time $t$ to time $t+\delta$ for each unit $u$ has a functional form
@@ -250,51 +208,25 @@ In other situations, the extended model may make scientific sense in its own rig
 For example, in biological metapopulation systems it might be scientifically meaningful to consider a model where there is variation over space and time in the parameters describing the local dynamics.
 Here, we are focusing on the hypothesis that there are some parameters that are fixed across space and time, but the specification in \eqref{eq:extension} requires this hypothesis to be nested within a more flexible alternative.
 
-The IBPF algorithm described in Alg.~\ref{alg:ibpfilter} carries out a block particle filter on this extended model.
-The extended parameters are given independent perturbations, but a spatial autoregressive step pulls the values of shared parameters toward their mean over the units.
-Indeed, this autoregressive step is the only difference between  Alg.~\ref{alg:ibpfilter} and the algorithm for unit-specific parameters proposed by \citet{ning21-ibpf}.
-This algorithm, in turn, is essentially the IF2 algorithm of \citet{ionides15} with the particle filter replaced by BPF.
-Alg.~\ref{alg:ibpfilter} assumes implicit loops over $\np\ \text{in}\ \seq{1}{\Np}$ and $\unit\ \text{in}\ \seq{1}{\Unit}$, 
-$\normal(\mu,\Sigma)$ denotes the normal distribution with mean $\mu$ and variance matrix $\Sigma$, and
-$\sigma_\time$ is a $D\times D$ diagonal matrix with entries $\sigma_{d,\time}$.
-The blocks, $\blocklist_{1:\Block}$, are a partition of $\seq{1}{\Unit}$.
 
-The pseudocode in Alg.~\ref{alg:ibpfilter} represents our implementation of {\ibpf} as the R function \code{ibpf} extending the open-source package \code{spatPomp} \citep{asfaw21github,asfaw21arxiv}.
-We will contribute \code{ibpf} to \code{spatPomp}.
-Additionally, the source code for all the results in this article is available at \url{https://github.com/ionides/ibpf_article}.
-Various generalizations of this implementation are possible.
-For example, iterated filtering theory does not rely on parameter perturbations following the normal distribution \citep{ionides15} though in practice we transform parameters to facilitate this convenient choice.
-Also, the pseudocode does not include parameter-dependent random walk variance, or a different perturbation schedule for initial value parameters, both of which could be included.
 
 %%%%%%% ibpf BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB %%%%%%%%%%%%%%%%%
 
-
-\begin{algorithm}[H]	
-   \caption{\textbf{IBPF}. \\
-    {\bf Inputs}:
-   simulator for the extended model, $f_{\myvec{X}_{\time}|\myvec{X}_{\time-1}}(\myvec{x}_{\time}\given \myvec{x}_{\time-1}\giventh\myvec{\theta})$;
-    evaluator for $f_{{Y}_{\unit,\time}|{X}_{\unit,\time}}({y}_{\unit,\time}\given {x}_{\unit,\time}\giventh\theta)$;
-    simulator for extended initialization, $f_{\myvec{X}_0}(\myvec{x}_0\giventh\myvec{\theta})$;
-    data, $\data{\myvec{y}}_{1:\Time}$;
-    number of particles, $\Np$;    
-    blocks, $\blocklist_{1:\Block}$;
-    initial parameter swarm with decomposition into shared and unit-specific parameters, $\Theta^{0,\np}_{\unit}=(\Phi^{0,\np}_{\unit},\Psi^{0,\np}_{\unit})$;
-    random walk perturbation, $\sigma_{d,\time}$.
-%{\bf \code{spatPomp} implementation}:	
-%     \code{ibpf(P,\,
-%        params{\argequals}$\theta_0${\argequals}$(\phi_0,\psi_{1:\Unit,0})$,
-%        Nbpf{\argequals}$\Nit$,
-%        Np{\argequals}$\Np\!$,
-%        rw.sd{\argequals}$\sigma$,
-%        cooling.fraction.50{\argequals}$a$,
-%        spat.regression{\argequals}$\spatReg$,
-%        block\_list{\argequals}$\blocklist$\,)}	
-%    where \code{P} is a	
-%     \class{\spatPomp} object \citep{asfaw21arxiv}.
-%
-}\label{alg:ibpfilter}	
-%\BlankLine	
-\For{$\nit\ \mathrm{in}\ \seq{1}{\Nit}$}{	
+\begin{algorithm}[H]
+\setstretch{1.35}
+  \caption{
+  \textbf{IBPF}. \newline
+  {\bf Inputs}:
+  simulator for the extended model, $f_{\myvec{X}_{\time}|\myvec{X}_{\time-1}}(\myvec{x}_{\time}\given \myvec{x}_{\time-1}\giventh\myvec{\theta})$ and initialization, $f_{\myvec{X}_0}(\myvec{x}_0\giventh\myvec{\theta})$;
+  evaluator for $f_{{Y}_{\unit,\time}|{X}_{\unit,\time}}({y}_{\unit,\time}\given {x}_{\unit,\time}\giventh\theta)$;
+  data, $\data{\myvec{y}}_{1:\Time}$;
+  number of particles, $\Np$;
+  blocks, $\blocklist_{1:\Block}$;
+  initial parameter swarm with decomposition into shared and unit-specific parameters, $\Theta^{0,\np}_{\unit}=(\Phi^{0,\np}_{\unit},\Psi^{0,\np}_{\unit})$;
+  random walk perturbation, $\sigma_{d,\time}$; cooling rate, $a$; number of iterations, $M$; spatial autoregression, $\spatReg$.
+}\label{alg:ibpfilter}
+%\BlankLine
+\For{$\nit\ \mathrm{in}\ \seq{1}{\Nit}$}{
   Perturb parameters:
     $\Theta^{F,\nit,\np}_{\unit,0}\sim \normal
     \left(
@@ -310,8 +242,8 @@ Also, the pseudocode does not include parameter-dependent random walk variance, 
      \;
       Prediction simulation: $\myvec{X}_{\time}^{P,\np}
         \sim {f}_{\myvec{X}_{\time}|\myvec{X}_{\time-1}}\big(
-        \mydot|\myvec{X}_{\time-1}^{F,\np};{\Theta^{P,\nit,\np}_{1:\Unit,\time}}\big)$	
-      \;	
+        \mydot|\myvec{X}_{\time-1}^{F,\np};{\Theta^{P,\nit,\np}_{1:\Unit,\time}}\big)$
+      \;
     \For{$\block\ \mathrm{in}\ \seq{1}{\Block}$}{
       Block prediction weights:
             $\displaystyle \blockweight^P_{\time,\np, \block}=
@@ -319,7 +251,7 @@ Also, the pseudocode does not include parameter-dependent random walk variance, 
               f_{Y_{\unit,\time}|X_{\unit,\time}}
               \big(
               \data{y}_{\unit,\time}\given X^{P,\np}_{\unit,\time}
-                \giventh \Theta^{P,\nit,\np}_{\unit,\time} \big)$	
+                \giventh \Theta^{P,\nit,\np}_{\unit,\time} \big)$
             \nllabel{alg:bpfilter:blockweights}
       \;
       Normalize weights:
@@ -346,15 +278,31 @@ Also, the pseudocode does not include parameter-dependent random walk variance, 
   \;
   }%End timestep for Loop
   $\Theta_{\unit}^{\nit,\np}=\Theta^{F,\nit,\np}_{\unit,\Time}$
-  \;  
+  \;
 } % end iterated filtering loop
-\KwOut{	
+\KwOut{
     IBPF parameter swarm, $\Theta_{\unit}^{\Nit,\np}$
-}	
-\end{algorithm}	
+}
+\end{algorithm}
+
+The IBPF algorithm described in Alg.~\ref{alg:ibpfilter} carries out a block particle filter on this extended model.
+The extended parameters are given independent perturbations, but a spatial autoregressive step pulls the values of shared parameters toward their mean over the units.
+Indeed, this autoregressive step is the only difference between  Alg.~\ref{alg:ibpfilter} and the algorithm for unit-specific parameters proposed by \citet{ning21-ibpf}.
+This algorithm, in turn, is essentially the IF2 algorithm of \citet{ionides15} with the particle filter replaced by BPF.
+
+
+Alg.~\ref{alg:ibpfilter} assumes implicit loops over $\np\ \text{in}\ \seq{1}{\Np}$ and $\unit\ \text{in}\ \seq{1}{\Unit}$,
+$\normal(\mu,\Sigma)$ denotes the normal distribution with mean $\mu$ and variance matrix $\Sigma$, and
+$\sigma_\time$ is a $D\times D$ diagonal matrix with entries $\sigma_{d,\time}$.
+The blocks, $\blocklist_{1:\Block}$, are a partition of $\seq{1}{\Unit}$.
 
 
 
+
+The pseudocode in Alg.~\ref{alg:ibpfilter} represents our implementation of {\ibpf} as the R function \code{ibpf} which we have contributed to the open-source package \code{spatPomp} \citep{asfaw21github,asfaw21arxiv}.
+Additionally, the source code for all the results in this article is available at \url{https://github.com/ionides/ibpf_article}.
+Various generalizations of this implementation are possible.
+For example, iterated filtering theory does not rely on parameter perturbations following the normal distribution \citep{ionides15} though in practice we transform parameters to facilitate this convenient choice (Sec.~\supSecAlg).
 
 
 
@@ -371,31 +319,16 @@ In principle, $\sigma_{d,n}$ can be a function of $n$ as well as the parameter, 
 The most common reason for using this flexibility is to avoid perturbing parameters during time intervals when there is no information about them: following an evolutionary analogy, evolution cannot operate effectively when there is mutation but no selection.
 For an initial value parameter, meaning one which specifies only the latent process value at the initial time $t_0$, we use $\sigma_{d,n}=0$ for $n\ge 1$ and we doubled the value of $\sigma_{d,n}$ for $n=0$.
 
-We set the cooling rate parameter to be $a=0.5$, corresponding to a 1\% reduction in the random walk standard deviation at each iteration.
+We used $J=4000$ particles, and we set the cooling rate parameter to be $a=0.5$, corresponding to a 1\% reduction in the random walk standard deviation at each iteration.
+We set $M=100$ optimizations iterations, chosen as an empirically assessed compromise between effort spent on each search and the number of searches conducted.
+Additional discussion of algorithmic parameters is given in Sec.~\supSecAlg.
 The only additional algorithmic parameter over previous iterated filtering algorithms is the spatial autoregressive parameter, $\spatReg$.
-Numerical experimentation suggests that the performance is not sensitive to the choice of $\spatReg>0$ (see Fig~\ref{fig:spatreg_boxplot} in Appendix A).
+Numerical experimentation suggests that the performance is not sensitive to the choice of $\spatReg>0$ (Supplementary Fig.~\supFigSpatReg).
 Subsequently, we used $\spatReg=0.1$.
 
 Applying IBPF to real data forces us to address issues of model development, model misspecification, and performance in the presence of outliers.
 Before tackling these issues, we use simulated data to demonstrate the capabilities of the methodology on a correctly specified model.
 
-\section{Testing {\ibpf} on a measles transmission model: simulation results}
-\label{sec:sim}
-
-Measles transmission has provided a useful example of epidemiological dynamics (and therefore also ecological dynamics, for a host-pathogen ecosystem), with plentiful case report data and relatively simple biology.
-Model-based analysis of measles time series data led to advances in understanding of the seasonality of infectious disease \citep{fine82}, critical community size \citep{bartlett57}, the recognition that relatively simple mechanistic models can provide a remarkably good description of the dynamics \citep{earn00}, and much other foundational research on disease dynamics.
-Some progress has been on building and fitting spatiotemporal models for measles; e.g., \citet{xia04,eggo11,bjornstad19,becker20}.
-However, the lack of suitable methodology to fit and assess a flexible class of coupled models is an obstacle to further progress \citep{becker20}.
-Previous methodological work has used spatiotemporal measles models as a test problem \citep{park20,ionides21}.
-However, these methods have fallen short as tools for data analysis due to numerical considerations.
-Bearing all this in mind, measles provides a natural testing ground for our new methodologies.
-We demonstrate that we now have the tools to carry out likelihood maximization (and therefore, in principle, profile likelihood confidence interval construction and likelihood-based model selection) on mechanistic statistical models that are appropriate for spatiotemporal metapopulation disease data.
-
-We specifically set ourselves the task of fitting a spatiotemporal model to the case reports for 20 towns studied by \citet{he10}.
-We require the ability to handle discrete case counts which vary from zero to thousands of cases per week.
-We consider a model with the same structure as \citet{he10}, namely a Markov chain with Gamma noise on the infection rate, but with the addition of a term for transmission between cities.
-This requirement limits us to plug-and-play methodologies, which are those that require simulation from the latent process model but not the ability to  evaluate transition densities \citep{breto09,he10}.
-The model equations are given in Sec.~\ref{sec:model}.
 
 <<data-plot, echo=F, fig.height=6.5, fig.width=6.5, out.width="5.5in", fig.cap = "Weekly measles case reports for 20 UK towns.",fig.show = "hold">>=
 library(spatPomp)
@@ -413,6 +346,123 @@ g <- ggplot2::ggplot(data = df,
   ggplot2::xlab("Year")
 print(g)
 @
+
+\section{Testing {\ibpf} on a measles transmission model}
+\label{sec:measles}
+
+Measles transmission has provided a useful example of epidemiological dynamics (and therefore also ecological dynamics, for a host-pathogen ecosystem), with plentiful case report data and relatively simple biology.
+Model-based analysis of measles time series data led to advances in understanding of the seasonality of infectious disease \citep{fine82}, critical community size \citep{bartlett57}, the recognition that relatively simple mechanistic models can provide a remarkably good description of the dynamics \citep{earn00}, and much other foundational research on disease dynamics.
+Some progress has been on building and fitting spatiotemporal models for measles; e.g., \citet{xia04,eggo11,bjornstad19,becker20}.
+However, the lack of suitable methodology to fit and assess a flexible class of coupled models is an obstacle to further progress \citep{becker20}.
+Previous methodological work has used spatiotemporal measles models as a test problem \citep{park20,ionides21}, but these methods have fallen short as tools for data analysis due to numerical considerations.
+Bearing all this in mind, measles provides a natural testing ground for our new methodologies.
+We demonstrate that we now have the tools to carry out likelihood maximization (and therefore, in principle, profile likelihood confidence interval construction and likelihood-based model selection) on mechanistic statistical models that are appropriate for spatiotemporal metapopulation disease data.
+
+
+
+\subsection{The measles data, a model and three submodels}
+\label{sec:model}
+
+
+We set ourselves the task of fitting a spatiotemporal model to the case reports for 20 towns studied by \citet{he10}.
+We require the ability to handle discrete case counts which vary from zero to thousands of cases per week.
+We consider a model with the same structure as \citet{he10}, namely a Markov chain with Gamma noise on the infection rate, but with the addition of a term for transmission between cities.
+This requirement limits us to plug-and-play methodologies, which are those that require simulation from the latent process model but not the ability to  evaluate transition densities \citep{breto09,he10}.
+
+Some previous analyses have used counts aggregated over two-week intervals \citep{park20,ionides21} since these were available for more cities, but our goal here is to extend the analysis of \citet{he10}.
+Apart from this, our model matches \citet{ionides21} and for completeness we repeat the description here.
+We compartmentalize the population of each town into susceptible ($S$), exposed ($E$), infectious ($I$), and recovered/removed ($R$) categories.
+The numbers of individuals in each compartment for town $\unit$ at time $t$ are denoted by integer-valued random variables $S_\unit(t)$, $E_\unit(t)$, $I_\unit(t)$, and $R_\unit(t)$.
+The population dynamics are written in terms of counting processes $N_{Q_1Q_2,\unit}(t)$ enumerating cumulative transitions in town $\unit$, up to time $t$, from compartment $Q_1$ to $Q_2$.
+Here, $Q_1,Q_2\in \{S,E,I,R,B,D\}$ with $B$ denoting a source compartment for immigration or birth, and $D$ a sink compartment for emigration or death.
+We enumerate the $U=20$ towns studied by \citet{he10} in decreasing size, so that $\unit=1$ corresponds to London.
+Our model is described by the following system of stochastic differential equations, for $\unit=1,\dots, \Unit$,
+\begin{equation}
+\nonumber
+%\label{eq:measles:system}
+\begin{array}{lllllll}
+\displaystyle dS_\unit(t) &=& dN_{BS,\unit}(t) &-& dN_{SE,\unit}(t) &-& dN_{SD,\unit}(t), \\
+\displaystyle dE_\unit(t) &=& dN_{SE,\unit}(t) &-& dN_{EI,\unit}(t) &-& dN_{ED,\unit}(t), \\
+\displaystyle dI_\unit(t) &=& dN_{EI,\unit}(t) &-& dN_{IR,\unit}(t) &-& dN_{ID,\unit}(t).
+\end{array}
+\end{equation}
+The total population $P_\unit(t)=S_\unit(t)+E_\unit(t)+I_\unit(t)+R_\unit(t)$ is calculated by smoothing census data and is treated as known.
+The number of recovered individuals $R_\unit(t)$ in town $\unit$ is therefore defined implicitly.
+$N_{SE,\unit}(t)$ is modeled as a negative binomial death process \citep{breto09,breto11} defined by a rate, $\mu_{SE,\unit}(t)$, specified as
+%\begin{eqnarray}
+\begin{equation}
+\nonumber
+\mu_{SE,\unit}=
+\beta_{\unit}
+\left[
+  \left( \frac{I_\unit+\iota_u}{P_\unit} \right)^{\alpha_{\unit}}
+\hspace{-1mm}
+ + \sum_{\altUnit \neq \unit} \frac{v_{\unit\altUnit}}{P_\unit}
+  \left\{
+    \left(
+      \frac{ I_{\altUnit} }{ P_{\altUnit} }
+    \right)^{\alpha_{\unit}} -
+    \hspace{-1mm}
+    \left(
+      \frac{I_\unit}{P_\unit}
+    \right)^{\alpha_{\unit}}
+  \right\}
+\right] \frac{d\Gamma_{SE,\unit}}{dt}.
+%\label{eqn:transmissionrate}
+%\end{eqnarray}
+\end{equation}
+Here, the time dependence of $\mu_{SE,u}$, $\beta_u$, $I_u$ and $P_u$ is suppressed;
+$\alpha_{\unit}$ is a mixing exponent modeling inhomogeneous contact rates within a town;
+$\iota_{\unit}$ models immigration of infected individuals;
+${d\Gamma_{SE,\unit}}/{dt}$ is gamma white noise, with intensity parameter $\sigma_{SE.\unit}$;
+$\beta_{\unit}$, models the seasonal transmission driven by high contact rates between children at school,
+\begin{equation}
+\nonumber
+  \beta_{\unit}(t)=\Bigg\{
+  \begin{array}{ll}
+\big(1+\amplitude_{\unit}(1-\schoolTermFrac)\schoolTermFrac^{-1} \big)\, \meanBeta_{\unit} & \mbox{ during school term},\\
+\big( 1-\amplitude_\unit\big) \, \meanBeta_{\unit} & \mbox{ during vacation},
+  \end{array}
+\label{eq:term}
+\end{equation}
+where $\schoolTermFrac = 0.759$ is the proportion of the year taken up by the school terms, $\meanBeta_\unit$ is the mean transmission rate, and $\amplitude_{\unit}$ measures the reduction of transmission during school holidays.
+
+The number of travelers from town $\unit$ to $\altUnit$ is denoted by $v_{\unit\altUnit}$.
+Here, $v_{\unit\altUnit}$ is constructed using the gravity movement model of \cite{xia04} given by
+\[
+v_{\unit\altUnit} = \gravity_{\unit} \cdot \frac{\hspace{2mm} \overline{\dist}\hspace{2mm}}{\hspace{1.5mm}\overline{\pop}^2\hspace{1mm}} \cdot \frac{\pop_\unit \cdot \pop_{\altUnit}}{\dist_{\unit\altUnit}},
+\]
+where $\gravity_u$ is the {\it gravitational constant}, $\dist_{\unit\altUnit}$ is the distance between town $\unit$ and town $\altUnit$, $\pop_\unit$ is the average of $P_{\unit}(t)$ across time, $\overline{\pop}$ is the average of $\pop_{\unit}$ across towns, and $\overline{\dist}$ is the average of $\dist_{\unit\altUnit}$ across all pairs of towns.
+The transition processes $N_{EI,\unit}(t)$, $N_{IR,\unit}(t)$ and $N_{QD,\unit}(t)$, for $Q\in\{S,E,I,R\}$,  are modeled as conditional Poisson process with per-capita rates $\mu_{EI,\unit}$, $\mu_{IR,\unit}$ and $\mu_{QD,\unit}$ respectively, and we fix $\mu_{QD,\unit}=(50 \mbox{ year})^{-1}$.
+The birth process $N_{BS,\unit}(t)$ is an inhomogeneous Poisson process with rate $\mu_{BS,\unit}(t)$, given by interpolated census data.
+
+To describe the measurement process, let $Z_{\unit\comma\time}=N_{IR\comma\unit}(t_\time)-N_{IR\comma\unit}(t_{\time-1})$ be the number of removed infected individuals in the $n$th reporting interval.
+Suppose that cases are quarantined once they are identified, so that reported cases comprise a fraction $\rho$ of these removal events.
+The case report $\data{y}_{\unit\comma\time}$ is modeled as a realization of a discretized conditionally Gaussian random variable $Y_{\unit\comma\time}$, defined for $y>0$ via
+\begin{eqnarray}
+\nonumber
+\prob\big[Y_{\unit\comma\time}{=}y\mid Z_{\unit\comma\time}{=}z\big] &=& \varPhi\big(y+0.5; \rho_{\unit} z,\rho_{\unit}(1-\rho_{\unit})z+\measOD_{\unit}^2\rho_{\unit}^2z^2\big)
+\\
+&&\hspace{-20mm}
+- \varPhi\big(y-0.5; \rho_{\unit} z,\rho_{\unit}(1-\rho_{\unit})z+\measOD_{\unit}^2\rho^2z^2\big)
+\label{eq:obs}
+\end{eqnarray}
+where $\varPhi(\cdot;\mu,\sigma^2)$ is the $\normal(\mu,\sigma^2)$ cumulative distribution function, and $\measOD$ models overdispersion relative to the binomial distribution.
+For $y=0$, we replace $y-0.5$ by $-\infty$ in \eqref{eq:obs}.
+Three data points were treated as missing by \citet{he10} due to presumed recording errors.
+We followed that decision in the measurement model by including a special value $\mathrm{NA}$ in $\Yspace$ and setting $Y_{\unit,n}$ to be $\mathrm{NA}$ with probability one when $\data{y}_{\unit,n}$ is missing.
+
+We have written the model with all parameters unit-specific, so $\theta=\psi_{1:U}$ with
+\arxiv{\begin{equation*}}
+\statSinica{$}
+\psi_u=\big(\meanBeta_{\unit},\mu_{EI,\unit}, \mu_{IR,\unit},\rho_{\unit},\measOD_{\unit},\sigma_{SE,\unit},\gravity_{\unit},\iota_{\unit},\amplitude_{\unit},\alpha_{\unit}, S_{0,\unit}, E_{0,\unit},I_{0,\unit}\big)
+\arxiv{\end{equation*}}
+\statSinica{$}
+for $u\in\seq{1}{U}$.
+This defines an extended model for implementing IBPF with shared parameters, as in \eqref{eq:extension}.
+It also lets us address a key data analysis question of which parameters should be shared between units and which should be unit-specific.
+
+
 
 <<sim-plot, echo=F, fig.height=6.5, fig.width=6.5, out.width="5.5in", fig.cap = "Simulated weekly measles case reports.",fig.show = "hold">>=
 library(spatPomp)
@@ -432,17 +482,10 @@ print(g)
 @
 
 The data are shown in Fig~\ref{fig:data-plot} and simulations from the model are shown in Fig~\ref{fig:sim-plot}.
-Parameters for the simulated model were based on the analysis of individual towns by \citet{he10} and adjusted to provide a visual match in the simulations.
-A goal of the simulation study is to obtain appropriate algorithmic choices for the data analysis.
-We seek to develop methodology which is demonstrably successful when the truth is known, before applying it to data.
-We present the simulation study from this perspective, to describe the process of developing our data analysis, though we acknowledge one could revisit the simulation study based on the data analysis in Sec.~\ref{sec:data} using maximum likelihood estimates of the parameters.
-
-A key data analysis question is to decide which parameters should be shared between units and which should be unit-specific.
-For a general SpatPOMP parameter, it is not necessarily well-defined how to extend the model so that each unit has a distinct parameter value, however our measles model falls into the structure defined in \eqref{eq:extension} and we suspect that similar considerations may arise in other applications.
-Different numerical issues may arise as the number of unit-specific parameters increases.
-Each unit-specific parameter contributes $U$ dimensions to the parameter space, potentially contributing difficulties associated with high-dimensional or weakly identified parameters.
-On the other hand, information about a unit-specific parameters may be localized in neighboring units which could align conveniently with the structure of the BPF.
-Estimation of shared parameters, by contrast, has the task of harvesting information from across all the units, which may have its own difficulties.
+Parameters for the simulated model were based on the analysis of individual towns by \citet{he10}.
+In order to investigate estimation of either shared or unit-specific parameters, the simulation was conducted with all parameters being shared.
+To find a shared parameter vector capable of providing a reasonable representation of all the towns simultaneously, we experimented to look for a visual match between the data and the simulations.
+The parameters used are reported in the supplement (Sec.~\supSecMeaslesParams).
 
 Estimated parameter values may have scientific interest, but we focus on the statistical task of likelihood maximization.
 In the presence of weak identifiability, small differences in likelihood could lead to large differences in parameter estimates.
@@ -451,16 +494,16 @@ Likelihood maximization permits such investigations, but they are beyond the sco
 Parameter values used for the simulation study and parameter values obtained by the likelihood maximization searches are provided in the supplementary code repository, for the interested reader.
 
 To facilitate data analysis, we wish to have methodology that operates across the full spectrum of decisions on shared versus unit-specific parameter designations.
-We therefore test our method on two cases: (A) mostly shared parameters, choosing only the initial values and reporting rate to be unit-specific; (B) every parameter is unit-specific.
-We also consider a third case; (C) every parameter is unit-specific and the dynamic coupling (in our context, movement of infected individuals between towns) is replaced by an external forcing of each unit (in our context, an immigration rate of infected individuals from outside the study population).
-Case (C) provides a useful point of reference since it is a special case of a PanelPOMP model \citep{breto19} and also can be analyzed as a collection of separate POMP models.
-We set up our model so that in case (C) we retrieve the analysis of \citet{he10}.
-One may expect that methods which take advantage of the special structure of (C) should out-perform more general methods that permit coupling between units, so we expect the SpatPOMP methods to be less numerically efficient than applying POMP methods separately to each unit.
+We therefore test our method on three submodels: {\modelA} has mostly shared parameters, choosing only the initial values and reporting rate to be unit-specific; {\modelB} has every parameter unit-specific; {\modelC} has every parameter is unit-specific and the dynamic coupling (in our context, movement of infected individuals between towns) is replaced by an external forcing of each unit (in our context, an immigration rate of infected individuals from outside the study population).
+Sec.~{\supSecMeaslesParams} defines the submodels in more detail.
+Submodel {\modelC} provides a useful point of reference since it is a special case of a PanelPOMP model \citep{breto19} and also can be analyzed as a collection of separate POMP models.
+We set up our model so that {\modelC} matches the analysis of \citet{he10}.
+One may expect that methods which take advantage of the special structure of {\modelC} should out-perform more general methods that permit coupling between units, so we expect the SpatPOMP methods to be less numerically efficient than applying POMP methods separately to each unit.
 Questions at stake are: How much less efficient are the SpatPOMP methods? Are simulation-based SpatPOMP inference methods practical for situations such as the measles model of \citet{he10}?
 
 
-The simulated model is drawn from model (A), which is nested within model (B) but not within (C).
-For models B and C, with all parameters are unit-specific, we must estimate $20\times 13=260$ parameters.
+The simulated model is drawn from model {\modelA}, which is nested within model {\modelB} but not within {\modelC}.
+For models {\modelB} and {\modelC}, with all parameters are unit-specific, we must estimate $20\times 12=240$ parameters.
 This greatly exceeds the 7 shared parameters fitted by \citet{ionides21} for a measles metapopulation model using a large computational effort.
 An iterated guided intermediate resampling filter (IGIRF) algorithm was used to fit 9 shared parameters and 3 unit-specific initial value parameters in a measles metapopulation model \citep{park20}.
 That analysis used a customized treatment for the unit-specific initial value parameters and did not attempt to estimate other unit-specific parameters.
@@ -480,25 +523,15 @@ This is practical only when $U$ is small (say, $U\le 5$) but that can be used to
 It may be surprising that resampling independently on each block (which is what the block particle filter does) is able to capture the dependence.
 Heuristically, we note that the dynamic dependence between blocks is maintained by BPF, which updates particles according to the full coupled dynamics.
 Whether this is sufficient to obtain a good approximation to the filter distribution is situation-dependent, but for the specific case of metapopulation models (for which the strongest coupling is within units rather than between units) the approximation can be empirically successful.
-In principle, the approximation error can be reduced by increasing block size, but in practice the additional Monte Carlo variance acquired by doing this is not worthwhile in situations where the coupling is relatively weak.
+In principle, the approximation error can be reduced by increasing the number of units in each block, but in practice the additional Monte Carlo variance acquired by doing this is not worthwhile in situations where the coupling is relatively weak.
 The BPF log-likelihood evaluation at the true parameter value is $\loglik_{\mathrm{true}}=\Sexpr{myround(loglik_truth[1],1)}$ with a Monte Carlo standard error of $\Sexpr{myround(loglik_truth[2],1)}$.
 
 
-In Fig.~\ref{fig:sim_search_boxplot} we investigate a sequence of successive searches for the MLE for the models A, B and C described above.
-Each search was replicated $36$ times.
-Search~1 was started with each parameter adjusted by a uniform $[-0.1,0.1]$ random perturbation on an appropriate dimensionless scale (log for non-negative parameters, logit for $[0,1]$ valued parameters).
-This is a fairly small perturbation, but nevertheless sufficient to knock the likelihood of the parameter vector around 300 log units below the MLE (shown in Fig.~\ref{fig:search_diagnostics}).
-The goal of this study is to show that the algorithm can succeed reliably on a relatively easy local optimization task.
-Subsequent searches were started with four copies of each parameter vector with estimated likelihood in the top 25\% for the previous search.
-
-The MLE is not known exactly in this case.
-Wilks's theorem gives an asymptotic expectation that the log-likelihood at the MLE should be greater than the likelihood at the truth by approximately $1/2$ the number of parameters, which here is $(4\times 20+9)/2=44.5$ for A and $(13\times 20)/2=130$ for B.
-The $y$-axis values in Fig.~\ref{fig:sim_search_boxplot} show log-likelihoods exceeding the truth by less than this, indicating some imperfection to the Monte Carlo maximization so far as Wilks's asymptotic result holds in this situation. 
-Despite this limitation, searches that exceed the likelihood at the truth have found inferentially plausible sets of parameters which can be used to study the likelihood surface around the maximum.
-For example, Monte Carlo profile confidence intervals can give proper coverage even in the presence of considerable Monte Carlo error \citep{ionides17,ning21}.
+\subsection{IBPF on simulated data}
+\label{sec:sim}
 
 
-<<v6_start,echo=F>>=
+<<v4_start,echo=F>>=
 readRDS("v4/v1a_3/initial_lik.rds") -> loglik_start
 median_start <- median(loglik_start[,"start_loglik"])
 @
@@ -549,7 +582,7 @@ loglik_he <- sum(read.csv("data/he10mle.csv")$loglik)
 # -40345.7
 @
 
-<<sim_search_boxplot, echo=F, fig.height=4, fig.width=5.5, out.width="5.5in", fig.cap = "Fitting different models to the simulated measles data, using an initial search and four further refinement searches. (A) $4\\times 20$ unit-specific parameters and $9$ shared parameters; (B) $13\\times 20$ unit-specific parameters and no shared parameters. (C) Also all unit-specific, but with immigration rather than coupling, matching the model of He et al (2010). The horizontal dashed line denotes the likelihood obtained by He et al, using \\code{pomp}. Here, $J=4000$, and the random walk standard deviation (on log- and logit-transformed parameters) is 0.005 for the initial search and 0.00125 for subsequent refinements.",fig.show = "hold">>=
+<<sim_search_boxplot, echo=F, fig.height=3, fig.width=5.5, out.width="5in", fig.cap = "Fitting simulated measles data, using an initial search and four refinement steps. (A1--A5) model \\modelA, $4\\times 20$ unit-specific parameters and $8$ shared parameters; (B1--B5) model \\modelB, $12\\times 20$ unit-specific parameters and no shared parameters;  (C1--C5) model \\modelC, also all unit-specific, but with immigration rather than coupling, matching He et al (2010). The horizontal dashed line is the log-likelihood at the true parameters, evaluated by BPF.",fig.show = "hold">>=
 a <- cbind(
 A1 = v1a$loglik,
 A2 = v2a$loglik,
@@ -574,6 +607,7 @@ C4 = v4c$loglik,
 C5 = v5c$loglik
 )
 
+par(mai=c(0.4,0.6,0.1,0.1))
 loglik_max <- max(cbind(a,b,c),truth_loglik)
 boxplot(cbind(a,b,c),ylim=loglik_max-c(200,0),
 ylab="Log-likelihood")
@@ -581,7 +615,24 @@ abline(h=truth_loglik,lty="dashed",col="blue")
 @
 
 
-<<search_diagnostics, echo=F, fig.height=6.5, fig.width=4.5, out.width="5in", fig.cap = "Three steps of a likelihood search on simulated data (left panels) and UK measles data (right panels). Final log-likelihood values are plotted against starting log-likelihood for an initial search (top row), a refinement of this search (second row) and a second refinement (third row). Unit-specific parameters were $\\rho$, $S_0$, $E_0$, $I_0$ (for the simulation study, model A) and all parameters (for the data, model B).">>=
+A goal of this simulation study is to obtain appropriate algorithmic choices for the data analysis.
+We seek to develop methodology which is demonstrably successful when the truth is known, before applying it to data.
+One could revisit the simulation study based on the data analysis in Sec.~\ref{sec:data} using maximum likelihood estimates of the parameters.
+
+In Fig.~\ref{fig:sim_search_boxplot} we investigate a sequence of successive searches for the MLE for the models {\modelA}, {\modelB} and {\modelC} described above.
+Each search was replicated $36$ times.
+Search~1 was started with each parameter adjusted by a uniform $[-0.1,0.1]$ random perturbation on an appropriate dimensionless scale (log for non-negative parameters, logit for $[0,1]$ valued parameters, see Sec.~{\supSecAlg}).
+This is a fairly small perturbation, but nevertheless sufficient to knock the likelihood of the parameter vector around 200 log units below the MLE (shown in Fig.~\ref{fig:search_diagnostics}).
+The goal of this study is to show that the algorithm can succeed reliably on a relatively easy local optimization task.
+Subsequent searches were started with four copies of each parameter vector with estimated likelihood in the top 25\% for the previous search.
+
+The MLE is not known exactly in this case.
+Wilks' theorem gives an asymptotic expectation that the log-likelihood at the MLE should be greater than the likelihood at the truth by approximately $1/2$ the number of parameters, which here is $(4\times 20+8)/2=44$ for {\modelA} and $(12\times 20)/2=120$ for {\modelB}.
+The $y$-axis values in Fig.~\ref{fig:sim_search_boxplot} show log-likelihoods exceeding the truth by less than this, indicating some imperfection to the Monte Carlo maximization so far as Wilks' asymptotic result holds in this situation.
+Despite this limitation, searches that exceed the likelihood at the truth have found inferentially plausible sets of parameters which can be used to study the likelihood surface around the maximum.
+For example, Monte Carlo profile confidence intervals can give proper coverage even in the presence of considerable Monte Carlo error \citep{ionides17,ning21}.
+
+<<search_diagnostics, echo=F, fig.height=6.5, fig.width=4.5, out.width="5in", fig.cap = "Three steps of a likelihood search on simulated data (left panel, model \\modelA) and UK measles data (right panel, model \\modelB).Dashed lines parallel to the axes show the log-likelihood at the truth (left panel) and the \\citet{he10} value (right panel). Points above the diagonal dashed line show improvement due to the search step.">>=
 par(mfcol=c(3,2))
 par(mai=c(0.3,0.3,0.1,0.1))
 par(omi=c(0.3,0.5,0.5,0.1))
@@ -684,7 +735,7 @@ mtext("Log-likelihood",side=1,line=LINE,outer=TRUE,at=0.75,cex=CEX)
 @
 
 
-In Fig.~\ref{fig:search_diagnostics} we take a closer look at convergence diagnostics corresponding to A for the simulated data (the first column) and B for the UK measles data (the second column).
+In Fig.~\ref{fig:search_diagnostics} we take a closer look at convergence diagnostics corresponding to {\modelA} for the simulated data (the first column) and {\modelB} for the UK measles data (the second column).
 For now, we focus on the first column.
 The first row plots the log-likelihood obtained after the initial search against the log-likelihood of the randomly selected starting value.
 The horizontal and vertical dashed lines denote the likelihood at the truth, and the diagonal dashed line represents equality, so that points above the diagonal show improvement after the search.
@@ -699,94 +750,12 @@ The results in Fig.~\ref{fig:sim_search_boxplot} and the first column of  Fig.~\
 Indeed, model misspecification that is inevitable for data analysis may be expected to add difficulties to filtering and therefore to numerical methods based on filtering.
 Rather, we view the simulation study as a lower bound on the effort required to carry out effective inference on data, and a starting point for investigating effective ways to proceed with the data analysis. Before moving on to the data analysis, we briefly describe the details of the model.
 
-\subsection{The measles data and model}
-\label{sec:model}
 
-The data we consider here are weekly case reports for twenty towns, identical to those studied by \citet{he10}.
-Some previous analyses have used counts aggregated over two-week intervals \citep{park20,ionides21} since these were available for more cities, but our goal here is to extend the analysis of \citet{he10}.
-Apart from this, our model matches \citet{ionides21} and for completeness we repeat the description here.
-We compartmentalize the population of each town into susceptible ($S$), exposed ($E$), infectious ($I$), and recovered/removed ($R$) categories.
-The numbers of individuals in each compartment for town $\unit$ at time $t$ are denoted by integer-valued random variables $S_\unit(t)$, $E_\unit(t)$, $I_\unit(t)$, and $R_\unit(t)$.
-The population dynamics are written in terms of counting processes $N_{AB,\unit}(t)$ enumerating cumulative transitions in town $\unit$, up to time $t$, between compartments $A$ and $B$.
-Here, $A,B\in \{S,E,I,R,B,D\}$ with $B$ denoting a source compartment for immigration or birth, and $D$ a sink compartment for emigration or death.
-We enumerate the $U=20$ towns studied by \citet{he10} in decreasing size, so that $\unit=1$ corresponds to London.
-Our model is described by the following system of stochastic differential equations, for $\unit=1,\dots, \Unit$,
-\begin{equation}
-\nonumber
-%\label{eq:measles:system}
-\begin{array}{lllllll}
-\displaystyle dS_\unit(t) &=& dN_{BS,\unit}(t) &-& dN_{SE,\unit}(t) &-& dN_{SD,\unit}(t), \\
-\displaystyle dE_\unit(t) &=& dN_{SE,\unit}(t) &-& dN_{EI,\unit}(t) &-& dN_{ED,\unit}(t), \\
-\displaystyle dI_\unit(t) &=& dN_{EI,\unit}(t) &-& dN_{IR,\unit}(t) &-& dN_{ID,\unit}(t). 
-\end{array}
-\end{equation}
-The total population $P_\unit(t)=S_\unit(t)+E_\unit(t)+I_\unit(t)+R_\unit(t)$ is calculated by smoothing census data and is treated as known.
-The number of recovered individuals $R_\unit(t)$ in town $\unit$ is therefore defined implicitly.
-$N_{SE,\unit}(t)$ is modeled as negative binomial death processes \citep{breto09,breto11}
-with over-dispersion parameter $\sigma_{SE}$, and rate given by
-\begin{eqnarray}
-\nonumber
-\mathbb{E} \big[ N_{SE,\unit}(t+dt) - N_{SE,\unit}(t) \big] 
-&=& 
-\beta(t) \, S_\unit(t) 
-\Big[ 
-  \left( \frac{I_\unit+\iota}{P_\unit} \right)^\alpha
-\\
-\label{eq:dEdt}
-&& \hspace{-3.8cm}
- + \sum_{\altUnit \neq \unit} \frac{v_{\unit\altUnit}}{P_\unit} 
-  \left\{ 
-    \left(
-      \frac{ I_{\altUnit} }{ P_{\altUnit} }
-    \right)^\alpha - 
-    \left(
-      \frac{I_\unit}{P_\unit}  
-    \right)^\alpha
-  \right\}
-\Big] dt + o(dt),\label{eqn:transmissionrate}
-\end{eqnarray}
-where $\beta(t)$ models seasonality driven by high contact rates between children at school, described by
-\begin{equation}
-\nonumber
-  \beta(t)=\begin{cases}
-\big(1+\amplitude(1-p)p^{-1} \big)\, \meanBeta & \mbox{ during school term},\\
-\big( 1-\amplitude\big) \, \meanBeta& \mbox{ during vacation},
-  \end{cases} \label{eq:term}
-\end{equation}
-with $p = 0.759$ being the proportion of the year taken up by the school terms, $\meanBeta$ is the mean transmission rate, and $\amplitude$ measures the reduction of transmission during school holidays.
-In \eqref{eq:dEdt}, $\alpha$ is a mixing exponent modeling inhomogeneous contact rates within a town, and $\iota$ models immigration of infected individuals which is appropriate when analyzing a subset of cities that cannot be treated as a closed system.
-The number of travelers from town $\unit$ to $\altUnit$ is denoted by $v_{\unit\altUnit}$. 
-Here, $v_{\unit\altUnit}$ is constructed using the gravity model of \cite{xia04}, 
-\[
-v_{\unit\altUnit} = \gravity \cdot \frac{\;\overline{\dist}\;}{\bar{P}^2} \cdot \frac{P_\unit \cdot P_{\altUnit}}{\dist(\unit,\altUnit)},
-\]
-where $\dist(\unit,\altUnit)$ denotes the distance between town $\unit$ and town $\altUnit$, $P_\unit$ is the average population for town $\unit$ across time, $\bar{P}$ is the average population across towns, and $\overline{\dist}$ is the average distance between a randomly chosen pair of towns.
-Here, we model $v_{\unit\altUnit}$ as fixed through time and symmetric between any two arbitrary towns, though a natural extension would allow for temporal variation and asymmetric movement between two towns.
-The transition processes $N_{EI,\unit}(t)$, $N_{IR,\unit}(t)$ and $N_{\bullet D,\unit}(t)$ are modeled as conditional Poisson process with per-capita rates $\mu_{EI}$, $\mu_{IR}$ and $\mu_{\bullet D}$ respectively, and we fix $\mu_{\bullet D}=(50 \mbox{ year})^{-1}$.
-The birth process $N_{BS,\unit}(t)$ is an inhomogeneous Poisson process with rate $\mu_{BS,\unit}(t)$, given by interpolated census data.
-
-To describe the measurement process, let $Z_{\unit\comma\time}=N_{IR\comma\unit}(t_\time)-N_{IR\comma\unit}(t_{\time-1})$ be the number of removed infected individuals in the $n$th reporting interval.
-Suppose that cases are quarantined once they are identified, so that reported cases comprise a fraction $\rho$ of these removal events.
-The case report $\data{y}_{\unit\comma\time}$ is modeled as a realization of a discretized conditionally Gaussian random variable $Y_{\unit\comma\time}$, defined for $y>0$ via
-\begin{eqnarray}
-\nonumber
-\prob\big[Y_{\unit\comma\time}{=}y\mid Z_{\unit\comma\time}{=}z\big] &=& \Phi\big(y+0.5; \rho z,\rho(1-\rho)z+\psi^2\rho^2z^2\big)
-\\
-&&\hspace{-20mm}
-- \Phi\big(y-0.5; \rho z,\rho(1-\rho)z+\psi^2\rho^2z^2\big)
-\label{eq:obs}
-\end{eqnarray}
-where $\Phi(\cdot;\mu,\sigma^2)$ is the $\normal(\mu,\sigma^2)$ cumulative distribution function, and $\psi$ models overdispersion relative to the binomial distribution.
-For $y=0$, we replace $y-0.5$ by $-\infty$ in \eqref{eq:obs}.
-
-Three data points were treated as missing by \citet{he10} due to presumed recording errors, and we followed that decision.
-The general SpatPOMP framework has flexibility that permits modeling of missing data in various ways. 
-We chose to include a special value $\mathrm{NA}$ in $\Yspace$ and set $Y_{u,n}$ to be $\mathrm{NA}$ with probability one when $\data{y}_{u,n}$ is missing.
-
-\section{Demonstration on data}
+\subsection{IBPF applied to data}
 \label{sec:data}
 
-<<data_search_boxplot, echo=F, fig.height=4, fig.width=5.5, out.width="5.5in", fig.cap = "Fitting different models to the UK measles data using the method tested on simulated data. (A) $4\\times 20$ unit-specific parameters and $9$ shared parameters; (B) $13\\times 20$ unit-specific parameters and no shared parameters. (C) Also all unit-specific, but with immigration rather than coupling, matching the model of He et al (2010). The horizontal dashed line denotes the likelihood obtained by He et al, using \\code{pomp}.",fig.show = "hold">>=
+
+<<data_search_boxplot, echo=F,  fig.height=3, fig.width=5.5, out.width="5in", fig.cap = "Fitting different models to the UK measles data using the method tested on simulated data. (A) $4\\times 20$ unit-specific parameters and $9$ shared parameters; (B) $13\\times 20$ unit-specific parameters and no shared parameters. (C) Also all unit-specific, but with immigration rather than coupling. The horizontal dashed line is the likelihood from \\citet{he10}.">>=
 a <- cbind(
 A1 = z1a$loglik,
 A2 = z2a$loglik,
@@ -819,38 +788,40 @@ D4 = z4d$loglik,
 D5 = z5d$loglik
 )
 loglik_max <- max(cbind(a,b,c),loglik_he)
+
+par(mai=c(0.5,0.8,0.1,0.1))
 boxplot(cbind(a,b,c),ylim=loglik_max-c(5500,0),
   ylab="Log-likelihood")
 abline(h=loglik_he,lty="dashed",col="blue")
 @
 
 
-Fig.~\ref{fig:data_search_boxplot} shows results for fitting models A, B and C to UK measles data using successive rounds of {\ibpf}, applying the same method used for the simulation study shown in Fig.~\ref{fig:sim_search_boxplot}.
-The dashed lines show the sum of the log-likelihoods obtained by \citet{he10}, $\ell_{\mathrm He}=\Sexpr{myround(loglik_he,1)}$.
-The value $\ell_{\mathrm He}$ corresponds to model C.
-BPF with each town forming a separate block, applied to an uncoupled model such as C, is equivalent to carrying out independent particle filters for each unit.
-Indeed, if the published parameter values from \citet{he10} are inserted into the \code{spatPomp} object for model C, then the \code{bpfilter} function can be used to carry out BPF, which retrieves $\ell_{\mathrm He}$, up to Monte Carlo error.
-Each of models A, B and C in Fig.~\ref{fig:data_search_boxplot} shows shortfall relative to $\ell_{\mathrm He}$.
 
-The largest shortfall is for A, and an explanation is that A has more shared parameters than the evidence in the data supports.
+Fig.~\ref{fig:data_search_boxplot} shows results for fitting models {\modelA}, {\modelB} and {\modelC} to UK measles data using successive rounds of {\ibpf}, applying the same method used for the simulation study shown in Fig.~\ref{fig:sim_search_boxplot}.
+The dashed lines show the sum of the log-likelihoods obtained by \citet{he10}, $\ell_{\mathrm He}=\Sexpr{myround(loglik_he,1)}$.
+The value $\ell_{\mathrm He}$ corresponds to model {\modelC}.
+BPF with each town forming a separate block, applied to an uncoupled model such as {\modelC}, is equivalent to carrying out independent particle filters for each unit.
+Indeed, if the published parameter values from \citet{he10} are inserted into the \code{spatPomp} object for model {\modelC}, then the \code{bpfilter} function can be used to carry out BPF, which retrieves $\ell_{\mathrm He}$, up to Monte Carlo error.
+Each of models {\modelA}, {\modelB} and {\modelC} in Fig.~\ref{fig:data_search_boxplot} shows shortfall relative to $\ell_{\mathrm He}$.
+
+The largest shortfall is for {\modelA}, and an explanation is that {\modelA} has more shared parameters than the evidence in the data supports.
 The results of \citet{he10} suggest that the data are explained better when various parameters are a function of the town population.
 However, it remains an open problem to determine suitable functional forms for this relationship, and to establish regularities across towns that can be represented by shared parameters.
 This may be investigated using panel methods such as PanelPOMP models \citep{breto19} in addition to consideration of SpatPOMP models.
 
-Models B and C give rise to comparable likelihoods, which is in contrast to Fig.~\ref{fig:sim_search_boxplot}.
-Fitting to simulated data from B (in the special case where all unit-specific parameters are equal across all units) the shortfall for C in Fig.~\ref{fig:sim_search_boxplot} indicates that we obtain a substantially worse fit by approximating coupling by an uncoupled reservoir of infection.
-If the actual data were also explained substantially better by a coupled model, we would expect to see comparable results in the data analysis.
+Models {\modelB} and {\modelC} give rise to comparable likelihoods, which is in contrast to Fig.~\ref{fig:sim_search_boxplot}.
+Fitting to simulated data from {\modelB} (in the special case where all unit-specific parameters are equal across all units) the shortfall for {\modelC} in Fig.~\ref{fig:sim_search_boxplot} indicates that we obtain a substantially worse fit by approximating coupling by an uncoupled reservoir of infection.
+If the actual data were also explained substantially better by the coupled model, we would expect to see comparable results in the data analysis.
 Since we do not, we conclude that this coupled model is not a substantially better explanation than the uncoupled model.
 Various other candidate coupling mechanisms have been proposed \citep{bjornstad19} but they have not yet been fitted to the full data, suggesting a lack of appropriate methodology to do so.
 Instead, \citet{bjornstad19} looked at summary statistics based on local fade-outs and re-introductions.
-Further investigation is needed to determine whether other models for coupling can show improvement over this gravity model on these data.
-This should be carried out in conjunction with research into the specification of shared and unit-specific parameters.
 
-We notice from Fig.~\ref{fig:data_search_boxplot} that model B has a small but distinct shortfall compared to $\ell_{\mathrm He}$.
+
+We notice from Fig.~\ref{fig:data_search_boxplot} that model {\modelB} has a small but distinct shortfall compared to $\ell_{\mathrm He}$.
 On the simulated data, we do not observe this shortfall, and we deduce that the real data provides a more challenging optimization environment.
 When carrying out hard optimization problems, it may be possible to develop helpful strategies specific to the model and data in question.
 For example, one could try merging unit-specific parameters from different searches, using the likelihood component for each unit to assess successful choices.
-Optimization heuristics such as this do not have general theoretical support; if they obtain higher likelihoods that is sufficient justification. 
+Optimization heuristics such as this do not have general theoretical support; if they obtain higher likelihoods that is sufficient justification.
 For analysis of panel time series data using PanelPOMP models, such methods have clearer theoretical support and have been found useful \citep{breto19}.
 
 \section{Discussion}
@@ -872,11 +843,15 @@ A Bayesian inference approach based on the ensemble Kalman filter was developed 
 An expectation-maximization approach based on a block particle filter was presented by \citet{finke17}.
 Spatiotemporal models having a convenient factorization across units were studied by \citet{beskos17} and \citet{xu19}.
 
+  We have demonstrated a workflow that led to a likelihood-based assessment of measles metapopulation models ({\modelA} and {\modelB}) with the possibility of finding evidence that they out-perform the uncoupled model, {\modelC}.
+  Our methodology showed the potential to successfully refute {\modelC} on simulated data, when the truth was within {\modelA} and {\modelB}, but no advantage was found for these coupled models when the same comparison was carried out on the data.
+Likelihood maximization for the measles data fits the {\it common task framework} described by \citet[][Sec.~6]{donoho17}, with the likelihood value for {\modelC} obtained by \citet{he10} providing a benchmark challenge.
+Future improvements in models, perhaps facilitated by the open-source models and methods accompanying this article, may obtain metapopulation models that convincingly beat model {\modelC}.
+
 Computation time for Fig.~\ref{fig:sim_search_boxplot} and Fig.~\ref{fig:data_search_boxplot} was approximately 24hr on a single core of a compute node for 4000 particles iterated 100 times over the 730 time points (weekly data for 14 years) for 20 cities.
 Each box in these figures involves 36 replications and thus took 24hr on all cores of one node on a computing cluster.
-This level of effort is tolerable, but does suggest that the methods will not readily extend to tasks that are considerably larger. 
-In particular, we do not expect applicability to situations where it is necessary to consider $10^3$ or more spatial units.
-In such situations, it may be necessary to make additional approximations such as those inherent in the ensemble Kalman filter \citep{evensen09book,katzfuss19} or other numerical filtering techniques \citep{whitehouse22}.
+A measure of computational efficiency is the size of problem that can be solved on this timescale, discussed further in Sec.~{\supSecEfficiency}.
+Tasks that are considerably larger, perhaps $10^3$ or more spatial units, may require additional approximations such as those inherent in the ensemble Kalman filter \citep{evensen09book,katzfuss19} or other numerical filtering techniques \citep{whitehouse22}.
 However, we anticipate that many practical metapopulation analyses can be addressed within the scope we have demonstrated.
 The majority of the computational effort is spent on simulating from the dynamic model.
 In the \code{spatPomp} R package, as in \code{pomp}, the user supplies a snippet of C code for simulating a single particle between a single arbitrary pair of times, and the package provides a vectorized form of this computation which is used by the inference methodologies within the package.
@@ -886,35 +861,199 @@ As a consequence, competitive computational performance is obtained even though 
 
 %\newpage
 
-\noindent {\bf Code and data availability}
-
-\vspace{1mm}
-
-\noindent The data we analyze are in the public domain, and are available together with source code at \url{https://github.com/ionides/ibpf_article}.
-
-\vspace{3mm}
-
 \noindent {\bf Acknowledgments}
 
 \vspace{1mm}
 
-\noindent This work was supported by National Science Foundation grants DMS-1761603 and DMS 1646108.
-We acknowledge an anonymous referee from a previous article who recommended that we should try implementing a block particle filter.
+\noindent This work was supported by National Science Foundation grants DMS-1761603 and DMS 1646108, and a Texas A\&M University Seed Fund Grant.
+We acknowledge an anonymous referee from a previous article who recommended implementing a block particle filter.
+We are grateful to two anonymous referees whose constructive feedback has improved this article.
 
 \bibliography{bib-ibpf}
+%\InputIfFileExists{ms.bbl}
 
-% \vspace{8mm}
-\newpage
 
-\noindent{\bf \Large Appendix A}
+\arxiv{
+\setcounter{section}{0}
+\setcounter{equation}{0}
+\def\theequation{S\arabic{section}.\arabic{equation}}
+%\def\thesection{S\arabic{section}}
+\renewcommand\thefigure{S\arabic{figure}}
+\renewcommand\thetable{S\arabic{table}}
+\def\thesection{S\arabic{section}}
 
-\vspace{3mm}
+<<read-sim-model,echo=F,eval=T,results="hide",warning=FALSE,message=FALSE>>=
+library(spatPomp)
+po <- readRDS("sim/he10.rds")
+theta <- coef(po)
+myround<- function (x, digits = 1) {
+  # adapted from the broman package
+  # solves the bug that round() kills significant trailing zeros
+  if (length(digits) > 1) {
+    digits <- digits[1]
+    warning("Using only digits[1]")
+  }
+  if (digits < 1) {
+    as.character(round(x,digits))
+  } else {
+    tmp <- sprintf(paste("%.", digits, "f", sep = ""), x)
+    zero <- paste0("0.", paste(rep("0", digits), collapse = ""))
+    tmp[tmp == paste0("-", zero)] <- zero
+    tmp
+  }
+}
 
-\noindent{\bf \large Varying the IBPF spatial autoregression parameter, $\spatReg$}
+mysignif <- function (x, digits = 1) {
+  myround(x, digits - ceiling(log10(abs(x))))
+}
+@
 
-\vspace{-5mm}
+\section{Parameters for the measles model}
 
-<<spatreg_boxplot, echo=F, fig.height=4, fig.width=5.5, out.width="5.5in", fig.pos="h", fig.cap = paste0("Varying the spatial autoregression algorithmic parameter for shared parameters with simulated measles data. The log-likelihood was obtained using $M=100$ iterations of IBPF starting at random parameters (median starting log-likelihood, ",signif(median_start,3), "). The horizontal dashed line denotes the log-likelihood at the true parameters.")>>=
+\newcommand\measlesShared{shared}
+\newcommand\measlesUnitSpecific{unit-specific}
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+Parameter & \modelA & \modelB & \modelC & Simulation \\
+\hline
+$\pinit_{S,u}$ & \measlesUnitSpecific & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["S_01"],3)}$ \\
+$\pinit_{E,u}$ & \measlesUnitSpecific & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["E_01"],5)}$ \\
+$\pinit_{I,u}$ & \measlesUnitSpecific & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["I_01"],5)}$ \\
+$\rho_u$ & \measlesUnitSpecific & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["rho1"],1)}$ \\
+$\measOD_{\unit}$ & \measlesShared & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["psi1"],2)}$ \\  
+$\mu_{EI,\unit}$ & \measlesShared & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["sigma1"]/52,0)} \, \mathrm{week}^{-1}$ \\
+$\mu_{IR}$ & \measlesShared & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["gamma1"]/52,0)} \, \mathrm{week}^{-1}$ \\
+$\meanBeta_\unit$ & \measlesShared & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["gamma1"]*(theta["R01"]+theta["mu1"])/52,0)} \, \mathrm{week}^{-1}$ \\
+$\sigma_{SE,\unit}$ & \measlesShared & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["sigmaSE1"],2)} \, \mathrm{year}^{1/2}$ \\
+$\amplitude_{\unit}$ & \measlesShared & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["amplitude1"],1)}$ \\
+$\alpha_{\unit}$ & \measlesShared & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["alpha1"],0)}$ \\
+$\gravity_{\unit}$ & \measlesShared & \measlesUnitSpecific & 0 &
+  $\Sexpr{myround(theta["g1"],0)}$ \\
+$\iota_{\unit}$ & 0 & 0 & \measlesUnitSpecific &
+  0 \\
+\hline
+\end{tabular}
+\caption{Parameters for the measles model. Sub-model {\modelA} has 4 unit-specific parameters and 8 shared parameters, with movement between units following a gravity equation. Sub-model {\modelB} has 12 unit-specific parameters and no shared parameters, with gravity movement. Sub-model {\modelC} has 12 unit-specific parameters and no shared parameters, with independent immigration of infections rather than movement between units. The last column shows the parameter values used for the simulated data in Figure~2 of the main text.
+}\label{tab:params}
+\end{center}
+\end{table}
+
+\noindent Notes on Table~\ref{tab:params}:
+\begin{enumerate}
+\item In the model formulation, all parameters are written as unit-specific, i.e., with a $u$ subscript. Shared parameters take equal values across all units.
+\item For the simulation, all parameters are shared, so one can assess the inferential consequences of estimating models with some or all parameters unit-specific. Establishing a good choice of parameters to be shared or unit-specific for the data is a data analysis goal.
+\item The initial values of the latent states are parameterized as fractions of the total population, so
+$S_{0,u}=\pinit_{S,u}P_u(t_0)$,
+$E_{0,u}=\pinit_{E,u}P_u(t_0)$,
+$I_{0,u}=\pinit_{I,u}P_u(t_0)$,
+and $R_{0,u}=\big(1-\pinit_{S,u}-\pinit_{E,u}-\pinit_{I,u}\big)P_u(t_0)$.
+\item The parameterization used in the numerical implementation replaces $\meanBeta_{\unit}$ with the basic reproductive number, a dimensionless ratio defined as
+$\mathscr{R}_{0,\unit}= \meanBeta_{\unit} \big(\mu_{IR,\unit}+\mu_D\big)^{-1}$.
+For the simulation,  $\mathscr{R}_{0,\unit}=\Sexpr{myround(theta["R01"],0)}$.
+\end{enumerate}
+
+%\newpage
+
+\section{Algorithmic parameters and transformations}
+
+
+%% values taken from z3/z1a.r and v4/v4a.r
+
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+Parameter & Value \\
+\hline
+$J$ & 4000 \\
+$M$ & 100 \\
+$\breve\sigma$ & 0.005 (0.00125 on some searches for the simulated data)\\
+$\spatReg$ & 0.1 \\
+$a$ & 0.5 \\
+\hline
+\end{tabular}
+\caption{Algorithmic parameters used for applying IBPF to the measles model. The same values were used for each of the sub-models {\modelA}, {\modelB} and {\modelC}.}\label{tab:algpars}
+\end{center}
+\end{table}
+
+\noindent Notes on Table~\ref{tab:algpars}:
+\begin{enumerate}
+\item The full $D\times \Time$ matrix of perturbation standard deviations with entries $\sigma_{d,n}$ was reduced to a single algorithmic parameter, $\breve\sigma$, via
+\begin{equation}
+\nonumber
+\sigma_{d,n} =
+  \left\{ \begin{array}{ll}
+    \breve\sigma & \mbox{if $\theta_d$ is not an IVP and not $\alpha_{\unit}$}
+    \\
+    0.1\, \breve\sigma & \mbox{if $\theta_d$ is $\alpha_{\unit}$}
+    \\
+    2\, \breve\sigma & \mbox{if $\theta_d$ is an IVP, and $n=0$}
+    \\
+    0 & \mbox{if $\theta_d$ is an IVP, and $n\ge 1$}
+  \end{array}\right.
+\end{equation}
+where the initial value parameters (IVPs) are $\pinit_{S,u}$, $\pinit_{E,u}$ and $\pinit_{I,u}$.
+
+\item Parameters perturbations were carried out on a transformed scale. A logit transform was used for $\pinit_{S,u}$, $\pinit_{E,u}$, $\pinit_{I,u}$, $\rho_{\unit}$. A log transformation was used for $\measOD_{\unit}$, $\sigma_{SE,u}$, $\mu_{EI,u}$, $\mu_{IR,\unit}$, $\meanBeta_{\unit}$, $\alpha_{\unit}$, $\gravity_{\unit}$, $\iota_{\unit}$. No transformation was used for $\amplitude_{\unit}$.
+
+\item The algorithmic parameters do not have any scientific significance once successful maximization has been demonstrated. They may affect the ease of successful maximization, or even the ability to attain this within an acceptable level of Monte Carlo uncertainty.
+
+\item $M=100$ was chosen empirically.
+For a computationally challenging maximization problem, we expect to carry out many searches from a variety of starting values, and we conduct further experiments following up on successful leads.
+In this case, it is enough to choose $M$ so that each search has a fair chance of finding a higher likelihood when there are local improvements to be made.
+
+\item Numerical experiments were carried out to choose $J$.
+We look for the smallest $J$ such that there is not much to be gained by making $J$ larger.
+This is carried out by looking for evidence about the bias and variance (discussed further in Sec.~\supSecEfficiency) which both need consideration when carrying out likelihood ratio tests and Monte Carlo adjusted profile confidence intervals \citep{ionides17,ning21}.
+
+\item Each iteration of IBPF produces a log-likelihood estimate corresponding to the extended model with dynamically perturbed parameters. At the end of the search, the log-likelihood was re-evaluated using BFP, with 10 replications at $J=8000$ particles. A high level of effort on likelihood evaluation assists the task of building understanding about the likelihood surface from repeated Monte Carlo searches.
+
+\item The exact record of all our computations is the source code for our numerical results, which is available at \url{https://github.com/ionides/ibpf_article}.
+
+\end{enumerate}
+
+%\newpage
+
+\section{Computational efficiency}
+
+Numerical error of Monte Carlo methods can be decomposed as bias and variance, and efficiency corresponds to how error scales with the amount of computational resources used. Expended resources can be quantified by objective metrics such as joules or dollars, but in practice we usually assess resources in terms of computational time on the machines that we personally have available.
+
+Here, our main goals are evaluation and maximization of the log-likelihood.
+Variance in Monte Carlo likelihood estimates results in negative bias on the log-likelihood due to Jensen's inequality.
+Approximations involved in constructing a filter provide another source of bias for estimating the log-likelihood.
+This Monte Carlo approximation bias has negative expectation, over when the model is correct, since log-likelihood is a proper scoring rule \citep{gneiting07}.
+Monte Carlo maximization error (meaning the difference between the unknown, exact log-likelihood at the Monte Carlo MLE compared to the unknown, exact MLE) can only be negative.
+Based on these considerations, we seek methods giving high average Monte Carlo log-likelihood at a Monte Carlo MLE, and our practical goal is to obtain reliably high log-likelihoods using calculations taking no longer than a day or so on one 36-core computing node.
+
+%\newpage
+
+
+\section{Varying the spatial autoregression parameter, $\spatReg$}
+
+\fontsize{9}{11.5pt plus.8pt minus .6pt}\selectfont
+
+<<v-v6_start,echo=F>>=
+readRDS("v/v6_3/initial_lik.rds") -> loglik_start_spatreg
+median_start_spatreg <- median(loglik_start_spatreg[,"start_loglik"])
+@
+
+<<spatreg_boxplot, echo=F, fig.height=3.6, fig.width=5.5, out.width="4.5in", fig.pos="h", fig.cap = paste0("Varying the IBPF spatial autoregression algorithmic parameter for shared parameters with simulated measles data. The log-likelihood was obtained using $M=100$ iterations of IBPF starting at random parameters (median starting log-likelihood, ",signif(median_start_spatreg,3), "). The horizontal dashed line denotes the log-likelihood at the true parameters.")>>=
+library(foreach)
 loglik_truth <- -38882.7 # from w1.r
 spat_regression <- c(0, 1/64, 1/32, 1/16, 1/8, 1/4, 1/2, 1) 
 spat_regression_char <- c("0", "1/64", "1/32", "1/16", "1/8", "1/4", "1/2", "1")
@@ -925,10 +1064,15 @@ results <- foreach(experiment=1:Experiment,.combine=rbind) %do% {
 }
 loglik_max <- max(c(loglik_truth,results$loglik))
 results <- as.data.frame(results)
+par(mai=c(0.6,0.8,0.1,0.1))
 boxplot(loglik~sp_reg,data=results,ylim=c(-40000,loglik_max),
   ylab="Log-likelihood", xlab="spatial autoregression parameter",
   names=spat_regression_char)
 abline(h=loglik_truth,col="blue",lty="dotted")
 @
+
+}
+
+
 
 \end{document}
