@@ -8,11 +8,11 @@
 \usepackage[sectionbib]{natbib}
 
 %%% Statistica Sinica formatting
-%\newcommand\statSinica[1]{#1}
+% \newcommand\statSinica[1]{#1}
  \newcommand\statSinica[1]{}
 %%% arXiv formatting
  \newcommand\arxiv[1]{#1}
-%\newcommand\arxiv[1]{}
+% \newcommand\arxiv[1]{}
 
 % sec:intro.
 % sec:alg. The \code{ibpf} algorithm for likelihood maximization
@@ -434,7 +434,12 @@ v_{\unit\altUnit} = \gravity_{\unit} \cdot \frac{\hspace{2mm} \overline{\dist}\h
 \]
 where $\gravity_u$ is the {\it gravitational constant}, $\dist_{\unit\altUnit}$ is the distance between town $\unit$ and town $\altUnit$, $\pop_\unit$ is the average of $P_{\unit}(t)$ across time, $\overline{\pop}$ is the average of $\pop_{\unit}$ across towns, and $\overline{\dist}$ is the average of $\dist_{\unit\altUnit}$ across all pairs of towns.
 The transition processes $N_{EI,\unit}(t)$, $N_{IR,\unit}(t)$ and $N_{QD,\unit}(t)$, for $Q\in\{S,E,I,R\}$,  are modeled as conditional Poisson process with per-capita rates $\mu_{EI,\unit}$, $\mu_{IR,\unit}$ and $\mu_{QD,\unit}$ respectively, and we fix $\mu_{QD,\unit}=(50 \mbox{ year})^{-1}$.
-The birth process $N_{BS,\unit}(t)$ is an inhomogeneous Poisson process with rate $\mu_{BS,\unit}(t)$, given by interpolated census data.
+A fraction $\cohort$ of births enter the susceptible cohort on the school admission day, and hence the birth process $N_{BS,\unit}(t)$ is an inhomogeneous Poisson process with rate
+%\begin{equation}\nonumber
+$\mu_{BS,\unit}(t-\birthdelay) \big[
+  (1-\cohort) + \cohort \delta(t-t_a) \big]$,
+%\end{equation}
+where $\mu_{BS,\unit}(t)$ is specified by interpolated census data, $t_a=\lfloor t \rfloor + 252/365$ is the admission date for the year containing $t$, $\delta$ is a Dirac delta function, and $\birthdelay=4\, \mbox{ year}$ is a fixed delay between birth and entry into a high-transmission school community.
 
 To describe the measurement process, let $Z_{\unit\comma\time}=N_{IR\comma\unit}(t_\time)-N_{IR\comma\unit}(t_{\time-1})$ be the number of removed infected individuals in the $n$th reporting interval.
 Suppose that cases are quarantined once they are identified, so that reported cases comprise a fraction $\rho$ of these removal events.
@@ -503,7 +508,7 @@ Questions at stake are: How much less efficient are the SpatPOMP methods? Are si
 
 
 The simulated model is drawn from model {\modelA}, which is nested within model {\modelB} but not within {\modelC}.
-For models {\modelB} and {\modelC}, with all parameters are unit-specific, we must estimate $20\times 12=240$ parameters.
+For models {\modelB} and {\modelC}, with all parameters are unit-specific, we must estimate $20\times 13=260$ parameters.
 This greatly exceeds the 7 shared parameters fitted by \citet{ionides21} for a measles metapopulation model using a large computational effort.
 An iterated guided intermediate resampling filter (IGIRF) algorithm was used to fit 9 shared parameters and 3 unit-specific initial value parameters in a measles metapopulation model \citep{park20}.
 That analysis used a customized treatment for the unit-specific initial value parameters and did not attempt to estimate other unit-specific parameters.
@@ -582,7 +587,7 @@ loglik_he <- sum(read.csv("data/he10mle.csv")$loglik)
 # -40345.7
 @
 
-<<sim_search_boxplot, echo=F, fig.height=3, fig.width=5.5, out.width="5in", fig.cap = "Fitting simulated measles data, using an initial search and four refinement steps. (A1--A5) model \\modelA, $4\\times 20$ unit-specific parameters and $8$ shared parameters; (B1--B5) model \\modelB, $12\\times 20$ unit-specific parameters and no shared parameters;  (C1--C5) model \\modelC, also all unit-specific, but with immigration rather than coupling, matching He et al (2010). The horizontal dashed line is the log-likelihood at the true parameters, evaluated by BPF.",fig.show = "hold">>=
+<<sim_search_boxplot, echo=F, fig.height=3, fig.width=5.5, out.width="5in", fig.cap = "Fitting simulated measles data, using an initial search and four refinement steps. (A1--A5) model \\modelA, $4\\times 20$ unit-specific parameters and $9$ shared parameters; (B1--B5) model \\modelB, $13\\times 20$ unit-specific parameters and no shared parameters;  (C1--C5) model \\modelC, also all unit-specific, but with immigration rather than coupling, matching He et al (2010). The horizontal dashed line is the log-likelihood at the true parameters, evaluated by BPF.",fig.show = "hold">>=
 a <- cbind(
 A1 = v1a$loglik,
 A2 = v2a$loglik,
@@ -627,7 +632,7 @@ The goal of this study is to show that the algorithm can succeed reliably on a r
 Subsequent searches were started with four copies of each parameter vector with estimated likelihood in the top 25\% for the previous search.
 
 The MLE is not known exactly in this case.
-Wilks' theorem gives an asymptotic expectation that the log-likelihood at the MLE should be greater than the likelihood at the truth by approximately $1/2$ the number of parameters, which here is $(4\times 20+8)/2=44$ for {\modelA} and $(12\times 20)/2=120$ for {\modelB}.
+Wilks' theorem gives an asymptotic expectation that the log-likelihood at the MLE should be greater than the likelihood at the truth by approximately $1/2$ the number of parameters, which here is $(4\times 20+9)/2=44.5$ for {\modelA} and $(13\times 20)/2=130$ for {\modelB}.
 The $y$-axis values in Fig.~\ref{fig:sim_search_boxplot} show log-likelihoods exceeding the truth by less than this, indicating some imperfection to the Monte Carlo maximization so far as Wilks' asymptotic result holds in this situation.
 Despite this limitation, searches that exceed the likelihood at the truth have found inferentially plausible sets of parameters which can be used to study the likelihood surface around the maximum.
 For example, Monte Carlo profile confidence intervals can give proper coverage even in the presence of considerable Monte Carlo error \citep{ionides17,ning21}.
@@ -869,11 +874,22 @@ As a consequence, competitive computational performance is obtained even though 
 We acknowledge an anonymous referee from a previous article who recommended implementing a block particle filter.
 We are grateful to two anonymous referees whose constructive feedback has improved this article.
 
+\arxiv{
+\vspace{2mm}
+\noindent{\bf Version notes}
+
+\vspace{1mm}
+
+\noindent Version [v1] was submitted to {\it Statistica Sinica}, and [v2] was accepted for publication. [v3] corrects for an omission of the cohort effect in the description of the model in Section~\ref{sec:model}.
+}
+
 \bibliography{bib-ibpf}
 %\InputIfFileExists{ms.bbl}
 
 
 \arxiv{
+\newpage
+
 \setcounter{section}{0}
 \setcounter{equation}{0}
 \def\theequation{S\arabic{section}.\arabic{equation}}
@@ -941,13 +957,15 @@ $\amplitude_{\unit}$ & \measlesShared & \measlesUnitSpecific & \measlesUnitSpeci
   $\Sexpr{myround(theta["amplitude1"],1)}$ \\
 $\alpha_{\unit}$ & \measlesShared & \measlesUnitSpecific & \measlesUnitSpecific &
   $\Sexpr{myround(theta["alpha1"],0)}$ \\
+$\cohort$& \measlesShared & \measlesUnitSpecific & \measlesUnitSpecific &
+  $\Sexpr{myround(theta["cohort1"],0)}$ \\  
 $\gravity_{\unit}$ & \measlesShared & \measlesUnitSpecific & 0 &
   $\Sexpr{myround(theta["g1"],0)}$ \\
 $\iota_{\unit}$ & 0 & 0 & \measlesUnitSpecific &
   0 \\
 \hline
 \end{tabular}
-\caption{Parameters for the measles model. Sub-model {\modelA} has 4 unit-specific parameters and 8 shared parameters, with movement between units following a gravity equation. Sub-model {\modelB} has 12 unit-specific parameters and no shared parameters, with gravity movement. Sub-model {\modelC} has 12 unit-specific parameters and no shared parameters, with independent immigration of infections rather than movement between units. The last column shows the parameter values used for the simulated data in Figure~2 of the main text.
+\caption{Parameters for the measles model. Sub-model {\modelA} has 4 unit-specific parameters and 9 shared parameters, with movement between units following a gravity equation. Sub-model {\modelB} has 13 unit-specific parameters and no shared parameters, with gravity movement. Sub-model {\modelC} has 13 unit-specific parameters and no shared parameters, with independent immigration of infections rather than movement between units. The last column shows the parameter values used for the simulated data in Figure~2 of the main text.
 }\label{tab:params}
 \end{center}
 \end{table}

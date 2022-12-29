@@ -3,7 +3,7 @@ Source code for: An iterated block particle filter for inference on coupled dyna
 
 E. L. Ionides, J. Wheeler and N. Ning
 
-This repository is a public version of the source code for the article. The intention is to keep it up-to-date as the article is revised during the publication process. 
+This repository is a public version of the source code for the article. The code was run using spatPomp 0.29.0.0 (see z3/z1a_3/sessionInfo.txt). Later versions of spatPomp incorporate the functions ibpf() and he10() included below.
 
 ms.Rnw The document source code.
 
