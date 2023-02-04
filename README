@@ -3,7 +3,7 @@ Source code for: An iterated block particle filter for inference on coupled dyna
 
 E. L. Ionides, J. Wheeler and N. Ning
 
-This repository is a public version of the source code for the article. The code was run using spatPomp 0.29.0.0 (see z3/z1a_3/sessionInfo.txt). Later versions of spatPomp incorporate the functions ibpf() and he10() included below.
+This repository is a public version of the source code for the article. The stat-sinica tag corresponds to the accepted version posted on the journal website. The code for this version was run using spatPomp 0.29.0.0 (see z3/z1a_3/sessionInfo.txt). Later versions of spatPomp incorporate the functions ibpf() and he10() included below. The files may be updated for subsequent improvements.
 
 ms.Rnw The document source code.
 
@@ -27,5 +27,5 @@ w testing likelihood evaluation, and getting a good evaluation at the truth for 
 
 z3. ibpf on measles data as used for he10.
 
-
+talk slides for a talk drawing on these results.
 

@@ -1,0 +1,305 @@
+\newcommand\myemph[1]{{\textbf{#1}}}
+\newcommand\enumerateSpace{\hspace{2mm}}
+\usepackage{amssymb}
+\newenvironment {myitemize} {
+                 \begin{list}{\textcolor{black}{$\bullet$} \hfill}
+%                 \begin{list}{\textcolor{blue}{{\small{$\blacktriangleright$}}} \hfill}
+                 {\setlength{\labelwidth}{0.3 cm}
+                  %\setlength{\leftmargin}{0em}
+                  \setlength{\leftmargin}{0.15cm}
+                  \setlength{\itemindent}{0.15cm}
+                  \setlength{\labelsep}{0cm}
+                  \setlength{\parsep}{0.2 ex}
+%                  \setlength{\itemsep}{0.25 cm}
+                  \setlength{\itemsep}{1 mm}
+%                   \setlength{\itemsep}{0.0 cm}
+      \setlength{\topsep}{0.0cm}}} %space between title and 1st item
+   {\end{list}}
+
+\newcommand\MainFigureBmScaling{1}
+\newcommand\MainFigureMeaslesScaling{2}
+\newcommand\MainFigureMeaslesSlice{3}
+
+%% for algorithm pseudocode
+\usepackage{enumerate,alltt,xstring}
+%\usepackage[ruled,noline,linesnumbered]{algorithm2e}
+\usepackage[ruled,noline]{algorithm2e}
+\SetKwFor{For}{for}{do}{end}
+\SetKwFor{While}{while}{do}{end}
+\SetKwInput{KwIn}{input}
+\SetKwInput{KwOut}{output}
+\SetKwInput{KwCplx}{complexity}
+\SetKwInput{KwIndices}{note}
+\SetKwBlock{Begin}{procedure}{}
+\DontPrintSemicolon
+
+%\newcommand\SuppFigureMeaslesSharedSlice{\eic{TODO}}
+
+\newcommand\SuppSecGeneralization{S1}
+\newcommand\SuppSecThmI{S3}
+\newcommand\SuppSecThmII{S4}
+\newcommand\SuppSecMemoryEfficient{S10}
+\newcommand\SuppSecAdaptedSimulation{S2}
+\newcommand\SuppSecBM{S5}
+\newcommand\SuppSecMeasles{S6}
+\newcommand\SuppSecMeaslesNbhd{S7}
+\newcommand\SuppSecMeaslesGammaSlice{S8}
+%\newcommand\SuppSecMeaslesReducedNoise{S9}
+\newcommand\SuppSecLorenz{S9}
+%\newcommand\SuppSecMeaslesIJ{S11}
+
+%\newcommand\AssumptionBivb{\ref{B:unconditional:mix}(b)}
+%\newcommand\AssumptionBiva{\ref{B:unconditional:mix}(a)}
+\newcommand\comma{{\hspace{-0.25mm},\hspace{-0.2mm}}}
+\newcommand\termStart{\dagger}
+%\newcommand\termStart{\circ}
+
+\newcommand\amplitude{a}
+\newcommand\meanBeta{{\bar\beta}}
+\newcommand\cohort{c}
+\newcommand\birth{b}
+
+
+%\title{Locally weighted island filters for partially observed spatiotemporal systems}
+
+\title{Island filters for partially observed spatiotemporal systems}
+
+
+%%%%%%%%%%%%%%%% START OF USER DEFINITIONS %%%%%%%%%%%%%%%5
+
+\newcommand\siOnly[1]{} %% redefined for the supplement
+\newcommand\msOnly[1]{#1} %% redefined for the supplement
+
+%\newcommand\tif{\mathrm{tif}}
+\newcommand\inputSpace{\rule[-1.5mm]{0mm}{4.7mm}}
+\newcommand\firstLineSpace{\rule[0mm]{0mm}{4mm}}
+\newcommand\lastLineSpace{\rule[-2.5mm]{0mm}{4mm}}
+
+\newcommand\gravity{G}
+
+\newcommand\AIRSIF{ASIF-IR}
+\newcommand\TIF{BIF}
+\newcommand\centersum{\Delta}
+\newcommand\mediumint{\resizebox{2.8mm}{!}{$\displaystyle \int$}}
+%\newcommand\Bsize{|B|}
+\newcommand\Bsize{b}
+%\newcommand\UnitSet{\mathbb{U}}
+%\newcommand\TimeSet{\mathbb{N}}
+\newcommand\TimeSet{\mbox{TimeSet should now be ObsTimeSet or ProcTimeSet}}
+\newcommand\UnitSet{1{\mycolon}\Unit}
+\newcommand\ObsTimeSet{1{\mycolon}\Time}
+\newcommand\ProcTimeSet{0{\mycolon}\Time}
+%\newcommand\spaceTime{\mathbb{S}}
+\newcommand\spaceTime{\UnitSet\times\ObsTimeSet}
+%\newcommand\unitTimeSubset{\mathbb{C}}
+\newcommand\unitTimeSubset{B}
+%\newcommand\adapted{\rho}
+\newcommand\adapted{\gamma}
+\newcommand\myeqref[1]{[\ref{#1}]}
+\newcommand\tif{{}}
+\newcommand\girf{\mathrm{girf}}
+\newcommand\gir{G}
+\newcommand\altAltTime{m}
+
+\newcommand\myvec[1]{\boldsymbol{#1}}
+
+\newcounter{wwii}
+\setcounter{wwii}{1}
+\newcommand\wwiiStep{\makebox[8mm][l]{\arabic{wwii}.}\stepcounter{wwii}}
+\newcounter{wwiiResample}
+\newcounter{wwiiAncestor}
+\newcounter{wwiiPredict}
+\newcounter{wwiiFilter}
+
+\newcounter{asii}
+\setcounter{asii}{1}
+\newcommand\asiiStep{\makebox[8mm][l]{\arabic{asii}.}\stepcounter{asii}}
+\newcounter{girasif}
+\setcounter{girasif}{1}
+\newcommand\girasifStep{\makebox[8mm][l]{\arabic{girasif}.}\stepcounter{girasif}}
+\newcounter{asiiResample}
+\newcounter{asiiAncestor}
+\newcounter{asiiPredict}
+\newcounter{asiiFilter}
+\newcounter{girasifResample}
+\newcounter{girasifAncestor}
+\newcounter{girasifPredict}
+\newcounter{girasifFilter}
+
+
+% package used by default for Overleaf
+%\usepackage[utf8]{inputenc}
+
+%% code macros
+%\newcommand\slot[1]{\code{#1}}
+%\newcommand\class[1]{class `\code{#1}'}
+\newcommand\code[1]{\texttt{#1}}
+\usepackage{url}
+
+\newcommand\W{W}
+\newcommand\V{V}
+\newcommand\ASindex{[\Unit]}
+\newcommand\simulation{\mathrm{sim}}
+
+%\renewcommand\baselinestretch{1.3}
+%\usepackage{showkeys}
+%\usepackage[numbers,sort&compress]{natbib}
+%\bibliographystyle{apalike}
+
+%\usepackage{natbib}
+%\bibliographystyle{plainnat}
+%\bibliographystyle{dcu}
+%\usepackage{url}
+
+\newcommand\pstep[1]{{\bf #1}}
+\newcommand\qsp{\rule{0mm}{1mm}\hspace{4mm}}
+\newcommand\plusStrut{\rule{0mm}{1.2mm}}
+
+%% basic POMP definitions
+\newcommand\Xspace{{\mathbb X}}
+\newcommand\Yspace{{\mathbb Y}}
+%\newcommand\Thetaspace{{\Theta}}
+\newcommand\Thetaspace{\R^{\Thetadim}}
+\newcommand\Xunitspace{{\scriptsize{\mathcal X}}}
+\newcommand\Yunitspace{{\tiny{\mathcal Y}}}
+\newcommand\hatTheta{\widehat{\Theta}}
+\newcommand\Xdim{{\mathrm{dim}}(\Xspace)}
+\newcommand\Ydim{{\mathrm{dim}}(\Yspace)}
+%\newcommand\Thetadim{{\mathrm{dim}}(\Thetaspace)}
+\newcommand\Thetadim{P}
+\newcommand\thetadim{p}
+\newcommand\timeSet{{\mathbb T}}
+\newcommand\data[1]{#1^*}
+
+\newcommand\unitSpecific{\hspace{0.1mm}\mathrm{us}}
+\newcommand\shared{\hspace{0.15mm}\mathrm{sh}}
+
+%% for particle filters
+\newcommand\unit{u}
+\newcommand\altUnit{\tilde u}
+\newcommand\Unit{U}
+\newcommand\rep{i}
+\newcommand\altIsland{\tilde i}
+\usepackage[mathscr]{euscript}
+\newcommand\Rep{\mathcal{I}}
+\renewcommand\time{n}
+\renewcommand\vec[1]{\boldsymbol{#1}}
+\newcommand\altTime{\tilde n}
+\newcommand\Time{N}
+\newcommand\Np{J}
+\newcommand\np{j}
+\newcommand\altNp{k}
+\newcommand\altAltNp{\tilde j}
+\newcommand\resampleIndex{r}
+\newcommand\unitWeight{w}
+
+
+%% for ASIF and HIPPIE
+\newcommand\IF{\mathrm{A}}  % adapted simulation
+\newcommand\IP{\mathrm{P}}  % adapted proposal
+%\newcommand\GR{\mathrm{GR}}  % GIR resample 
+%\newcommand\GP{\mathrm{GP}}  % GIR proposal 
+\newcommand\GR{\mathrm{IR}}  % intermediate resample 
+\newcommand\GP{\mathrm{IP}}  % intermediate proposal 
+\newcommand\resample{\mathrm{R}} % this would have been F before
+\newcommand\proposal{\mathrm{P}} 
+\newcommand\LCP{\mathrm{P}}  % local prediction 
+\newcommand\LCF{\mathrm{F}}  % local filter 
+
+%% for GIR
+%\newcommand\Lookahead{L}
+%\newcommand\lookahead{\ell}
+\newcommand\Ninter{S} %% number of intermediate timepoints
+\newcommand\ninter{s}
+%\newcommand\Nguide{K} %% number of lookahead particles
+%\newcommand\nguide{k}
+%\newcommand\lookaheadEnd{\time\oplus \Lookahead}
+%\newcommand\lookaheadEnd{\min(\time+\Lookahead,\Time)}
+\newcommand\guideFunc{g}
+%\newcommand\VtoTheta{{\overleftarrow{V}}}
+%\newcommand\thetaToV{{\overrightarrow{V}}}
+%\newcommand\VtoTheta{{\overline{V}}}
+%\newcommand\thetaToV{\underline{V}}
+%\newcommand\thetaToV[1]{\stackrel{\rightarrow}{\mathrm{v}}_{\hspace{-0.5mm}#1}\!}
+%\newcommand\VtoTheta[1]{\stackrel{\leftarrow}{\mathrm{v}}_{\hspace{-0.5mm}#1}\!}
+\newcommand\thetaToV{\stackrel{\rightarrow}{\mathrm{v}}\!}
+\newcommand\VtoTheta{\stackrel{\leftarrow}{\mathrm{v}}\!}
+%\newcommand\thetaToV[1]{\stackrel{\rightarrow}{\mathrm{v}_{#1}}\!}
+%\newcommand\VtoTheta[1]{\stackrel{\leftarrow}{\mathrm{v}_{#1}}\!}
+\newcommand\npgir{\np}
+\newcommand\Npgir{\Np}
+\newcommand\Nguide{G}
+
+%% for all iterated filtering algorithms
+\newcommand\Nit{M}
+\newcommand\nit{m}
+
+
+%% customized math macros
+\newcommand\prob{\mathbb{P}}
+\newcommand\E{\mathbb{E}}
+\newcommand\dd[1]{\mathrm{d}{#1}}
+\newcommand\given{{\,\vert\,}}
+\newcommand\equals{{{\,}={\,}}} 
+\newcommand\myequals{\hspace{0.5mm}{=}\hspace{0.5mm}}
+\newcommand\myto{{\;:\;}}
+\newcommand\seq[2]{{#1}\!:\!{#2}}
+\newcommand\mydot{{\,\cdot\,}}
+\newcommand\cp[2]{N_{\mathrm{#1}\mathrm{#2}}}
+\newcommand\giventh{{\hspace{0.5mm};\hspace{0.5mm}}}
+%\newcommand\normal{{\mathrm{Normal}}}
+\newcommand\normal{\mathcal{N}}
+\newcommand\argequals{{\,=\,}}
+\newcommand\lags{c}
+\newcommand\maxlag{\overline{c}}
+\newcommand\nlfList{C}
+\newcommand\bigO{\mathcal{O}}
+\newcommand\loglik{\lambda}
+\newcommand\loglikMC{\MC{\loglik}}
+\newcommand\R{\mathbb{R}}
+\newcommand\param{\,;}
+\newcommand\mycolon{{\hspace{0.6mm}:\hspace{0.6mm}}}
+\newcommand\MC[1]{#1^{\,\mbox{\tiny MC}}}
+%\newcommand\EMC{\MC{\E}}
+\newcommand\EMC{{\E}}
+\newcommand\Var{\mathrm{Var}}
+\newcommand\var{\Var}
+\newcommand\Cov{\mathrm{Cov}} 
+\newcommand\cov{\Cov}
+\newcommand\iid{\mathrm{iid}}
+%\newcommand\dist{\mathrm{dist}}
+\newcommand\dist{d}
+\newcommand\transpose{\top}
+
+\newcommand\gnsep{,}
+
+\def\lik{L}
+\def\loglik{\ell}
+
+%% THEOREM-LIKE ENVIRONMENTS
+\usepackage{amsthm}
+\newtheorem{prop}{Proposition}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}{Lemma}
+%\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\newtheorem{cor}{Corrolary}
+%\newtheorem{fact}{Fact}  
+\newtheorem{assumption}{Assumption}
+\newtheorem{assumptionB}{Assumption}
+%\newtheorem{procedure}{Procedure}
+\renewcommand\theassumption{A\arabic{assumption}}
+\renewcommand\theassumptionB{B\arabic{assumptionB}}
+
+%\usepackage{float}
+%\floatstyle{ruled}
+%\newfloat{textbox}{t}{tbx}
+%\floatname{textbox}{Box}
+%\renewcommand\thetextbox{\arabic{textbox}}
+
+
+%% FOR PSEUDOCODE SETUP
+\newcommand\mystretch{\rule[-2mm]{0mm}{5mm} }   
+\newcommand\asp{\hspace{4mm}}
+
+%%%%%%%%%%%%%%%% END OF USER DEFINITIONSS %%%%%%%%%%%%%%%5

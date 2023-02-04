@@ -1,0 +1,563 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+
+\usepackage{amsmath,amsfonts,amssymb,graphicx} 
+\input{header.tex}
+\input{header-ms.tex}
+\input{theorems1.tex}
+
+\begin{document}
+
+\begin{frame}
+  
+\begin{center}
+  {\Large\bf An iterated block particle filter for inference on coupled dynamic systems with shared and unit-specific parameters}
+
+%% ABSTRACT: We consider inference for a collection of partially observed, stochastic, interacting, nonlinear dynamic processes. Each process is called a unit, and our primary motivation arises in biological metapopulation systems where a unit is a spatially distinct sub-population. Block particle filters are an effective tool for simulation-based likelihood evaluation for these systems, which are strongly dependent through time on a single unit and relatively weakly coupled between units. Iterated filtering algorithms can facilitate likelihood maximization for simulation-based filters. We introduce a new iterated block particle filter algorithm applicable to parameters that are either unit-specific or shared between units. We demonstrate this algorithm to carry out inference on a coupled epidemiological model for spatiotemporal measles case report data in twenty towns.
+
+\vspace{2mm}
+
+Edward Ionides\\
+University of Michigan, Department of Statistics
+
+\vspace{8mm}
+
+MFO worksho on \\
+Design and Analysis of Infectious Disease Studies
+\\
+Feb 23, 2023
+
+
+\hspace{3mm}
+
+Slides are at \url{https://ionides.github.io/talks/mfo23.pdf}
+%% 8:15am EST
+
+\vspace{8mm}
+
+Joint work with\\
+Kidus Asfaw, Ning Ning, Joonha Park, Jesse Wheeler and Aaron King
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Questions to be addressed}
+
+  \begin{enumerate}
+  \item When can we carry out full-information likelihood-based inference on a general class of spatiotemporal partially observed Markov process models?
+  \item When should we want to?
+  \item Is there an intersection between scientific problems of interest and the capabilities of the \texttt{spatPomp} R package?
+  \end{enumerate}
+
+  \vspace{3mm}
+
+  We introduce the iterated block particle filter because it currently appears the most powerful algorithm available in \texttt{spatPomp}.
+
+\end{frame}
+
+\newcommand\challengeSep{\vspace{3mm}}
+
+\begin{frame}{Inference challenges in population dynamics}
+
+  \begin{enumerate}
+\item Combining measurement noise and process noise.
+\item Including covariates in mechanistically plausible ways.
+\item  Continuous time models.
+\item  Modeling and estimating interactions in coupled systems.
+\item  Dealing with unobserved variables.
+\item  \myemph{Modeling spatial-temporal dynamics}.
+\item  \myemph{Studying population dynamics via genetic sequence data}.
+  \end{enumerate}
+
+  \vspace{3mm}
+  
+  1--6 are from Bjornstad \& Grenfell ({\it Science}, 2001).\\
+  7 is from Grenfell et al ({\it Science}, 2004).\\
+  1--5 are largely solved, from a methodological perspective.
+  
+  
+\end{frame}
+
+\begin{frame}{Example: Pre-vaccination measles in England \& Wales}
+
+\vspace{-2mm}
+
+\begin{center}
+\includegraphics[width=8.4cm]{he10-data.pdf}
+
+
+\end{center}
+
+\vspace{-2mm}
+  
+\end{frame}
+
+\begin{frame}{Time series data, panel data \& spatiotemporal data}
+
+  \bi
+\item Looking at one unit (town) is \myemph{time series analysis}.
+
+  \item Joint modeling of a few units (say, 2 or 3) is \myemph{multivariate time series analysis}.
+
+\item Analysis of many time series, without consideration of dynamic interactions, is \myemph{panel data analysis}.
+
+\item Allowing for coupling between units, we get \myemph{spatiotemporal analysis}, which in our context is \myemph{metapopulation analysis}.
+
+  \ei
+  
+Question: When should we avoid inference for spatiotemporal models? When do we need to consider coupling? How?
+
+\end{frame}
+
+\begin{frame}{Desiderata}
+
+  \begin{itemize}
+    \item We want to be able to fit arbitrary dynamic models. The limitations should be our scientific creativity and the information in the data.
+
+    \item In practice, that means using \myemph{plug-and-play} methods which need a simulator from the model but not nice closed-form expressions for densities.
+
+    \item We want statistically efficient inference, to extract all the information in the data.
+
+    \item In practice, that means using likelihood-based methods.
+
+      \item  In the time series case, iterated particle filtering (IF2) implemented in the R package \texttt{pomp} enables Masters-level statisticians to do this (\url{https://ionides.github.io/531w22/}). The science may be hard, but the statistics is becoming routine.
+      \end{itemize}
+  \end{frame}
+
+
+
+\begin{frame}{Panel data}
+
+\bi
+\item To investigate epidemiological dynamics in multiple cities, one can consider each city independently, perhaps modeling a background immigration rate of infections for each city.
+
+\item \myemph{Decoupling} leads to panel data analysis, by assumption. Iterated filtering methods extend to panel data (Breto et al, {\it Journal of the American Statistical Association}, 2019).
+
+\item We must decide which parameters should be modeled as \myemph{shared} vs \myemph{unit-specific}.
+
+\item The consequences of decoupling are becoming easier to study with the development of statistical inference methods for coupled systems, i.e., metapopulation dynamics.
+
+  \ei
+
+  \end{frame}
+
+\begin{frame}{The curse of dimensionality}
+
+  \bi
+  \item
+    Particle filter (PF) methods are effective for inference on low-dimensional nonlinear partially observed stochastic dynamic systems. They scale exponentially badly.
+
+\item Extending the successes of particle filter methods from time series data to metapopulation data is becoming possible.
+
+\item Algorithms under consideration:\\
+  {\bf
+  Bagged filters (BF, IBF)\\
+  Ensemble Kalman filter (EnKF, IEnKF)\\
+  Guided intermediate resampling filter (GIRF, IGIRF)\\
+  Block particle filter (BPF, IBPF)\\
+  }
+  
+\item Filters estimate latent states and evaluate the likelihood.
+\item Each filter has an iterated version which estimates parameters by repeated filtering using stochastic parameter perturbations.
+
+\item These algorithms are all implemented in an R package, \texttt{spatPomp}.
+  
+  \ei
+  
+\end{frame}
+
+\begin{frame}{Filtering $U$ units of a coupled measles SEIR model}
+
+\vspace{-3mm}
+
+\begin{center}
+\includegraphics[width=10cm]{mscale_loglik_plot-1.pdf}
+
+
+\end{center}
+
+\vspace{-2mm}
+
+Simulated data using a gravity model with geography, demography and transmssion parameters corresponding to UK pre-vaccination measles (Ionides et al, {JASA}, 2021).
+
+%\end{center}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{$U=40$ units for a coupled measles SEIR model}
+
+\vspace{-2.7mm}
+
+\begin{center}
+\includegraphics[width=8cm]{slice_image_plot-1.pdf}
+\end{center}
+
+\vspace{-3mm}
+
+{\bf A}. Simulated Susceptible-Exposed-Infected-Recovered dynamics coupled with a gravity model (log of biweekly reported cases).
+
+{\bf B}. Measles UK pre-vaccination case reports for the 40 largest cities.
+
+
+
+
+%\end{center}
+
+\end{frame}
+
+\begin{frame}{Parameters for the measles model}
+  \bi
+\item Seasonal tranmission: mean and amplitude, using school term for contact rate.
+  \item Durations of latency and infectious period.
+\item Initial values: fraction susceptible, latent and infectious.
+\item Cohort effect: all births in an age cohort start school in September.
+\item Inhomogenous mixing coefficient.
+\item Measurement fraction.
+\item Transport model gravity constant.
+\item Dynamic noise (process overdispersion).
+\item Measurement overdispersion.
+
+\ei
+
+  \end{frame}
+
+\begin{frame}{More on the block particle filter}
+
+\bi
+\item BPF worked quickly, easily and reliably on our measles model filtering experiments.
+
+\item This motivated us to develop an IBPF for parameter estimation.
+   
+\item BPF has theoretical support in some situations (Rebeschini \& Van Handel, {\it Annals of Applied Probability}, 2015).
+
+\item BPF was independently proposed as the ``factored particle filter'' by Ng et al (2002, {\it Proc. 18th Conference on Uncertainty and Artificial Intelligence}) but not widely popularized.
+
+\ei
+
+\end{frame}
+
+\begin{frame}{Particle filter (PF)}
+
+  \begin{columns}
+    \begin{column}{0.48\linewidth}
+      \begin{center}
+      {\bf \textcolor{blue}{Evolutionary analogy}}
+
+      \vspace{5mm}
+      
+      {\bf Mutation}
+
+      $\downarrow$
+
+      {\bf Fitness}
+
+      $\downarrow$
+
+      {\bf Natural selection}
+      
+      \end{center}
+    \end{column}
+     \begin{column}{0.48\linewidth}
+      \begin{center}
+      {\bf \textcolor{blue}{Particle filter algorithm}}
+
+      \vspace{5mm}
+      
+      {\bf Predict: stochastic dynamics}
+
+      $\downarrow$
+
+      {\bf Measurement: weight}
+
+      $\downarrow$
+
+      {\bf Filter: resample}
+      \end{center}
+    \end{column}
+  \end{columns}
+
+  \vspace{15mm}
+  
+    \begin{myitemize}
+  \item PF is an evolutionary algorithm with good mathematical properties: an unbiased likelihood estimate and consistent latent state distribution.
+  \end{myitemize}
+
+\end{frame}
+  
+\begin{frame}{Block particle filter (BPF)}
+
+  \begin{columns}
+    \begin{column}{0.48\linewidth}
+      \begin{center}
+      {\bf \textcolor{blue}{Evolutionary analogy}}
+
+      \vspace{5mm}
+      
+      {\bf Mutation}
+
+      $\downarrow$
+
+      {\bf Fitness\\
+      for each chromosome}
+
+      $\downarrow$
+
+      {\bf Natural selection\\
+      for each chromosome}
+
+      $\downarrow$
+
+      {\bf Recombine chromosomes}
+      
+      \end{center}
+    \end{column}
+     \begin{column}{0.48\linewidth}
+      \begin{center}
+      {\bf \textcolor{blue}{Block particle filter}}
+
+      \vspace{5mm}
+      
+      {\bf Predict: stochastic dynamics}
+
+      $\downarrow$
+
+      {\bf Measurement: weight\\
+      for each block}
+
+      $\downarrow$
+
+      {\bf Filter: resample\\
+      for each block}
+
+      $\downarrow$
+
+      {\bf Recombine blocks}
+      \end{center}
+    \end{column}
+  \end{columns}
+
+  \vspace{5mm}
+  
+    \begin{myitemize}
+    \item Blocks in BPF allow recombination (reassortment of chromosomes in sexual reproduction) in the evolutionary analogy.
+    \item Blocks are a partition of the metapopulation units. Our experiments suggest treating each sub-population (i.e., city) as a block.
+
+  \end{myitemize}
+
+\end{frame}
+
+\begin{frame}
+
+\frametitle{Measles likelihood slices for coupling parameter, $G$}
+
+\vspace{-5mm}
+
+\begin{columns}[T] % align columns
+\begin{column}{.55\textwidth}
+  \includegraphics[width=6cm]{slice_combined_plot-1.pdf}
+\end{column}
+\begin{column}{.52\textwidth}
+
+  \vspace{6mm}
+  
+  Simulating $15$ year of data from $U=40$ cities for the measles model.
+  Slice likelihood, varying $G$ with other paramters fixed at the truth.
+
+  \vspace{3mm}
+
+  {\bf A}. Evaluation using adapted bagged filter (ABF).
+
+    \vspace{3mm}
+
+  {\bf B}. Evaluation using block particle filter (BPF).
+
+    \vspace{3mm}
+
+  {\bf C}. Evaluation using EnKF.
+
+  \vspace{3mm}
+  
+Results from Ionides et al (2021, {\it JASA}). We computed a slice due to lack of good optimization algorithms to compute a profile.
+  
+\end{column}
+\end{columns}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Scalability needed for practical inference}
+
+Large numbers of parameters
+  \begin{itemize}
+  \item  Initial conditions will typically have to be estimated for each unit.
+  \item Various dynamic parameters and measurement parameters (e.g., reporting rate) may also need to be unit-specific to obtain a statistical fit to the data.
+\item Working with hundreds of estimated parameters raises additional challenges on top of the high-dimensional coupled dynamics.
+  \end{itemize}
+
+\vspace{5mm}
+  
+A moderate numbers of spatial units is enough to open new possibilities.
+
+  \begin{itemize}
+  \item As soon as dimension exceeds capabilities of a particle filter (say, $U=5$) we are in situations where likelihood-based inference for general models has been inaccessible.
+
+  \item 10-100 coupled units is our target problem size.
+
+  \item Larger problems will need numerical approximations (e.g., EnKF). Exact Monte Carlo methods help study the effect of these approximations.
+    
+  \end{itemize}
+
+  \end{frame}
+
+\begin{frame}{An iterated block particle filter for parameter estimation}
+
+
+  \begin{center}
+    
+  \includegraphics[trim={0 0 0 10mm},clip,width=9cm]{IBPF_workflow.pdf}
+
+
+  \end{center}
+  
+\end{frame}
+
+\begin{frame}
+
+\vspace{-6mm}
+
+\begin{columns}[T] % align columns
+\begin{column}{.75\textwidth}
+  \includegraphics[width=6.8cm]{ibpf/search_diagnostics-1.pdf}
+\end{column}
+
+\hspace{-15mm}
+\begin{column}{.35\textwidth}
+  \vspace{10mm}
+  
+$\bullet$    IBPF applied to simulations and data.
+
+    \vspace{5mm}
+
+$\bullet$    Multiple searches from random starting points.
+
+    \vspace{5mm}
+    
+$\bullet$    Top 25\% of searches are subsequently refined.
+    
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+
+\begin{columns}[T] % align columns
+\begin{column}{.75\textwidth}
+  \includegraphics[width=7.5cm]{ibpf/sim_search_boxplot-1.pdf}
+
+    \includegraphics[width=7.5cm]{ibpf/data_search_boxplot-1.pdf}
+
+  \end{column}
+
+\hspace{-15mm}
+\begin{column}{.35\textwidth}
+  \vspace{5mm}
+  
+$\bullet$    IBPF applied to simulations (top panel) and data (bottom panel).
+
+    \vspace{5mm}
+
+$\bullet$    Multiple search refinements.
+
+    \vspace{5mm}
+    
+    (A) Mostly shared parameters.
+
+    \vspace{5mm}
+
+    (B) All unit-specific parameters
+
+    \vspace{5mm}
+
+    (C) all unit-specific, without coupling
+    
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Filtering $U$-dimensional correlated Brownian motion}
+
+\vspace{-3mm}
+
+\begin{center}
+\includegraphics[width=10cm]{bm_alt_plot-1.pdf}
+
+\vspace{-1mm}
+
+$\cov\big(X_{\unit,\time}-X_{\unit,\time-1},X_{\altUnit,\time}-X_{\altUnit,\time-1}\big) \sim 0.4^{|\unit-\altUnit|}_{}$
+
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Filtering $U$ units of Lorenz 96 toy atmospheric model} 
+
+\vspace{-3mm}
+
+\begin{center}
+\includegraphics[width=10cm]{lz_loglik_plot-1.pdf}
+
+\vspace{-1mm}
+
+$dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\big) - X_{\unit}(t) + F \big\} dt + \sigma \, dB_{\unit}(t)$
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Future work}
+
+  \newcommand\futuresep{\vspace{3mm}}
+  
+  \begin{myitemize}
+  \item We are reaching to the point where we can carry out likelihood-based inference for a flexible class of metapopulation models for measles.
+Flexibility supports generation and testing of scientific hypotheses.
+        
+    \futuresep
+    
+%  \item Measles was previously a motivating model system for POMP methods for single populations.
+
+    \futuresep
+    
+  \item Many systems in ecology, epidemiology and elsewhere could be studied in a SpatPOMP framework. Including microbiomes?
+
+     \futuresep
+
+   \item Modeling and inference for nonlinear stochastic dynamics is hard. But, if you can't build a quantitative statistical model then you don't understand it and you can't control it?
+    
+\end{myitemize}
+
+\end{frame}
+
+\nocite{bjornstad01,grenfell04,breto19,rebeschini15,ng02,ionides21}
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\bibliographystyle{apalike}
+\bibliography{bib}
+\end{frame}
+
+%%% extra material
+
+
+\end{document}

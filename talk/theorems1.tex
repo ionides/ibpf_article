@@ -1,0 +1,289 @@
+
+\newcommand\PartOfBoundOffDiagonal{3\efourB+4(K + \dmax)\,\efive}
+\newcommand\boundOffDiagonal{\efourA + \PartOfBoundOffDiagonal}
+\newcommand\K{K^\prime}
+\newcommand\ThmOneVarBound{Q^{4b} \, \Unit\Time  \big(\altb + \etwo \, (\Unit\Time-\altb) \big)}
+
+
+\newcommand\BvConstant{\mathcal{C}_0}
+\newcommand\dmax{d_{\max}}
+\newcommand\boundLemma{\efourB+(K+d_{\unit,\time})\efive}
+\newcommand\boundLemmaUniform{\efourB+(K+\dmax)\efive}
+
+
+%\newcommand\altB{\tilde{B}}
+\newcommand\altB{C}
+%\newcommand\el{\epsilon_\ell}
+\newcommand\el{\epsilon}   %%% epsilon for Thm 1
+%\newcommand\eone{\epsilon_1}
+%\newcommand\eone{\epsilon^{}_{\!\mathrm{\ref{A1}}}}
+\newcommand\eone{\epsilon^{}_{\!\mathrm{A1}}}
+%\newcommand\eone{\epsilon^{A}_{1}}
+%\newcommand\etwo{\epsilon^{}_{\!\mathrm{\ref{A:unconditional:mix}}}}
+\newcommand\etwo{\epsilon^{}_{\!\mathrm{A4}}}
+%\newcommand\altb{\tilde{b}}
+\newcommand\altb{c}
+\newcommand\Ai{
+\begin{assumption}\label{A1}
+There is an $\eone>0$ and a collection of neighborhoods $\{B_{\unit\comma\time}\subset A_{\unit\comma\time}, \unit\in 1\mycolon\Unit,\time\in 1\mycolon\Time\}$ such that, for all  $\unit$, $\time$, $\Unit$, $\Time$,  any  bounded real-valued function $|h(x)|\le 1$, and any value of $x_{B^c_{\unit\comma\time}}$, 
+%\begin{equation}
+\begin{eqnarray}
+\nonumber
+&& \hspace{-12mm} \Bigg| \int h(x_{\unit\comma\time}) f_{X_{\unit\comma\time}|Y_{B_{\unit\comma\time}},X_{B^c_{\unit\comma\time}}}(x_{\unit\comma\time}\given  \data{y}_{B_{\unit\comma\time}}, x_{B^c_{\unit\comma\time}}) \, dx_{\unit\comma\time}
+\\
+\siOnly{\label{eq:weak_coupling2}}
+\msOnly{\nonumber}
+&& \hspace{-3mm} - \int h(x_{\unit\comma\time})f_{X_{\unit\comma\time}|Y_{B_{\unit\comma\time}}}(x_{\unit\comma\time}\given \data{y}_{B_{\unit\comma\time}})
+\, dx_{\unit\comma\time}
+\Bigg| \hspace{1mm} < \hspace{1mm} \eone.
+%\end{equation}
+\end{eqnarray}
+\end{assumption}
+}
+
+\newcommand\Aii{
+\begin{assumption}\label{A1b}
+For the collection of neighborhoods in Assumption~\ref{A1}, with $B^+_{\unit\comma\time}=B^{}_{\unit\comma\time}\cup (\unit,\time)$, there is a constant $\Bsize$, depending on $\eone$ but not on $\Unit$ and $\Time$, such that
+\begin{equation}
+\nonumber
+\sup_{\unit\in 1:\Unit, \, \time\in 1:\Time} \big| B^+_{\unit\comma\time}\big| \le \Bsize.
+\end{equation}
+\end{assumption}
+}
+
+\newcommand\Aiii{
+\begin{assumption}\label{A2}
+There is a constant $Q$ such that, for all $\unit$ and $\time$, $\Unit$ and $\Time$,
+\begin{equation}
+\nonumber
+Q^{-1} <f_{Y_{\unit\comma\time}|X_{\unit\comma\time}}(\data{y}_{\unit\comma\time}\given x_{\unit\comma\time}) < Q
+\end{equation}
+\end{assumption}
+}
+
+\newcommand\Aiv{
+  \begin{assumption}\label{A:unconditional:mix}
+    There exists $\etwo > 0$ such that the following holds.
+    For each $\unit, \time$, a set $\altB^{}_{\unit\comma\time} \subset (1\mycolon U)\times(0\mycolon N)$ exists such that $(\altUnit, \altTime) \notin \altB_{\unit\comma\time}$ implies $B_{\unit\comma\time}^+ \cap B_{\altUnit\comma\altTime}^+ = \emptyset$ and
+      \begin{equation} 
+\siOnly{\label{eq:A:unconditional:mix}}
+\msOnly{\nonumber}
+        \big| f_{X_{B^{+}_{\altUnit\comma\altTime}}|X^{}_{B^{+}_{\unit\comma\time}}} - f_{X_{B^{+}_{\altUnit\comma\altTime}}} \big|
+        < \etwo \, f_{X_{B^{+}_{\altUnit\comma\altTime}}}
+      \end{equation}
+      Further, there is a uniform bound $|\altB_{\unit\comma\time}| \le \altb$.
+\end{assumption}
+}
+
+\newcommand\TheoremI{
+\begin{theorem}  \label{thm:tif}
+Let $\MC{\loglik}$ denote the Monte Carlo likelihood approximation constructed by {\TIF}.
+Consider a limit with a growing number of islands, $\Island\to\infty$, and suppose assumptions~\ref{A1},~\ref{A1b} and~\ref{A2}.
+There are quantities $\el(\Unit,\Time)$ and $V(\Unit,\Time)$, with bounds $|\el|<\eone Q^{2}$ and $V < Q^{4\Bsize} \, U^2 N^2$, such that
+\begin{equation}
+\label{th1:lik:bound}
+\Island^{1/2}\big[ \MC{\loglik}-\loglik-\el\Unit\Time \big]  \xrightarrow[\Island \rightarrow \infty]{d} \normal\big[0,V\big],
+\end{equation}
+where $\xrightarrow[\Island \rightarrow \infty]{d}$ denotes convergence in distribution and $\normal[\mu,\Sigma]$ is the normal distribution with mean $\mu$ and variance $\Sigma$.
+If additionally Assumption~\ref{A:unconditional:mix} holds, we obtain an improved variance bound
+\begin{equation}
+\label{th1:lik:bound2}
+V < \ThmOneVarBound.
+\end{equation}
+\end{theorem}
+}
+
+
+%%% 2222222222222222222222
+
+
+%\newcommand\ethree{\epsilon^{}_{\mathrm{\ref{B1}}}}
+\newcommand\ethree{\epsilon^{}_{\mathrm{B1}}}
+%\newcommand\efourA{\epsilon^{}_{\mathrm{\ref{B:unconditional:mix}}}}
+\newcommand\efourA{\epsilon^{}_{\mathrm{B4}}}
+%\newcommand\efourB{\epsilon^{}_{\mathrm{\ref{B:temporal:mix}}}}
+\newcommand\efourB{\epsilon^{}_{\mathrm{B5}}}
+%\newcommand\efive{\epsilon^{}_{\mathrm{\ref{B:girf}}}}
+\newcommand\efive{\epsilon_{\mathrm{B6}}}
+
+\newcommand\Bi{
+
+\begin{assumptionB}\label{B1}
+  There is an $\ethree>0$ and a collection of neighborhoods $\{B_{\unit\comma\time}\subset A_{\unit\comma\time}, \unit\in 1\mycolon\Unit,\time\in 1\mycolon\Time\}$ such that the following holds for all $\unit$, $\time$, $\Unit$, $\Time$, and any bounded real-valued function $|h(x)|\le 1$\emph{:} if we write $A=A_{u,n}$, $B=B_{u,n}$, $f_{A}(x_A) = f_{Y_{A}|X_{A}}(\data y_{A}|x_A)$, and $f_{B}(x_B) = f_{Y_{B}|X_{B}}(\data y_{B}|x_B)$,
+%\begin{equation}
+\begin{eqnarray}
+\nonumber
+%\label{asif:eq:weak_coupling2}
+&&\hspace{-7mm}
+\left| 
+\int \hspace{-1mm} h(x)
+\left\{
+\frac{
+  \E_{g} \! \big[ 
+    f_{A}\big(X_{A}^P\big) f_{X_{u,n}|X_{A^{[n]}},\vec X_{n-1}} \big(x | X_{A^{[n]}}^P, \vec X_{n-1}\big) 
+  \big]
+} {
+  \E_{g} \! \big[f_A\big(X_A^P\big)\big]
+} - 
+\right.
+\right.
+\\
+\nonumber
+&& 
+\siOnly{\hspace{20mm}}
+\hspace{-6.5mm} 
+% - \hspace{-1mm} 
+\siOnly{\hspace{2mm}}
+\left.
+\left.
+\frac{
+  \E_{g} \! \big[
+    f_{B}\big(X_{B}^P\big) f_{X_{u,n}|X_{B^{[n]}},\vec X_{n-1}}\big(x | X_{B^{[n]}}^P, \vec X_{n-1}\big) \big] 
+} {
+  \E_{g} \! \big[f_B\big(X_B^P\big)\big]
+} 
+\!
+\right\}
+\!
+dx
+\right| \hspace{0mm} < \hspace{0mm} \ethree.
+%\end{equation}
+\end{eqnarray}
+\end{assumptionB}
+}
+
+\newcommand\Bii{
+\begin{assumptionB}\label{B1b}
+The bound $\sup_{\unit\in 1:\Unit,\time\in 1:\Time} \big| B^+_{\unit\comma\time}\big| \le \Bsize$ in Assumption~\ref{A1b} applies for the neighborhoods defined in Assumption~\ref{B1}. 
+This also implies there is a finite maximum temporal depth for the collection of neighborhoods, defined as
+\begin{equation}
+\nonumber
+\dmax=\sup_{(\unit,\time)}\hspace{1mm} \sup_{(\altUnit,\altTime)\in B_{\unit,\time}}|\time-\altTime|.
+\end{equation}
+\end{assumptionB}
+}
+
+\newcommand\Biii{
+\begin{assumptionB}\label{B2} Identically to Assumption~\ref{A2}, 
+$Q^{-1} <f_{Y_{\unit\comma\time}|X_{\unit\comma\time}}(\data{y}_{\unit\comma\time}\given x_{\unit\comma\time}) < Q$.
+\end{assumptionB}
+}
+
+\newcommand\BivA{
+\begin{assumptionB}\label{B:unconditional:mix}
+Define $g_{{X}_{A}|{X}_{B}}$ via \myeqref{eq:g}.
+Suppose there is an $\efourA$ such that the following holds.
+For each $\unit, \time$, a set $\altB^{}_{\unit\comma\time} \subset (1\mycolon U)\times(0\mycolon N)$ exists such that $(\altUnit, \altTime) \notin \altB_{\unit\comma\time}$ implies $B_{\unit\comma\time}^+ \cap B_{\altUnit\comma\altTime}^+ = \emptyset$ and
+%      \begin{eqnarray} 
+%\label{eq:B:unconditional:mix:1}
+\begin{equation}
+\nonumber
+\big| 
+   g^{}_{{X}^{P}_{B^{}_{\altUnit\comma\altTime}}{X}^{P}_{B^{}_{\unit\comma\time}}} 
+   - g^{}_{{X}^{P}_{B^{}_{\altUnit\comma\altTime}}} \, g^{}_{{X}^{P}_{B^{}_{\unit\comma\time}}} 
+\big|
+<
+%&\hspace{-3mm}<\hspace{-3mm} & 
+%\\
+%&&\hspace{-30mm}
+(1/2) \, \efourA \, \,  g^{}_{{X}^{P}_{B^{}_{\altUnit\comma\altTime}}} \, g^{}_{{X}^{P}_{B^{}_{\unit\comma\time}}}
+%\\
+%\label{eq:B:unconditional:mix:2}
+\end{equation}
+\begin{eqnarray}
+\nonumber
+\big|
+g^{}_{X^P_{B^{}_{\altUnit\comma\altTime}}|\vec{X}_{0:\Time}} 
+\, g^{}_{X^P_{B^{}_{\unit\comma\time}}|\vec{X}_{0:\Time}} 
+-
+g^{}_{X^P_{B^{}_{\altUnit\comma\altTime}},X^P_{B^{}_{\unit\comma\time}}|\vec{X}_{0:\Time}}
+\big|
+&&
+%&\hspace{-3mm}<\hspace{-3mm}& 
+\\
+\nonumber
+%&&\hspace{-30mm}(1/2) \, \efourA \, \, 
+&&\hspace{-30mm} < (1/2) \, \efourA \, \, 
+ g^{}_{X^P_{B^{}_{\altUnit\comma\altTime}},X^P_{B^{}_{\unit\comma\time}}|\vec{X}_{0:\Time}}
+      \end{eqnarray}
+      Further, there is a uniform bound $|\altB_{\unit\comma\time}| \le \altb$.
+\end{assumptionB}
+}
+\newcommand\BivB{
+\begin{assumptionB}\label{B:temporal:mix}
+There is a constant $K$ such that, for any set $D\subset (\UnitSet)\times(n{\mycolon}n-d)$ and for all $\time\ge K+d$, $\vec{x}^{(1)}_{\time-d-K}$, $\vec{x}^{(2)}_{\time-d-K}$, and all $x^{}_{D_n}$,
+\begin{eqnarray}
+\nonumber
+&&\hspace{-6mm} \big|
+g^{}_{{X}_{D}|\vec{X}_{\time-d-K}}(x^{}_{D}\given\vec{x}^{(1)}_{\time-d-K})
+-
+g^{}_{{X}_{D}|\vec{X}_{\time-d-K}}(x^{}_{D}\given\vec{x}^{(2)}_{\time-d-K})
+\big|
+\\
+\nonumber
+&& \siOnly{\hspace{10mm}} \hspace{4mm}
+< 
+\efourB  \,  \,
+g^{}_{{X}_{D}|\vec{X}_{\time-d-K}}(x^{}_{D_n}\given\vec{x}^{(1)}_{\time-d-K})
+\end{eqnarray}
+
+\end{assumptionB}
+}
+
+\newcommand\Bv{
+\begin{assumptionB}\label{B:girf}
+Let $h$ be a bounded function with $|h(x)|\le 1$. 
+Let $\vec{X}^{\GR}_{\time,\Ninter,\np,\island}$ be the Monte Carlo quantity constructed in ASIF-IR, conditional on $\vec{X}^{\IF}_{\time-1,\Ninter,\island}=\vec{x}^{\IF}_{\time-1,\Ninter,\island}$.
+There is a constant $\BvConstant(\Unit,\Time,\Ninter)$ such that, for all $\efive^{}>0$ and $\vec{x}^{\IF}_{\time-1,\Ninter,\island}$, whenever the number of particles satisfies $J > \BvConstant(\Unit,\Time,\Ninter)/\efive^{4}$,
+\begin{equation}
+\nonumber
+\hspace{-0.5mm}
+\left|  
+\, 
+  \EMC\Big[ 
+    \frac{1}{\Np} \sum_{\np=1}^{\Np} h(\vec{X}^{\GR}_{\time,\Ninter,\np,\island}) 
+   \Big] \!
+-  \E_g \! \big[h(\vec{X}_\time)\given \vec{X}_{\time-1}=\vec{x}^{\IF}_{\time-1,\Ninter,\island}\big] 
+\right| \!
+< \efive^{}.
+\end{equation}
+\end{assumptionB}
+}
+
+\newcommand\Bvi{
+\begin{assumptionB}\label{B:XG_XA_ind}
+For $1\leq \time \leq N$, the Monte Carlo random variable $X^A_{\time,i}$ is independent of $w^M_{\unit,\time,i,j}$ conditional on $X^A_{\time-1,i}$.
+\end{assumptionB}
+}
+
+
+\newcommand\TheoremII{
+\begin{theorem}  \label{thm:asif}
+Let $\MC{\loglik}$ denote the Monte Carlo likelihood approximation constructed by ASIF-IR, or by ASIF since this is the special case of ASIF-IR with $\Ninter=1$.
+Consider a limit with a growing number of islands, $\Island\to\infty$, and suppose assumptions~\ref{B1},~\ref{B1b}, \ref{B2}, \ref{B:temporal:mix}, \ref{B:girf} and~\ref{B:XG_XA_ind}. 
+Suppose the number of particles $\Np$ exceeds the requirement for~\ref{B:girf}.
+There are quantities $\el(\Unit,\Time)$ and $V(\Unit,\Time)$ with $|\el|<
+Q^2\ethree + 2 Q^{2\Bsize}\big(\boundLemma\big)$
+and $V<Q^{4\Bsize}\Unit^2\Time^2$ 
+such that
+\begin{equation}
+\siOnly{\label{th:asif:lik:bound}}
+\msOnly{\nonumber}
+\Island^{1/2}
+  \big[ 
+    \MC{\loglik}-\loglik-\el\Unit\Time 
+  \big]  
+  \xrightarrow[\Island \rightarrow \infty]{d} 
+  \normal\big[ 0,V \big].
+\end{equation}
+If additionally Assumption~\ref{B:unconditional:mix} holds, we obtain an improved rate of
+\begin{equation}
+\siOnly{\label{th:asif:lik:bound2}}
+\msOnly{\nonumber}
+V < Q^{4\Bsize}\Time\Unit
+\big\{ c + \big(\boundOffDiagonal \big) \big(\Time\Unit-c\big)
+\big\}
+\end{equation}
+\end{theorem}
+}
+
