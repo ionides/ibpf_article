@@ -507,6 +507,7 @@ $\bullet$    Multiple search refinements.
 %9	Sud-Est	        Jacmel	        2,034	632,601	        310	West
 %10	Sud	        Les Cayes	2,654	774,976	        290	South
 
+  % Hurricane Matthew: October 2016
   
 \begin{columns}[T] % align columns
 
@@ -554,6 +555,53 @@ $\bullet$  Population of 10,000,000 in 10 d\'{e}partements
 
 \end{frame}
 
+\begin{frame}{Haiti cholera weekly reports 2010-2019 (log scale)}
+\includegraphics[width=12cm]{haiti/Plot_Reported_Cases-1.pdf}
+\end{frame}
+
+\begin{frame}{Log-likelihoods of models and an ARMA benchmark}
+
+  \begin{center}
+\begin{tabular}{|l|rc|rc|rc|}
+\hline
+& Model~1& (p) & Model~2 & (p) & Model~3 & (p)
+\\
+\hline
+Wheeler et al
+& { -2731.3} & (15)
+& -21957.3 & (6)
+& { -17850.4} & (35)
+\\
+Lee et al
+& -3030.9 & (20)
+& -29367.4 & (6)
+& -31840.8 & (29)
+\\
+Log-ARMA(2,1)
+& -2803.7 & (4)  %% -0.5*5615.3+4
+& { -18027.0} & (40)  %% -0.5*36133.9+40
+& -18027.0 & (40)
+\\
+\hline
+\end{tabular}
+  \end{center}
+
+  \vspace{3mm}
+  
+  Model 1 (stochastic, aggregated): \\
+  We add process overdispersion, and beat the ARMA benchmark.
+
+  \vspace{5mm}
+
+  Model 2 (deterministic, spatial): \\
+  We use a log-normal measurement model. ODE models fall far short of the ARMA benchmark.
+
+    \vspace{5mm}
+
+    Model 3 (stochastic, spatial): \\
+    (We fit the model using IBPF, and beat the ARMA benchmark.
+  
+\end{frame}
 
 \begin{frame}
 \frametitle{Filtering $U$-dimensional correlated Brownian motion}
@@ -613,7 +661,7 @@ Flexibility supports generation and testing of scientific hypotheses.
 
 \end{frame}
 
-\nocite{bjornstad01,grenfell04,breto19,rebeschini15,ng02,ionides21}
+\nocite{bjornstad01,grenfell04,breto19,rebeschini15,ng02,ionides21,wheeler23,lee20,asfaw23arxiv}
 
 \begin{frame}[allowframebreaks]
 \frametitle{References}
