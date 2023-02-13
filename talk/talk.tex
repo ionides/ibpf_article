@@ -36,7 +36,7 @@ Slides are at \url{https://ionides.github.io/talks/mfo23.pdf}
 \vspace{8mm}
 
 Joint work with\\
-Kidus Asfaw, Ning Ning, Joonha Park, Jesse Wheeler and Aaron King
+Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King
 
 \end{center}
 
@@ -46,7 +46,13 @@ Kidus Asfaw, Ning Ning, Joonha Park, Jesse Wheeler and Aaron King
 
   \begin{enumerate}
   \item When can we carry out full-information likelihood-based inference on a general class of spatiotemporal partially observed Markov process models?
+
+    \vspace{2mm}
+    
   \item When should we want to?
+
+    \vspace{2mm}
+    
   \item Is there an intersection between scientific problems of interest and the capabilities of the \texttt{spatPomp} R package?
   \end{enumerate}
 
@@ -66,16 +72,19 @@ Kidus Asfaw, Ning Ning, Joonha Park, Jesse Wheeler and Aaron King
 \item  Continuous time models.
 \item  Modeling and estimating interactions in coupled systems.
 \item  Dealing with unobserved variables.
-\item  \myemph{Modeling spatial-temporal dynamics}.
+\item  \myemph{Modeling spatiotemporal dynamics}.
 \item  Studying population dynamics via genetic sequence data.
   \end{enumerate}
 
-  \vspace{3mm}
+  \vspace{4mm}
   
-  1--6 are from Bjornstad \& Grenfell ({\it Science}, 2001).\\
-  7 is an active topic, but not the focus of this talk.\\
-  1--5 are largely solved, from a methodological perspective.
-  
+  1--5 are largely solved, from a methodological perspective.\\
+  7 is exciting but not the focus of this talk.\\
+  6 is our topic.
+
+  \vspace{4mm}
+
+  \resizebox{12cm}{!}{Reviews: Bjornstad \& Grenfell ({\it Science}, 2001); Grenfell et al ({\it Science}, 2004)}  
   
 \end{frame}
 
@@ -105,6 +114,8 @@ Kidus Asfaw, Ning Ning, Joonha Park, Jesse Wheeler and Aaron King
 \item Allowing for coupling between units, we get \myemph{spatiotemporal analysis}, which in our context is \myemph{metapopulation analysis}.
 
   \ei
+
+\vspace{3mm}
   
 Question: When should we avoid inference for spatiotemporal models? When do we need to consider coupling? How?
 
@@ -113,13 +124,17 @@ Question: When should we avoid inference for spatiotemporal models? When do we n
 \begin{frame}{Desiderata}
 
   \begin{itemize}
-    \item We want to be able to fit arbitrary dynamic models. The limitations should be our scientific creativity and the information in the data.
+    \item Consideration of arbitrary dynamic models. The limitations should be our scientific creativity and the information in the data.
 
-    \item In practice, that means using \myemph{plug-and-play} methods which need a simulator from the model but not nice closed-form expressions for densities.
+      \vspace{2mm}
+      
+     Hence, \myemph{plug-and-play} methods which need a simulator from the model but not nice closed-form expressions for densities.
 
-    \item We want statistically efficient inference, to extract all the information in the data.
+    \item Statistically efficient inference, to extract all the information in the data.
 
-    \item In practice, that means using likelihood-based methods.
+      \vspace{2mm}
+      
+    Hence, likelihood-based methods.
 
       \item  In the time series case, iterated particle filtering (IF2) implemented in the R package \texttt{pomp} enables Masters-level statisticians to do this (\url{https://ionides.github.io/531w22/}). The science may be hard, but the statistics is becoming routine.
       \end{itemize}
@@ -215,7 +230,7 @@ Simulated data using a gravity model with geography, demography and transmssion 
 \item Cohort effect: all births in an age cohort start school in September.
 \item Inhomogenous mixing coefficient.
 \item Measurement fraction.
-\item Transport model gravity constant.
+\item Population movement model: gravity constant.
 \item Dynamic noise (process overdispersion).
 \item Measurement overdispersion.
 
@@ -223,7 +238,7 @@ Simulated data using a gravity model with geography, demography and transmssion 
 
   \end{frame}
 
-\begin{frame}{More on the block particle filter}
+\begin{frame}{More on the block particle filter (BPF)}
 
 \bi
 \item BPF worked quickly, easily and reliably on our measles model filtering experiments.
@@ -358,12 +373,15 @@ Simulated data using a gravity model with geography, demography and transmssion 
 \begin{column}{.55\textwidth}
   \includegraphics[width=6cm]{slice_combined_plot-1.pdf}
 \end{column}
+
+\hspace{-5mm}
 \begin{column}{.52\textwidth}
 
   \vspace{6mm}
   
-  Simulating $15$ year of data from $U=40$ cities for the measles model.
-  Slice likelihood, varying $G$ with other paramters fixed at the truth.
+  Simulating $15$ year of data from $U=40$ cities.
+  Slice likelihood, varying $G$ with other parameters fixed.\\
+   (Ionides et al, {\it JASA}, 2021).
 
   \vspace{3mm}
 
@@ -378,15 +396,34 @@ Simulated data using a gravity model with geography, demography and transmssion 
   {\bf C}. Evaluation using EnKF.
 
   \vspace{3mm}
-  
-Results from Ionides et al (2021, {\it JASA}). We computed a slice due to lack of good optimization algorithms to compute a profile.
+  A much easier task than computing a profile likelihood for real data.
+ 
   
 \end{column}
 \end{columns}
 
 \end{frame}
 
+\begin{frame}{Comments on the Ensemble Kalman Filter (EnKF)}
 
+  \begin{itemize}
+  \item EnKF is more dependent on approximate Gaussianity than is sometimes supposed.
+
+    \vspace{2mm}
+    
+  \item The Gaussian-inspired update rule is similar to the extended Kalman filter (EKF), which has largely been superseded by particle filter methods for low-dimensional nonlinear biological dynamics.
+
+    \vspace{2mm}
+    
+\item Simple systems can defeat EnKF: the linear Gaussian update is helpless when data inform the conditional variance rather than the conditional mean.
+
+  \vspace{2mm}
+  
+    \item Big systems need computationally tractable analysis. EnKF may sometimes be the best solution available, but be aware of its limitations.
+
+  \end{itemize}
+
+\end{frame}
 
 
 \begin{frame}{Scalability needed for practical inference}
@@ -407,8 +444,8 @@ A moderate numbers of spatial units is enough to open new possibilities.
 
   \item 10-100 coupled units is our target problem size.
 
-  \item Larger problems will need numerical approximations (e.g., EnKF). Exact Monte Carlo methods help study the effect of these approximations.
-    
+  \item Larger problems will need numerical approximations (e.g., EnKF).
+        
   \end{itemize}
 
   \end{frame}
@@ -457,37 +494,123 @@ $\bullet$    Top 25\% of searches are subsequently refined.
 \begin{frame}
 
 \begin{columns}[T] % align columns
-\begin{column}{.75\textwidth}
+\hspace{-4mm}\begin{column}{.75\textwidth}
   \includegraphics[width=7.5cm]{ibpf/sim_search_boxplot-1.pdf}
 
     \includegraphics[width=7.5cm]{ibpf/data_search_boxplot-1.pdf}
 
   \end{column}
 
-\hspace{-15mm}
-\begin{column}{.35\textwidth}
+\hspace{-18mm}
+\begin{column}{.4\textwidth}
   \vspace{5mm}
   
-$\bullet$    IBPF applied to simulations (top panel) and data (bottom panel).
+  {\bf IBPF for measles, 20 cities}\\
+
+  \vspace{1mm}
+  
+  $\bullet$ simulations (top panel)\\
+  dash line: likelihood at truth
+
+  \vspace{2mm}
+  
+  $\bullet$ data (bottom panel)\\
+  dash line: MLE for case C.
 
     \vspace{5mm}
 
-$\bullet$    Multiple search refinements.
+%$\bullet$    Multiple search refinements.
 
-    \vspace{5mm}
+%    \vspace{5mm}
     
-    (A) Mostly shared parameters.
+    (A) 9 shared parameters, $4\times 20$ unit-specific parameters
 
     \vspace{5mm}
 
-    (B) All unit-specific parameters
+    (B) all parameters unit-specific
 
     \vspace{5mm}
 
-    (C) all unit-specific, without coupling
+    (C) all unit-specific, with constant immigration instead of coupling
     
   \end{column}
 \end{columns}
+
+\end{frame}
+
+\begin{frame}{Inferences from the previous slide}
+
+  \begin{itemize}
+    %$\bullet$
+  \item
+IBPF can work for simulated data, since it finds likelihoods higher than the truth when the model is well-specified
+
+  \vspace{5mm}
+
+  \item
+    %$\bullet$
+    When coupled by a gravity model, simulated data show evidence against a constant immigration model.
+
+    \vspace{5mm}
+    
+  \item 
+    %$\bullet$
+    Real data do not favor this gravity model over a constant immigration model.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{He et al (2010) parameters; $r$ is rank correlation with $N_{1950}$}
+
+\resizebox{12cm}{!}{
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r}
+\hline
+  & $N_{1950}$ & $R_0$ & IP & LP & $\alpha$ & $a$ & $\iota$ & $\psi$ & $\rho$ & $\sigma_{SE}$\\
+\hline
+Halesworth & 2200 & 33.00 & 2.30 & 7.90 & 0.95 & 0.38 & 0.0091 & 0.64 & 0.75 & 0.075\\
+\hline
+Lees & 4200 & 30.00 & 2.10 & 8.50 & 0.97 & 0.15 & 0.0310 & 0.68 & 0.61 & 0.080\\
+\hline
+Mold & 6400 & 21.00 & 1.80 & 5.90 & 1.00 & 0.27 & 0.0140 & 2.90 & 0.13 & 0.054\\
+\hline
+Dalton in Furness & 11000 & 28.00 & 2.00 & 5.50 & 0.99 & 0.20 & 0.0390 & 0.82 & 0.46 & 0.078\\
+\hline
+Oswestry & 11000 & 53.00 & 2.70 & 10.00 & 1.00 & 0.34 & 0.0300 & 0.48 & 0.63 & 0.070\\
+\hline
+Northwich & 18000 & 30.00 & 3.00 & 8.50 & 0.95 & 0.42 & 0.0600 & 0.40 & 0.80 & 0.086\\
+\hline
+Bedwellty & 29000 & 25.00 & 3.00 & 6.80 & 0.94 & 0.16 & 0.0400 & 0.95 & 0.31 & 0.061\\
+\hline
+Consett & 39000 & 36.00 & 2.70 & 9.10 & 1.00 & 0.20 & 0.0730 & 0.41 & 0.65 & 0.071\\
+\hline
+Hastings & 66000 & 34.00 & 5.40 & 7.00 & 1.00 & 0.30 & 0.1900 & 0.40 & 0.70 & 0.096\\
+\hline
+Cardiff & 240000 & 34.00 & 3.10 & 9.90 & 1.00 & 0.22 & 0.1400 & 0.27 & 0.60 & 0.054\\
+\hline
+Bradford & 290000 & 32.00 & 3.40 & 8.50 & 0.99 & 0.24 & 0.2400 & 0.19 & 0.60 & 0.045\\
+\hline
+Hull & 300000 & 39.00 & 5.50 & 9.20 & 0.97 & 0.22 & 0.1400 & 0.26 & 0.58 & 0.064\\
+\hline
+Nottingham & 310000 & 23.00 & 3.70 & 5.70 & 0.98 & 0.16 & 0.1700 & 0.26 & 0.61 & 0.038\\
+\hline
+Bristol & 440000 & 27.00 & 4.90 & 6.20 & 1.00 & 0.20 & 0.4400 & 0.20 & 0.63 & 0.039\\
+\hline
+Leeds & 510000 & 48.00 & 11.00 & 9.50 & 1.00 & 0.27 & 1.2000 & 0.17 & 0.67 & 0.078\\
+\hline
+Sheffield & 520000 & 33.00 & 6.40 & 7.20 & 1.00 & 0.31 & 0.8500 & 0.18 & 0.65 & 0.043\\
+\hline
+Manchester & 700000 & 33.00 & 6.90 & 11.00 & 0.96 & 0.29 & 0.5900 & 0.16 & 0.55 & 0.055\\
+\hline
+Liverpool & 800000 & 48.00 & 9.80 & 7.90 & 0.98 & 0.30 & 0.2600 & 0.14 & 0.49 & 0.053\\
+\hline
+Birmingham & 1100000 & 43.00 & 12.00 & 8.50 & 1.00 & 0.43 & 0.3400 & 0.18 & 0.54 & 0.061\\
+\hline
+London & 3400000 & 57.00 & 13.00 & 13.00 & 0.98 & 0.55 & 2.9000 & 0.12 & 0.49 & 0.088\\
+\hline
+$\qquad r$ & 1 & 0.46 & 0.95 & 0.32 & 0.11 & 0.30 & 0.9300 & -0.93 & -0.20 & -0.330\\
+\hline
+\end{tabular}
+}
 
 \end{frame}
 
@@ -637,25 +760,42 @@ $dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\bi
 
 \end{frame}
 
+% From Li et al (2020) page S-14:
+% According to official report, around 5 million people left Wuhan city before January 23. The total population in Wuhan city after January 23 (when travel restrictions were imposed) is therefore around 6 million. 
+
+\begin{frame}{COVID in 375 cities in China, 10-23 January, 2020}
+
+  \begin{itemize}
+  \item Metapopulation data were used to infer the fraction of asymptomatic cases and their contagiousness, using an iterated EnKF \\
+    (Li et al, {\it Science}, May 2020).
+   \item
+    The time interval predates Wuhan travel restrictions.
+    %
+%     load("data/incidence.rda")
+%    li20dat <- incidence[1:14,-1]
+%     tot <- sort(apply(li20dat,2,sum))
+%     sum(tot)         
+   \item Total cases 801, Wuhan 454, Chongqing 27, Beijing 26.
+   \item 259 cities with 0 cases, 99 with 1--5 cases, 17 with $>5$ cases.
+\end{itemize}     
+
+\end{frame}
+
 \begin{frame}{Future work}
 
-  \newcommand\futuresep{\vspace{3mm}}
+  \newcommand\futuresep{\vspace{5mm}}
   
   \begin{myitemize}
-  \item We are reaching to the point where we can carry out likelihood-based inference for a flexible class of metapopulation models for measles.
-Flexibility supports generation and testing of scientific hypotheses.
-        
-    \futuresep
-    
-%  \item Measles was previously a motivating model system for POMP methods for single populations.
+
+  \item We anticipate continued progress in modeling and inference for nonlinear spatiotemporal partially observed stochastic dynamic systems.
 
     \futuresep
     
-  \item Many systems in ecology, epidemiology and elsewhere could be studied in a SpatPOMP framework. Including microbiomes?
+  \item The \texttt{spatPomp} package facilitates data analysis.
 
-     \futuresep
+    \futuresep
 
-   \item Modeling and inference for nonlinear stochastic dynamics is hard. But, if you can't build a quantitative statistical model then you don't understand it and you can't control it?
+    \item Questions and comments?
     
 \end{myitemize}
 
