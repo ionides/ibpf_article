@@ -35,7 +35,7 @@ Slides are at \url{https://ionides.github.io/talks/mfo23.pdf}
 
 \vspace{8mm}
 
-Joint work with\\
+Joint work with
 Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King
 
 \end{center}
@@ -79,8 +79,9 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King
   \vspace{4mm}
   
   1--5 are largely solved, from a methodological perspective.\\
-  7 is exciting but not the focus of this talk.\\
-  6 is our topic.
+  6 is our immediate topic.\\
+  7 is exciting but not the focus of this talk.
+
 
   \vspace{4mm}
 
@@ -88,7 +89,7 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King
   
 \end{frame}
 
-\begin{frame}{Example: Pre-vaccination measles in England \& Wales}
+\begin{frame}{Pre-vaccination weakly measles in England \& Wales}
 
 \vspace{-2mm}
 
@@ -130,13 +131,17 @@ Question: When should we avoid inference for spatiotemporal models? When do we n
       
      Hence, \myemph{plug-and-play} methods which need a simulator from the model but not nice closed-form expressions for densities.
 
+     \vspace{2mm}
+     
     \item Statistically efficient inference, to extract all the information in the data.
 
       \vspace{2mm}
       
-    Hence, likelihood-based methods.
+    Hence, \myemph{likelihood-based} methods.
 
-      \item  In the time series case, iterated particle filtering (IF2) implemented in the R package \texttt{pomp} enables Masters-level statisticians to do this (\url{https://ionides.github.io/531w22/}). The science may be hard, but the statistics is becoming routine.
+    \vspace{2mm}
+    
+      \item  For time series analysis, iterated particle filtering via \texttt{mif2} in the R package \texttt{pomp} enables Masters-level statisticians to do this (\url{https://ionides.github.io/531w22/}). The science may be hard, but the statistics is becoming routine.
       \end{itemize}
   \end{frame}
 
@@ -147,11 +152,19 @@ Question: When should we avoid inference for spatiotemporal models? When do we n
 \bi
 \item To investigate epidemiological dynamics in multiple cities, one can consider each city independently, perhaps modeling a background immigration rate of infections for each city.
 
-\item \myemph{Decoupling} leads to panel data analysis, by assumption. Iterated filtering methods extend to panel data (Breto et al, {\it Journal of the American Statistical Association}, 2019).
+  \vspace{2mm}
+  
+\item \myemph{Decoupling} leads to panel data analysis, by assumption.
 
-\item We must decide which parameters should be modeled as \myemph{shared} vs \myemph{unit-specific}.
+  \vspace{2mm}
+  
+  \item Iterated filtering methods extend to panel data (Breto et al, {\it Journal of the American Statistical Association}, 2019).
 
-\item The consequences of decoupling are becoming easier to study with the development of statistical inference methods for coupled systems, i.e., metapopulation dynamics.
+    \vspace{2mm}
+    
+\item We must decide which parameters should be modeled as \myemph{shared} (i.e., the same for each unit) vs \myemph{unit-specific}.
+
+%\item The consequences of decoupling are becoming easier to study with the development of statistical inference methods for coupled systems, i.e., metapopulation dynamics.
 
   \ei
 
@@ -161,22 +174,32 @@ Question: When should we avoid inference for spatiotemporal models? When do we n
 
   \bi
   \item
-    Particle filter (PF) methods are effective for inference on low-dimensional nonlinear partially observed stochastic dynamic systems. They scale exponentially badly.
+    Particle filter (PF) methods fail for high-dimensional systems. They scale exponentially badly.
 
-\item Extending the successes of particle filter methods from time series data to metapopulation data is becoming possible.
+    \vspace{2mm}
+    
+  \item Algorithms with improved scalability include:\\
 
-\item Algorithms under consideration:\\
+    \vspace{1mm}
+    
   {\bf
   Bagged filters (BF, IBF)\\
   Ensemble Kalman filter (EnKF, IEnKF)\\
   Guided intermediate resampling filter (GIRF, IGIRF)\\
   Block particle filter (BPF, IBPF)\\
   }
-  
-\item Filters estimate latent states and evaluate the likelihood.
-\item Each filter has an iterated version which estimates parameters by repeated filtering using stochastic parameter perturbations.
 
-\item These algorithms are all implemented in an R package, \texttt{spatPomp}.
+      \vspace{2mm}
+
+\item Filters estimate latent states and evaluate the likelihood.
+
+    \vspace{2mm}
+
+  \item Each filter has an iterated version which estimates parameters by repeated filtering using stochastic parameter perturbations.
+
+        \vspace{2mm}
+
+\item These algorithms are all implemented in the \texttt{spatPomp} R package.
   
   \ei
   
@@ -243,10 +266,22 @@ Simulated data using a gravity model with geography, demography and transmssion 
 \bi
 \item BPF worked quickly, easily and reliably on our measles model filtering experiments.
 
-\item This motivated us to develop an IBPF for parameter estimation.
-   
+        \vspace{2mm}
+
+
 \item BPF has theoretical support in some situations (Rebeschini \& Van Handel, {\it Annals of Applied Probability}, 2015).
 
+        \vspace{2mm}
+
+      \item This motivated us to develop an IBPF for parameter estimation.
+        
+        \vspace{2mm}
+
+      \item IBPF has theoretical guarantees similar to BPF (Ning \& Ionides, {\it arXiv}, 2023).
+        
+        \vspace{2mm}
+
+        
 \item BPF was independently proposed as the ``factored particle filter'' by Ng et al (2002, {\it Proc. 18th Conference on Uncertainty and Artificial Intelligence}) but not widely popularized.
 
 \ei
@@ -560,7 +595,7 @@ IBPF can work for simulated data, since it finds likelihoods higher than the tru
 
 \end{frame}
 
-\begin{frame}{He et al (2010) parameters; $r$ is rank correlation with $N_{1950}$}
+\begin{frame}{He et al (2010) estimates. $r$ is rank correlation with $N_{1950}$}
 
 \resizebox{12cm}{!}{
 \begin{tabular}{l|r|r|r|r|r|r|r|r|r|r}
@@ -607,7 +642,7 @@ Birmingham & 1100000 & 43.00 & 12.00 & 8.50 & 1.00 & 0.43 & 0.3400 & 0.18 & 0.54
 \hline
 London & 3400000 & 57.00 & 13.00 & 13.00 & 0.98 & 0.55 & 2.9000 & 0.12 & 0.49 & 0.088\\
 \hline
-$\qquad r$ & 1 & 0.46 & 0.95 & 0.32 & 0.11 & 0.30 & 0.9300 & -0.93 & -0.20 & -0.330\\
+$\qquad r$ & 1 & 0.46 & \cellcolor{yellow!50} 0.95 & 0.32 & 0.11 & 0.30 & 0.9300 & -0.93 & -0.20 & -0.330\\
 \hline
 \end{tabular}
 }
@@ -691,18 +726,18 @@ $\bullet$  Population of 10,000,000 in 10 d\'{e}partements
 \\
 \hline
 Wheeler et al
-& { -2731.3} & (15)
+& \cellcolor{yellow!50} -2731.3 & \cellcolor{yellow!50}(15)
 & -21957.3 & (6)
-& { -17850.4} & (35)
+& \cellcolor{yellow!50} -17850.4 & \cellcolor{yellow!50}(35)
 \\
 Lee et al
 & -3030.9 & (20)
 & -29367.4 & (6)
 & -31840.8 & (29)
 \\
-Log-ARMA(2,1)
+Log-ARMA(2,1) \hspace{-2.5mm}
 & -2803.7 & (4)  %% -0.5*5615.3+4
-& { -18027.0} & (40)  %% -0.5*36133.9+40
+& \cellcolor{yellow!50} { -18027.0} & \cellcolor{yellow!50} (40)  %% -0.5*36133.9+40
 & -18027.0 & (40)
 \\
 \hline
@@ -722,8 +757,12 @@ Log-ARMA(2,1)
     \vspace{5mm}
 
     Model 3 (stochastic, spatial): \\
-    (We fit the model using IBPF, and beat the ARMA benchmark.
+    We fit the model using IBPF, and beat the ARMA benchmark.
   
+\end{frame}
+
+\begin{frame}{Evidence for a decreasing transmission rate in Model 1}
+\includegraphics[width=12cm]{haiti/Beta_trend_Figure-1.pdf}
 \end{frame}
 
 \begin{frame}
@@ -801,7 +840,7 @@ $dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\bi
 
 \end{frame}
 
-\nocite{bjornstad01,grenfell04,breto19,rebeschini15,ng02,ionides21,wheeler23,lee20,asfaw23arxiv}
+\nocite{asfaw23arxiv,bjornstad01,breto19,grenfell04,he10,ionides21,ionides22,lee20,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler23}
 
 \begin{frame}[allowframebreaks]
 \frametitle{References}
