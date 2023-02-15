@@ -207,7 +207,7 @@ Question: When should we avoid inference for spatiotemporal models? When do we n
 
 \begin{frame}{Filtering $U$ units of a coupled measles SEIR model}
 
-\vspace{-3mm}
+\vspace{-1mm}
 
 \begin{center}
 \includegraphics[width=10cm]{mscale_loglik_plot-1.pdf}
@@ -215,7 +215,7 @@ Question: When should we avoid inference for spatiotemporal models? When do we n
 
 \end{center}
 
-\vspace{-2mm}
+\vspace{-4mm}
 
 Simulated data using a gravity model with geography, demography and transmssion parameters corresponding to UK pre-vaccination measles (Ionides et al, {JASA}, 2021).
 
@@ -809,16 +809,31 @@ $dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\bi
     (Li et al, {\it Science}, May 2020).
    \item
     The time interval predates Wuhan travel restrictions.
-    %
-%     load("data/incidence.rda")
-%    li20dat <- incidence[1:14,-1]
-%     tot <- sort(apply(li20dat,2,sum))
-%     sum(tot)         
+%% see README for R code
    \item Total cases 801, Wuhan 454, Chongqing 27, Beijing 26.
-   \item 259 cities with 0 cases, 99 with 1--5 cases, 17 with $>5$ cases.
+   \item{} 259 cities with 0 cases, 99 with 1--5 cases, 17 with $>5$ cases.
+   \item{} 0 cases reported for all cities during Jan 10--15.
+
 \end{itemize}     
 
 \end{frame}
+
+\begin{frame}{Top: data. Middle: IBPF fit. Bottom: IEnKF fit} 
+\includegraphics[width=12cm]{covid/3-panel.pdf}
+\end{frame}
+
+\begin{frame}{Technical issues with EnKF}
+
+  \begin{itemize}
+  \item EnKF is based on a continuous Gaussian approximation.
+  \item Log-likelihoods with respect to counting measure are never positive, and cannot properly be compared with log-likelihoods corresponding to continuous densities.
+    \item For data with many zeros, the unbounded EnKF likelihood can substantially bias the MLE.
+    \item Adapting EnKF for count data is non-trivial (Katzfuss et al, {\it JASA}, 2019).
+    \item Li et al avoided the issue by using a ``heuristic observation error variance'' within EnKF. The corresponding ``log-likelihood'' is not the log-likelihood of any model. In particular, it cannot validly be compared againt simple statistical benchmarks.
+  \item Data and models will never be perfect. We want to reveal, rather than conceal, limitations.
+  \end{itemize}
+  
+  \end{frame}
 
 \begin{frame}{Future work}
 
@@ -840,7 +855,7 @@ $dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\bi
 
 \end{frame}
 
-\nocite{asfaw23arxiv,bjornstad01,breto19,grenfell04,he10,ionides21,ionides22,lee20,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler23}
+\nocite{asfaw23arxiv,bjornstad01,breto19,grenfell04,he10,katzfuss19,ionides21,ionides22,lee20,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler23}
 
 \begin{frame}[allowframebreaks]
 \frametitle{References}

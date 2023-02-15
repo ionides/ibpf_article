@@ -1,0 +1,16 @@
+
+plots produced from p.r
+
+numbers from code below:
+
+  setwd('~/git')
+  load("metapop/metapoppkg/data/incidence.rda")
+  li20early <- incidence[1:14,-1]
+  totEarly <- sort(apply(li20dat,2,sum))
+  tail(totEarly)
+  sum(totEarly)
+  sum(totEarly==0)
+  sum(totEarly<=5)-sum(totEarly==0)
+  sum(totEarly>=6)
+  apply(li20early,1,sum) # daily totals
+
