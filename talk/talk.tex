@@ -45,21 +45,21 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King
 \begin{frame}{Questions to be addressed}
 
   \begin{enumerate}
-  \item When can we carry out full-information likelihood-based inference on a general class of spatiotemporal partially observed Markov process models?
-
-    \vspace{2mm}
-    
-  \item When should we want to?
+  \item When can we carry out full-information likelihood-based inference on a general class of spatiotemporal partially observed Markov process models? (Of particular interest are metapopulation models.)
 
     \vspace{2mm}
     
   \item Is there an intersection between scientific problems of interest and the capabilities of the \texttt{spatPomp} R package?
-  \end{enumerate}
 
-  \vspace{10mm}
+        \vspace{2mm}
 
-  We introduce the {\bf iterated block particle filter} because it is currently the most powerful algorithm available in \texttt{spatPomp}.
+\item We introduce the {\bf iterated block particle filter} because it is currently the most powerful algorithm available in \texttt{spatPomp}.
 
+  \vspace{2mm}
+
+\item Bonus question: How do we know if our model is statistically adequate, or needs more work?
+  
+    \end{enumerate}
 \end{frame}
 
 \newcommand\challengeSep{\vspace{3mm}}
@@ -91,6 +91,11 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King
 
 \begin{frame}{Pre-vaccination weakly measles in England \& Wales}
 
+  %% full weekly data now available:
+  %% Korevaar, Hannah, C. Jessica Metcalf, and Bryan T. Grenfell. "Structure, space and size: competing drivers of variation in urban and rural measles transmission." Journal of the Royal Society Interface 17, no. 168 (2020): 20200010.
+  %% https://royalsocietypublishing.org/doi/pdf/10.1098/rsif.2020.0010
+  %% data at https://rs.figshare.com/collections/Supplementary_material_from_Structure_space_and_size_competing_drivers_of_variation_in_urban_and_rural_measles_transmission_/5036567/1
+  
 \vspace{-2mm}
 
 \begin{center}
@@ -116,9 +121,9 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King
 
   \ei
 
-\vspace{3mm}
+%\vspace{3mm}
   
-Question: When should we avoid inference for spatiotemporal models? When do we need to consider coupling? How?
+%Question: When should we avoid inference for spatiotemporal models? When do we need to consider coupling? How?
 
 \end{frame}
 
@@ -139,15 +144,31 @@ Question: When should we avoid inference for spatiotemporal models? When do we n
       
     Hence, \myemph{likelihood-based} methods.
 
-    \vspace{2mm}
-    
-      \item  For time series analysis, iterated particle filtering via \texttt{mif2} in the R package \texttt{pomp} enables Masters-level statisticians to do this (\url{https://ionides.github.io/531w22/}). The science may be hard, but the statistics is becoming routine.
       \end{itemize}
   \end{frame}
 
+\begin{frame}{Fitting mechanistic models to time series}
+  
+    \vspace{8mm}
+
+    \begin{itemize}
+    \item  Iiterated particle filtering via \texttt{mif2} in the R package \texttt{pomp} enables Masters-level statisticians to do plug-and-play likelihood-based inference:
+
+      \vspace{2mm}
+
+      \url{https://ionides.github.io/531w22/}
+
+      \vspace{5mm}
+      \item
+      The science may be hard, but the statistics is becoming routine.
+
+    % examples: COVID etc, bison in Yellowstone National Park, volatility in the stock market, gun purchases, human proximal small intestine pH
+
+    \end{itemize}
+\end{frame}
 
 
-\begin{frame}{Panel data}
+\begin{frame}{Fitting mechanistic models to panel data}
 
 \bi
 \item To investigate epidemiological dynamics in multiple cities, one can consider each city independently, perhaps modeling a background immigration rate of infections for each city.
@@ -158,7 +179,7 @@ Question: When should we avoid inference for spatiotemporal models? When do we n
 
   \vspace{2mm}
   
-  \item Iterated filtering methods extend to panel data (Breto et al, {\it Journal of the American Statistical Association}, 2019).
+  \item Iterated filtering methods extend to panel data (\texttt{panelPomp}, Breto et al, {\it JASA}, 2019).
 
     \vspace{2mm}
     
@@ -195,7 +216,7 @@ Question: When should we avoid inference for spatiotemporal models? When do we n
 
     \vspace{2mm}
 
-  \item Each filter has an iterated version which estimates parameters by repeated filtering using stochastic parameter perturbations.
+  \item Iterated filters estimate parameters using stochastic parameter perturbations.
 
         \vspace{2mm}
 
@@ -247,17 +268,21 @@ Simulated data using a gravity model with geography, demography and transmssion 
 
 \begin{frame}{Parameters for the measles model}
   \bi
-\item Seasonal tranmission: mean and amplitude, using school term for contact rate.
+\item Seasonal transmission: mean and amplitude, using school term for contact rate.
   \item Durations of latency and infectious period.
 \item Initial values: fraction susceptible, latent and infectious.
 \item Cohort effect: all births in an age cohort start school in September.
-\item Inhomogenous mixing coefficient.
+\item Inhomogenous mixing exponent, $I^{\alpha}$.
 \item Measurement fraction.
 \item Population movement model: gravity constant.
-\item Dynamic noise (process overdispersion).
+\item Dynamic noise: process overdispersion.
 \item Measurement overdispersion.
 
 \ei
+\vspace{3mm}
+(Adding gravity coupling to the model of He et al, {\it JRSI}, 2010)
+%\vspace{5mm}
+%Plug-and-play methods let you add or subtract features
 
   \end{frame}
 
@@ -282,7 +307,7 @@ Simulated data using a gravity model with geography, demography and transmssion 
         \vspace{2mm}
 
         
-\item BPF was independently proposed as the ``factored particle filter'' by Ng et al (2002, {\it Proc. 18th Conference on Uncertainty and Artificial Intelligence}) but not widely popularized.
+\item BPF was independently proposed as the ``factored particle filter'' by Ng et al (2002).
 
 \ei
 
@@ -338,6 +363,11 @@ Simulated data using a gravity model with geography, demography and transmssion 
   
 \begin{frame}{Block particle filter (BPF)}
 
+  \begin{myitemize}
+    \item Blocks are a partition of the metapopulation units.
+    \item For measles, we use each city as a block.
+  \end{myitemize}
+  
   \begin{columns}
     \begin{column}{0.48\linewidth}
       \begin{center}
@@ -391,10 +421,9 @@ Simulated data using a gravity model with geography, demography and transmssion 
   \vspace{5mm}
   
     \begin{myitemize}
-    \item Blocks in BPF allow recombination (reassortment of chromosomes in sexual reproduction) in the evolutionary analogy.
-    \item Blocks are a partition of the metapopulation units. Our experiments suggest treating each sub-population (i.e., city) as a block.
+    \item Blocks are segments of the full state which can be reassorted between particles at the resampling step.
 
-  \end{myitemize}
+\end{myitemize}
 
 \end{frame}
 
@@ -477,7 +506,7 @@ A moderate numbers of spatial units is enough to open new possibilities.
   \begin{itemize}
   \item As soon as dimension exceeds capabilities of a particle filter (say, $U=5$) we are in situations where likelihood-based inference for general models has been inaccessible.
 
-  \item 10-100 coupled units is our target problem size.
+  \item 5-500 coupled units is our target problem size.
 
   \item Larger problems will need numerical approximations (e.g., EnKF).
         
@@ -499,6 +528,9 @@ A moderate numbers of spatial units is enough to open new possibilities.
 
 \begin{frame}
 
+%%% A: 9 shared parameters; 4 unit-specific
+%%% B: all unit-specific
+  
 \vspace{-6mm}
 
 \begin{columns}[T] % align columns
@@ -575,22 +607,25 @@ $\bullet$    Top 25\% of searches are subsequently refined.
 
 \begin{frame}{Inferences from the previous slide}
 
-  \begin{itemize}
-    %$\bullet$
+%%% Wilks' Theorem: improvement on truth is about (1/2) chisq(p)
+  
+\begin{itemize}
   \item
 IBPF can work for simulated data, since it finds likelihoods higher than the truth when the model is well-specified
 
   \vspace{5mm}
 
   \item
-    %$\bullet$
     When coupled by a gravity model, simulated data show evidence against a constant immigration model.
 
     \vspace{5mm}
     
-  \item 
-    %$\bullet$
-    Real data do not favor this gravity model over a constant immigration model.
+\item 
+Data do not favor this gravity model over a constant immigration model.
+
+%%% An underwhelming sounding result, but a necessary step to make progress,
+%%% and previously we did not know how to do this.
+    
 \end{itemize}
 
 \end{frame}
@@ -671,25 +706,30 @@ $\qquad r$ & 1 & 0.46 & \cellcolor{yellow!50} 0.95 & 0.32 & 0.11 & 0.30 & 0.9300
 
 %\hspace{-15mm}
 \begin{column}{.35\textwidth}
-  \vspace{5mm}
+  \vspace{2mm}
   
-$\bullet$  820,000 reported cases and nearly 10,000 deaths
+  $\bullet$  820,000 reported cases
 
-    \vspace{5mm}
+  \vspace{4mm}
+  
+  $\bullet$ nearly 10,000 deaths
+
+    \vspace{4mm}
 
 $\bullet$  Population of 10,000,000 in 10 d\'{e}partements
 
-    \vspace{5mm}
+    \vspace{4mm}
     
-    $\bullet$  Lee et al (2020) developed 3 models to guide vaccination plans:
+    $\bullet$  Lee et al (2020) developed 4 models to guide vaccination plans:
 
+    %%% Elizabeth Lee, Johns Hopkins
+    
     \vspace{1mm}
     
     {\bf 1}. stochastic, national \\
     {\bf 2}. ODE, spatial \\
-    %d\'{e}partment \\
-    {\bf 3}. stochastic, spatial
-    %d\'{e}partment.
+    {\bf 3}. stochastic, spatial\\
+    {\bf 4}. agent based
 
 \end{column}
 
@@ -765,48 +805,20 @@ Log-ARMA(2,1) \hspace{-2.5mm}
 \includegraphics[width=12cm]{haiti/Beta_trend_Figure-1.pdf}
 \end{frame}
 
-\begin{frame}
-\frametitle{Filtering $U$-dimensional correlated Brownian motion}
-
-\vspace{-3mm}
-
-\begin{center}
-\includegraphics[width=10cm]{bm_alt_plot-1.pdf}
-
-\vspace{-1mm}
-
-$\cov\big(X_{\unit,\time}-X_{\unit,\time-1},X_{\altUnit,\time}-X_{\altUnit,\time-1}\big) \sim 0.4^{|\unit-\altUnit|}_{}$
-
-\end{center}
-
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Filtering $U$ units of Lorenz 96 toy atmospheric model} 
-
-\vspace{-3mm}
-
-\begin{center}
-\includegraphics[width=10cm]{lz_loglik_plot-1.pdf}
-
-\vspace{-1mm}
-
-$dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\big) - X_{\unit}(t) + F \big\} dt + \sigma \, dB_{\unit}(t)$
-
-\end{center}
-
-\end{frame}
 
 % From Li et al (2020) page S-14:
+% Ruiyun Li, Imperial (Oslo as of 2021)
 % According to official report, around 5 million people left Wuhan city before January 23. The total population in Wuhan city after January 23 (when travel restrictions were imposed) is therefore around 6 million. 
 
 \begin{frame}{COVID in 375 cities in China, 10-23 January, 2020}
 
   \begin{itemize}
-  \item Metapopulation data were used to infer the fraction of asymptomatic cases and their contagiousness, using an iterated EnKF \\
+  \item Metapopulation data were used to infer the fraction of asymptomatic cases and their contagiousness
     (Li et al, {\it Science}, May 2020).
+  \item SEIR model with asymptomatics, reporting delay, and coupling based on cell phone data.
+  \item Inference using iterated EnKF.
+
+    \vspace{5mm}
    \item
     The time interval predates Wuhan travel restrictions.
 %% see README for R code
@@ -854,6 +866,39 @@ $dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\bi
 \end{myitemize}
 
 \end{frame}
+
+\begin{frame}
+\frametitle{Filtering $U$-dimensional correlated Brownian motion}
+
+\vspace{-3mm}
+
+\begin{center}
+\includegraphics[width=10cm]{bm_alt_plot-1.pdf}
+
+\vspace{-1mm}
+
+$\cov\big(X_{\unit,\time}-X_{\unit,\time-1},X_{\altUnit,\time}-X_{\altUnit,\time-1}\big) \sim 0.4^{|\unit-\altUnit|}_{}$
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Filtering $U$ units of Lorenz 96 toy atmospheric model} 
+
+\vspace{-3mm}
+
+\begin{center}
+\includegraphics[width=10cm]{lz_loglik_plot-1.pdf}
+
+\vspace{-1mm}
+
+$dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\big) - X_{\unit}(t) + F \big\} dt + \sigma \, dB_{\unit}(t)$
+
+\end{center}
+
+\end{frame}
+
 
 \nocite{asfaw23arxiv,bjornstad01,breto19,grenfell04,he10,katzfuss19,ionides21,ionides22,lee20,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler23}
 
