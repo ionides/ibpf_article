@@ -89,7 +89,7 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King
   
 \end{frame}
 
-\begin{frame}{Pre-vaccination weakly measles in England \& Wales}
+\begin{frame}{Pre-vaccination weekly measles in England \& Wales}
 
   %% full weekly data now available:
   %% Korevaar, Hannah, C. Jessica Metcalf, and Bryan T. Grenfell. "Structure, space and size: competing drivers of variation in urban and rural measles transmission." Journal of the Royal Society Interface 17, no. 168 (2020): 20200010.
@@ -687,6 +687,8 @@ $\qquad r$ & 1 & 0.46 & \cellcolor{yellow!50} 0.95 & 0.32 & 0.11 & 0.30 & 0.9300
 
 \begin{frame}{Cholera in Haiti, 2010-2019}
 
+  %%% Haiti and Dominican Republic share Hispaniola
+  
 % https://web.archive.org/web/20151106110552/http://www.ihsi.ht/pdf/projection/Estimat_PopTotal_18ans_Menag2015.pdf
 %Map	Department	Capital	Area (km2)	Population	Density (Pop./km2)	Planning Region
 %1	Artibonite	Gonaïves	4,987	1,727,524	350	Central
@@ -841,8 +843,8 @@ Log-ARMA(2,1) \hspace{-2.5mm}
   \item Log-likelihoods with respect to counting measure are never positive, and cannot properly be compared with log-likelihoods corresponding to continuous densities.
     \item For data with many zeros, the unbounded EnKF likelihood can substantially bias the MLE.
     \item Adapting EnKF for count data is non-trivial (Katzfuss et al, {\it JASA}, 2019).
-    \item Li et al avoided the issue by using a ``heuristic observation error variance'' within EnKF. The corresponding ``log-likelihood'' is not the log-likelihood of any model. In particular, it cannot validly be compared againt simple statistical benchmarks.
-  \item Data and models will never be perfect. We want to reveal, rather than conceal, limitations.
+%    \item Li et al avoided the issue by using a ``heuristic observation error variance'' within EnKF. The corresponding ``log-likelihood'' is not the log-likelihood of any model. In particular, it cannot validly be compared againt simple statistical benchmarks.
+%  \item Data and models will never be perfect. We want to reveal, rather than conceal, limitations.
   \end{itemize}
   
   \end{frame}
@@ -857,11 +859,11 @@ Log-ARMA(2,1) \hspace{-2.5mm}
 
     \futuresep
     
-  \item The \texttt{spatPomp} package facilitates data analysis.
+  \item As long as the \texttt{spatPomp} package facilitates data analysis, we expect continuing package development.
 
-    \futuresep
+%    \futuresep
 
-    \item Questions and comments?
+ %   \item Questions and comments?
     
 \end{myitemize}
 
