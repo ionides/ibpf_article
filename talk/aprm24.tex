@@ -1,0 +1,538 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+
+\usepackage{amsmath,amsfonts,amssymb,graphicx} 
+\input{header.tex}
+\input{header-ms.tex}
+\input{theorems1.tex}
+
+%% for flow diagrams
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary {arrows.meta}
+\usetikzlibrary{shapes.geometric}
+
+\begin{document}
+
+\begin{frame}
+  
+\begin{center}
+  {\Large\bf An iterated block particle filter for inference on coupled dynamic systems}
+
+% ABSTRACT
+% We consider inference for a collection of partially observed, stochastic, interacting, nonlinear dynamic processes. Each process is called a unit, and our primary motivation arises in biological metapopulation systems where a unit is a spatially distinct sub-population. Block particle filters are an effective tool for simulation-based likelihood evaluation for these systems, which are strongly dependent through time on a single unit and relatively weakly coupled between units. Iterated filtering algorithms can facilitate likelihood maximization for simulation-based filters. We introduce a new iterated block particle filter algorithm applicable to parameters that are either unit-specific or shared between units. We demonstrate this algorithm to carry out inference on a coupled epidemiological model for spatiotemporal COVID-19 case report data in 373 cities.
+
+
+\vspace{2mm}
+
+Edward Ionides\\
+University of Michigan, Department of Statistics
+
+\vspace{8mm}
+
+IMS Asia Pacific Rim Meeting\\
+Jan 5, 2024
+
+
+\hspace{3mm}
+
+Slides are at \url{https://ionides.github.io/talks/aprm24.pdf}
+
+\vspace{8mm}
+
+Joint work with
+Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King, Mercedes Pascual
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Questions to be addressed}
+
+  \begin{enumerate}
+  \item When can we carry out full-information likelihood-based inference on a general class of spatiotemporal partially observed Markov process models? In particular, models for networks of interacting biological population dynamics.
+
+    \vspace{2mm}
+    
+  \item Is there an intersection between scientific problems of interest and the capabilities of the \texttt{spatPomp} R package?
+
+        \vspace{2mm}
+
+\item We introduce the {\bf iterated block particle filter}, currently the most powerful algorithm available in \texttt{spatPomp}.
+
+  \vspace{2mm}
+
+\item Bonus question: How do we know if our model is statistically adequate, or needs more work?
+  
+    \end{enumerate}
+\end{frame}
+
+\newcommand\challengeSep{\vspace{3mm}}
+
+\begin{frame}{Inference challenges in population dynamics}
+
+  \begin{enumerate}
+\item Combining measurement noise and process noise.
+\item Including covariates in mechanistically plausible ways.
+\item  Continuous time models.
+\item  Modeling and estimating interactions in coupled systems.
+\item  Dealing with unobserved variables.
+\item  \myemph{Modeling spatiotemporal dynamics}.
+\item  Studying population dynamics via genetic sequence data.
+  \end{enumerate}
+
+  \vspace{4mm}
+  
+  1--5 are largely solved, from a methodological perspective.\\
+  6 is our immediate topic.\\
+  7 is exciting but not the focus of this talk.
+
+
+  \vspace{4mm}
+
+  \resizebox{12cm}{!}{Reviews: Bjornstad \& Grenfell ({\it Science}, 2001); Grenfell et al ({\it Science}, 2004)}  
+  
+\end{frame}
+
+\begin{frame}{Desiderata}
+
+  \begin{itemize}
+    \item Consideration of arbitrary dynamic models. The limitations should be our scientific creativity and the information in the data.
+
+      \vspace{2mm}
+      
+     Hence, \myemph{plug-and-play} methods which need a simulator from the model but not nice closed-form expressions for densities.
+
+     \vspace{2mm}
+     
+    \item Statistically efficient inference, to extract all the information in the data.
+
+      \vspace{2mm}
+      
+    Hence, \myemph{likelihood-based} methods.
+
+      \end{itemize}
+  \end{frame}
+
+\begin{frame}{Fitting mechanistic models to time series}
+  
+    \vspace{8mm}
+
+    \begin{itemize}
+    \item  Iterated particle filtering via \texttt{mif2} in the R package \texttt{pomp} enables Masters-level statisticians to do plug-and-play likelihood-based inference:
+
+      \vspace{2mm}
+
+      \url{https://ionides.github.io/531w22/}
+
+      \vspace{5mm}
+      \item
+      The science may be hard, but the statistics is becoming routine.
+
+    % examples: COVID etc, bison in Yellowstone National Park, volatility in the stock market, gun purchases, human proximal small intestine pH
+
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{The curse of dimensionality}
+
+  \bi
+  \item
+    Particle filter (PF) methods fail for high-dimensional systems. They scale exponentially badly.
+
+    \vspace{2mm}
+    
+  \item Algorithms with improved scalability include:\\
+
+    \vspace{1mm}
+    
+  {\bf
+  Bagged filters (BF, IBF)\\
+  Ensemble Kalman filter (EnKF, IEnKF)\\
+  Guided intermediate resampling filter (GIRF, IGIRF)\\
+  Block particle filter (BPF, IBPF)\\
+  }
+
+      \vspace{2mm}
+
+\item Filters estimate latent states and evaluate the likelihood.
+
+    \vspace{2mm}
+
+  \item Iterated filters estimate parameters using stochastic parameter perturbations.
+
+        \vspace{2mm}
+
+\item These algorithms are all implemented in the \texttt{spatPomp} R package.
+  
+  \ei
+  
+\end{frame}
+
+
+
+\begin{frame}{COVID in 375 cities in China, 10-23 January, 2020}
+
+  \begin{itemize}
+  \item Metapopulation data were used to infer the fraction of asymptomatic cases and their contagiousness
+    (Li et al, {\it Science}, May 2020).
+  \item SEIR (susceptible-exposed-infected-removed) model with asymptomatics, reporting delay, and coupling based on cell phone data.
+  \item Li et al (2020) used iterated EnKF for inference.
+  \item The time interval covers the initial China lockdown.
+  \item Here, we summarize our re-analysis of this model and data, recently posted on arXiv.
+%% see README for R code
+%   \item Total cases 801, Wuhan 454, Chongqing 27, Beijing 26.
+%   \item{} 259 cities with 0 cases, 99 with 1--5 cases, 17 with $>5$ cases.
+%   \item{} 0 cases reported for all cities during Jan 10--15.
+
+\end{itemize}     
+
+\end{frame}
+
+\begin{frame}
+  %%{An SEAIR metapopulation model for COVID-19}
+\begin{center}
+%%%%% SEAIR diagram
+\resizebox{11cm}{!}{
+\begin{tikzpicture}[
+  square/.style={rectangle, draw=black, minimum width=0.8cm, minimum height=0.8cm, rounded corners=.1cm, fill=blue!8},
+  travel/.style={circle, draw=black, minimum width=0.85cm, minimum height=0.8cm, fill=green!8},
+  report/.style={shape=regular polygon, regular polygon sides=8, draw, fill=red!8,minimum size=0.9cm,inner sep=0cm},
+  bendy/.style={bend left=25},
+  >/.style={shorten >=0.25mm}, % redefine arrow to stop short of node
+  >/.tip={Stealth[length=1.5mm,width=1.5mm]} % redefine arrow style
+]
+\tikzset{>={}}; % this is needed to implement the arrow redefinition
+
+\node (S) at (-0.5,0) [square] {S$_u$};
+\node (E) at (2,0) [square] {E$_u$};
+\node (A) at (4.5,0) [square] {A$_u$};
+\node (I) at (4.5,-1.75) [square] {I$_u$};
+\node (R) at (7,0) [square] {R$_u$};
+
+\node (T1) at (-0.5,1.75) [travel] {T};
+\node (T2) at (2,1.75) [travel] {T};
+\node (T3) at (4.5,1.75) [travel] {T};
+
+\node (Ca) at (4.5,-3.5) [report] {C$^a_u$};
+\node (Cb) at (7,-3.5) [report] {C$^b_u$};
+\node (C) at (9.5,-3.5) [report] {C$_u$};
+
+\node (V1) at (2.5,-1.75) {};
+\node (V2) at (3,-3.5) {};
+\draw [->] (E) -- (Ca -| V2) -- (Ca);
+\draw [->] (I -| V1) -- (I);
+
+\draw [->] (S) -- (E);
+\draw [->] (A) -- (R);
+
+\draw [->] (Ca) -- (Cb);
+\draw [->] (Cb) -- (C);
+
+\draw [->] (I.east) -- (R);
+\draw [->] (E) -- (A);
+
+\draw [->, bendy] (S) to (T1);
+\draw [->, bendy] (T1) to (S);
+
+\draw [->, bendy] (E) to (T2);
+\draw [->, bendy] (T2) to (E);
+
+\draw [->, bendy] (A) to (T3);
+\draw [->, bendy] (T3) to (A);
+
+\end{tikzpicture}
+}
+\end{center}
+\bi
+\item 
+  Reportably infectious individuals, $\mathrm{I}_u$ for city $u$, are included in the delayed reporting compartment, $\mathrm{C^a_u}$.
+  \item 
+An individual arriving at $\mathrm{C}_u$ is a case report for city $u$.
+\item
+  Individuals in $\mathrm{A}_u$ are not reportable and transmit at a reduced rate.
+  \item 
+Travel occurs to and from $\mathrm{T}$, based on 2018 data from Tencent.
+%\item Many models have been proposed. We want a framework to implement and evaluate various scientific hypotheses.
+\ei
+
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[height=9.5cm]{covid/panel_plot-1.png}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}
+ \includegraphics[width=12cm]{covid/filter_tests10.png}
+
+  \begin{itemize}
+\item BPF is the best available filter for this COVID model.
+\item Similar results hold for other models (Ionides et al, {\it JASA}, 2023).
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}{More on the block particle filter (BPF)}
+
+\bi
+\item BPF also worked quickly, easily and reliably on a measles metapopulation, as well as various toy benchmark problems (Ionides et al, {\it JASA}, 2023).
+
+        \vspace{2mm}
+
+\item BPF has theoretical support in some situations (Rebeschini \& Van Handel, {\it Annals of Applied Probability}, 2015).
+
+        \vspace{2mm}
+
+      \item This motivated us to develop an IBPF for parameter estimation.
+        
+        \vspace{2mm}
+
+      \item IBPF has theoretical guarantees similar to BPF (Ning \& Ionides, {\it JMLR}, 2023).
+        
+        \vspace{2mm}
+
+        
+\item BPF was independently proposed as the ``factored particle filter'' by Ng et al (2002).
+
+\ei
+
+\end{frame}
+
+\begin{frame}{Particle filter (PF)}
+
+  \begin{columns}
+    \begin{column}{0.48\linewidth}
+      \begin{center}
+      {\bf \textcolor{blue}{Evolutionary analogy}}
+
+      \vspace{5mm}
+      
+      {\bf Mutation}
+
+      $\downarrow$
+
+      {\bf Fitness}
+
+      $\downarrow$
+
+      {\bf Natural selection}
+      
+      \end{center}
+    \end{column}
+     \begin{column}{0.48\linewidth}
+      \begin{center}
+      {\bf \textcolor{blue}{Particle filter algorithm}}
+
+      \vspace{5mm}
+      
+      {\bf Predict: stochastic dynamics}
+
+      $\downarrow$
+
+      {\bf Measurement: weight}
+
+      $\downarrow$
+
+      {\bf Filter: resample}
+      \end{center}
+    \end{column}
+  \end{columns}
+
+  \vspace{15mm}
+  
+    \begin{myitemize}
+  \item PF is an evolutionary algorithm with good mathematical properties: an unbiased likelihood estimate and consistent latent state distribution.
+  \end{myitemize}
+
+\end{frame}
+  
+\begin{frame}{Block particle filter (BPF)}
+
+  \begin{myitemize}
+    \item Blocks are a partition of the metapopulation units.
+    \item For measles, we use each city as a block.
+  \end{myitemize}
+  
+  \begin{columns}
+    \begin{column}{0.48\linewidth}
+      \begin{center}
+      {\bf \textcolor{blue}{Evolutionary analogy}}
+
+      \vspace{5mm}
+      
+      {\bf Mutation}
+
+      $\downarrow$
+
+      {\bf Fitness\\
+      for each chromosome}
+
+      $\downarrow$
+
+      {\bf Natural selection\\
+      for each chromosome}
+
+      $\downarrow$
+
+      {\bf Recombine chromosomes}
+      
+      \end{center}
+    \end{column}
+     \begin{column}{0.48\linewidth}
+      \begin{center}
+      {\bf \textcolor{blue}{Block particle filter}}
+
+      \vspace{5mm}
+      
+      {\bf Predict: stochastic dynamics}
+
+      $\downarrow$
+
+      {\bf Measurement: weight\\
+      for each block}
+
+      $\downarrow$
+
+      {\bf Filter: resample\\
+      for each block}
+
+      $\downarrow$
+
+      {\bf Recombine blocks}
+      \end{center}
+    \end{column}
+  \end{columns}
+
+  \vspace{5mm}
+  
+    \begin{myitemize}
+    \item Blocks are segments of the full state which can be reassorted between particles at the resampling step.
+
+\end{myitemize}
+
+\end{frame}
+
+
+\begin{frame}{Comments on the Ensemble Kalman Filter (EnKF)}
+
+  \begin{itemize}
+  \item EnKF is more dependent on approximate Gaussianity than is sometimes supposed.
+
+    \vspace{2mm}
+    
+  \item The Gaussian-inspired update rule is similar to the extended Kalman filter (EKF), which has largely been superseded by particle filter methods for low-dimensional nonlinear biological dynamics.
+
+    \vspace{2mm}
+    
+\item Simple systems can defeat EnKF: the linear Gaussian update is helpless when data inform the conditional variance rather than the conditional mean.
+
+  \vspace{2mm}
+  
+    \item Big systems need computationally tractable analysis. EnKF may sometimes be the best solution available, but be aware of its limitations.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{An iterated block particle filter for parameter estimation}
+
+
+  \begin{center}
+    
+  \includegraphics[trim={0 0 0 10mm},clip,width=9cm]{IBPF_workflow.pdf}
+
+
+  \end{center}
+  
+\end{frame}
+
+\begin{frame}{Practical inference using IBPF}
+  \bi
+  \item to do
+
+  \ei
+  
+  \end{frame}
+
+%% \begin{frame}{Technical issues with EnKF}
+
+%%   \begin{itemize}
+%%   \item EnKF is based on a continuous Gaussian approximation.
+%%   \item Log-likelihoods with respect to counting measure are never positive, and cannot properly be compared with log-likelihoods corresponding to continuous densities.
+%%     \item For data with many zeros, the unbounded EnKF likelihood can substantially bias the MLE.
+%%     \item Adapting EnKF for count data is non-trivial (Katzfuss et al, {\it JASA}, 2019).
+%% %    \item Li et al avoided the issue by using a ``heuristic observation error variance'' within EnKF. The corresponding ``log-likelihood'' is not the log-likelihood of any model. In particular, it cannot validly be compared againt simple statistical benchmarks.
+%% %  \item Data and models will never be perfect. We want to reveal, rather than conceal, limitations.
+%%   \end{itemize}
+  
+%%   \end{frame}
+
+%% \begin{frame}{Future work}
+
+%%   \newcommand\futuresep{\vspace{5mm}}
+  
+%%   \begin{myitemize}
+
+%%   \item We anticipate continued progress in modeling and inference for nonlinear spatiotemporal partially observed stochastic dynamic systems.
+
+%%     \futuresep
+    
+%%   \item As long as the \texttt{spatPomp} package facilitates data analysis, we expect continuing package development.
+
+%% %    \futuresep
+
+%%  %   \item Questions and comments?
+    
+%% \end{myitemize}
+
+%% \end{frame}
+
+\begin{frame}
+\frametitle{Filtering $U$-dimensional correlated Brownian motion}
+
+\vspace{-3mm}
+
+\begin{center}
+\includegraphics[width=10cm]{bm_alt_plot-1.pdf}
+
+\vspace{-1mm}
+
+$\cov\big(X_{\unit,\time}-X_{\unit,\time-1},X_{\altUnit,\time}-X_{\altUnit,\time-1}\big) \sim 0.4^{|\unit-\altUnit|}_{}$
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Filtering $U$ units of Lorenz 96 toy atmospheric model} 
+
+\vspace{-3mm}
+
+\begin{center}
+\includegraphics[width=10cm]{lz_loglik_plot-1.pdf}
+
+\vspace{-1mm}
+
+$dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\big) - X_{\unit}(t) + F \big\} dt + \sigma \, dB_{\unit}(t)$
+
+\end{center}
+
+\end{frame}
+
+
+\nocite{asfaw23arxiv,bjornstad01,breto19,grenfell04,he10,katzfuss19,ionides21,ionides22,lee20,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler23}
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\bibliographystyle{apalike}
+\bibliography{bib}
+\end{frame}
+
+%%% extra material
+
+
+\end{document}
