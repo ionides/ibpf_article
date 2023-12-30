@@ -47,22 +47,18 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King, Me
 
 \end{frame}
 
-\begin{frame}{Questions to be addressed}
+\begin{frame}{Question to be addressed}
 
   \begin{enumerate}
-  \item When can we carry out full-information likelihood-based inference on a general class of spatiotemporal partially observed Markov process models? In particular, models for networks of interacting biological population dynamics.
-
-    \vspace{2mm}
-    
-  \item Is there an intersection between scientific problems of interest and the capabilities of the \texttt{spatPomp} R package?
+  \item When can we carry out full-information likelihood-based inference on nonlinear non-Gaussian spatiotemporal partially observed Markov process (SpatPOMP) models? In particular, models for networks of interacting biological population dynamics.
 
         \vspace{2mm}
 
-\item We introduce the {\bf iterated block particle filter}, currently the most powerful algorithm available in \texttt{spatPomp}.
+\item We introduce the {\bf iterated block particle filter}, currently the most powerful algorithm available in the \texttt{spatPomp} R package.
 
-  \vspace{2mm}
+%  \vspace{2mm}
 
-\item Bonus question: How do we know if our model is statistically adequate, or needs more work?
+%  \item Bonus question: How do we know if our model is statistically adequate, or needs more work?
   
     \end{enumerate}
 \end{frame}
@@ -451,10 +447,16 @@ Travel occurs to and from $\mathrm{T}$, based on 2018 data from Tencent.
 \end{frame}
 
 \begin{frame}{Practical inference using IBPF}
-  \bi
-  \item to do
+  \begin{enumerate}
+  \item Monte Carlo adjusted profile likelihood \citep{ionides17profile} obtains confidence intervals that accommodate Monte Carlo error.
 
-  \ei
+  \item Comparing the log-likelihood with an autoregressive model (or other simple statistical model) provides a check of model fit.
+
+  \item Comparing the block log-likelihood against the benchmark provides insight into problematic units.
+
+    \item Comparing the conditional log-likelihood for each observation against the benchmark helps to identify outliers. 
+    
+  \end{enumerate}
   
   \end{frame}
 
@@ -490,6 +492,25 @@ Travel occurs to and from $\mathrm{T}$, based on 2018 data from Tencent.
 %% \end{myitemize}
 
 %% \end{frame}
+
+\begin{frame}{Filtering $U$ units of a coupled measles SEIR model}
+
+\vspace{-1mm}
+
+\begin{center}
+\includegraphics[width=10cm]{mscale_loglik_plot-1.pdf}
+
+
+\end{center}
+
+\vspace{-4mm}
+
+Simulated data using a gravity model with geography, demography and transmssion parameters corresponding to UK pre-vaccination measles (Ionides et al, {JASA}, 2023).
+
+%\end{center}
+
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Filtering $U$-dimensional correlated Brownian motion}
