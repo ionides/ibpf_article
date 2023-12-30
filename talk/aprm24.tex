@@ -54,7 +54,7 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King, Me
 
         \vspace{2mm}
 
-\item We introduce the {\bf iterated block particle filter}, currently the most powerful algorithm available in the \texttt{spatPomp} R package.
+\item We introduce the {\bf iterated block particle filter}, currently the most effective algorithm in the \texttt{spatPomp} R package.
 
 %  \vspace{2mm}
 
@@ -115,7 +115,7 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King, Me
     \vspace{8mm}
 
     \begin{itemize}
-    \item  Iterated particle filtering via \texttt{mif2} in the R package \texttt{pomp} enables Masters-level statisticians to do plug-and-play likelihood-based inference:
+    \item  Iterated particle filtering via \texttt{mif2} in the R package \texttt{pomp} enables Masters-level statisticians to do plug-and-play likelihood-based inference for nonlinear, non-Gaussian, partially observed dynamic systems:
 
       \vspace{2mm}
 
@@ -167,7 +167,7 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King, Me
 
 
 
-\begin{frame}{COVID in 375 cities in China, 10-23 January, 2020}
+\begin{frame}{COVID in 373 cities in China, Jan 10 to Feb 8, 2020}
 
   \begin{itemize}
   \item Metapopulation data were used to infer the fraction of asymptomatic cases and their contagiousness
@@ -175,7 +175,7 @@ Patricia Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron King, Me
   \item SEIR (susceptible-exposed-infected-removed) model with asymptomatics, reporting delay, and coupling based on cell phone data.
   \item Li et al (2020) used iterated EnKF for inference.
   \item The time interval covers the initial China lockdown.
-  \item Here, we summarize our re-analysis of this model and data, recently posted on arXiv.
+  \item We present re-analysis of this model and data, recently posted on arXiv.
 %% see README for R code
 %   \item Total cases 801, Wuhan 454, Chongqing 27, Beijing 26.
 %   \item{} 259 cities with 0 cases, 99 with 1--5 cases, 17 with $>5$ cases.
@@ -282,7 +282,7 @@ Travel occurs to and from $\mathrm{T}$, based on 2018 data from Tencent.
 
         \vspace{2mm}
 
-      \item This motivated us to develop an IBPF for parameter estimation.
+      \item This motivated us to develop an iterated BPF (IBPF) for parameter estimation.
         
         \vspace{2mm}
 
@@ -455,43 +455,12 @@ Travel occurs to and from $\mathrm{T}$, based on 2018 data from Tencent.
   \item Comparing the block log-likelihood against the benchmark provides insight into problematic units.
 
     \item Comparing the conditional log-likelihood for each observation against the benchmark helps to identify outliers. 
-    
+
+    \item Two recent case studies (Wheeler et al, 2023; Li et al, 2023) demonstrate data analysis using IBPF. Code and data are provided via R packages extending \code{spatPomp}.
+      
   \end{enumerate}
   
   \end{frame}
-
-%% \begin{frame}{Technical issues with EnKF}
-
-%%   \begin{itemize}
-%%   \item EnKF is based on a continuous Gaussian approximation.
-%%   \item Log-likelihoods with respect to counting measure are never positive, and cannot properly be compared with log-likelihoods corresponding to continuous densities.
-%%     \item For data with many zeros, the unbounded EnKF likelihood can substantially bias the MLE.
-%%     \item Adapting EnKF for count data is non-trivial (Katzfuss et al, {\it JASA}, 2019).
-%% %    \item Li et al avoided the issue by using a ``heuristic observation error variance'' within EnKF. The corresponding ``log-likelihood'' is not the log-likelihood of any model. In particular, it cannot validly be compared againt simple statistical benchmarks.
-%% %  \item Data and models will never be perfect. We want to reveal, rather than conceal, limitations.
-%%   \end{itemize}
-  
-%%   \end{frame}
-
-%% \begin{frame}{Future work}
-
-%%   \newcommand\futuresep{\vspace{5mm}}
-  
-%%   \begin{myitemize}
-
-%%   \item We anticipate continued progress in modeling and inference for nonlinear spatiotemporal partially observed stochastic dynamic systems.
-
-%%     \futuresep
-    
-%%   \item As long as the \texttt{spatPomp} package facilitates data analysis, we expect continuing package development.
-
-%% %    \futuresep
-
-%%  %   \item Questions and comments?
-    
-%% \end{myitemize}
-
-%% \end{frame}
 
 \begin{frame}{Filtering $U$ units of a coupled measles SEIR model}
 
@@ -545,7 +514,7 @@ $dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\bi
 \end{frame}
 
 
-\nocite{asfaw23arxiv,bjornstad01,breto19,grenfell04,he10,katzfuss19,ionides21,ionides22,lee20,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler23}
+\nocite{asfaw23arxiv,bjornstad01,breto19,grenfell04,he10,katzfuss19,ionides21,ionides22,lee20,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler23,li23}
 
 \begin{frame}[allowframebreaks]
 \frametitle{References}
