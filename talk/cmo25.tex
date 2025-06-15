@@ -58,14 +58,17 @@ Ning (Patricia) Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron K
 
 \vspace{2mm}
 
-\item Bonus question: How do we know if our model is statistically adequate, or needs more work? Hint: we need {\bf performance benchmarks}, i.e., comparison with non-mechanistic machine learning methods. If there is performance shortfall, we need diagnostics to figure out where and how.
-  
+\item Bonus question: How do we know if our model is statistically adequate, or needs more work?
+
+  \begin{itemize}
+  \item Hint: we need {\bf performance benchmarks}, i.e., comparison with non-mechanistic machine learning methods. If there is performance shortfall, we need diagnostics to figure out where and how.
+  \end{itemize}
     \end{enumerate}
 \end{frame}
 
 \newcommand\challengeSep{\vspace{3mm}}
 
-\begin{frame}{Inference challenges in population dynamics}
+\begin{frame}{Inference challenges in population dynamics: A brief history}
 
   \begin{enumerate}
 \item Combining measurement noise and process noise.
@@ -80,7 +83,7 @@ Ning (Patricia) Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron K
   \vspace{4mm}
   
   1--5 are largely solved, from a methodological perspective.\\
-  6 is our immediate topic.\\
+  \myemph{6 is our immediate topic.}\\
   7 is exciting but not the focus of this talk.
 
 
@@ -115,7 +118,12 @@ Ning (Patricia) Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron K
     \vspace{8mm}
 
     \begin{itemize}
-    \item  Iterated particle filtering via \texttt{mif2} in the R package \texttt{pomp} enables Masters-level statisticians to do plug-and-play likelihood-based inference for nonlinear, non-Gaussian, partially observed dynamic systems:
+    \item  \myemph{Iterated particle filtering} via \texttt{mif2} in the R package \texttt{pomp} \citep{king16} enables plug-and-play likelihood-based inference for nonlinear, non-Gaussian, partially observed Markov process (POMP) models.
+
+      \item Allows consideration of arbitrary POMP models for low-dimensional time series data.
+
+      \item Accessible for Masters-level statisticians:
+
 
       \vspace{2mm}
 
@@ -167,13 +175,13 @@ Ning (Patricia) Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron K
 
 \begin{frame}{\texttt{spatPomp}: an R package for SpatPOMP models}
 
-  Asfaw et al ({\it J. Open Source Software}, 2024)
+  Asfaw et al (2024, {\it J. Open Source Software})
   \url{https://github.com/spatPomp-org}
   
   \bi
-\item Permits specification of arbitrary non-linear non-Gaussian spatiotemporal POMP models.
-\item Adds spatial structure to \texttt{pomp} \citep{king16}.
-\item Monte Carlo algorithms designed to address the \myemph{curse of dimensionality}.
+\item Permits specification of arbitrary non-linear non-Gaussian spatiotemporal POMP (SpatPOMP) models.
+\item \texttt{spatPomp} spatial structure to \texttt{pomp}.
+\item Includes Monte Carlo algorithms designed to address the \myemph{curse of dimensionality}.
   \item Algorithms compile via C to assist performance.
 \item Statistically efficient, likelihood-based inference despite methods being simulation-based.
   \ei
@@ -209,7 +217,8 @@ Ning (Patricia) Ning, Jesse Wheeler, Kidus Asfaw, Jifan Li, Joonha Park, Aaron K
     \end{center}
 
 \end{center}
-\bi
+  \bi
+  \item $U=373$ cities (spatial units) labeled $u=1,\dots,U$.
 \item 
   Reportably infectious individuals, $\mathrm{I}_u$ for city $u$, are included in the delayed reporting compartment, $\mathrm{C^a_u}$.
   \item 
@@ -248,7 +257,7 @@ $M_4$ &
 $M_5$ &
   -9088.2&
   12 &
-  Adding overdispersed dynamics to $M_2$ and refitting
+  Adding overdispersed dynamics to $M_2$
 \\
 $M_6$ &
   -9116.5&
@@ -273,7 +282,7 @@ Model comparisons by log-likelihood. The degrees of freedom (df) is the number o
 \item Tracked down by assessing conditional log-likelihood for each unit and each time.
 \item Even then, the likelihood was poor compared to non-mechanistic benchmarks. Including over-dispersion fixed that.
 \item Some weak identifiability remained. extra assumptions can lead to plausible parameter estimates without much loss of model fit.
-\item Mild outliers remain, e.g., Wuhan on day 18.  
+\item Less severe outliers remain, e.g., Wuhan on day 18.  
   \ei
 
 \end{frame}
@@ -289,7 +298,7 @@ Model comparisons by log-likelihood. The degrees of freedom (df) is the number o
  \includegraphics[width=10cm]{covid/filter_tests10.png}
 
   \begin{itemize}
-\item BPF is the best available filter for this COVID model.
+\item Block particle filter (BPF) beats alternatives for this COVID model.
 \item Similar results hold for other models (Ionides et al, {\it JASA}, 2023).
   \end{itemize}
   
@@ -481,7 +490,7 @@ Model comparisons by log-likelihood. The degrees of freedom (df) is the number o
 
     \item Comparing the conditional log-likelihood for each observation against the benchmark helps to identify outliers. 
 
-    \item Two recent case studies (Wheeler et al, 2023; Li et al, 2023) demonstrate data analysis using IBPF. Code and data are provided via R packages extending \code{spatPomp}.
+    \item Two recent case studies (Wheeler et al, 2024; Li et al, 2024) demonstrate data analysis using IBPF. Code and data are provided via R packages extending \code{spatPomp}.
       
   \end{enumerate}
   
@@ -539,7 +548,9 @@ $dX_{\unit}(t) = \big \{  X_{\unit-1}(t) \big(X_{\unit+1}(t) - X_{\unit-2}(t)\bi
 \end{frame}
 
 
-\nocite{asfaw24,bjornstad01,breto19,grenfell04,he10,katzfuss19,ionides21,ionides24,lee20,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler24,li24}
+%\nocite{asfaw24,bjornstad01,breto19,grenfell04,he10,katzfuss19,ionides23,ionides24,lee20,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler24,li24}
+
+\nocite{asfaw24,bjornstad01,grenfell04,ionides23,ionides24,li20,ng02,ning23-ibpf,park20,rebeschini15,wheeler24,li24}
 
 \nocite{asfaw24tutorial}
 \begin{frame}[allowframebreaks]
